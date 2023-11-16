@@ -1,0 +1,56 @@
+[
+    {
+        "username": "cmenweg",
+        "nom": "MENWEG",
+        "prenom": "CLEMENT",
+        "email": "clement.menweg@sardines-and-cie.sar",
+        "motdepasse": "bonjour",
+        "role": "administrateur",
+        "groupe": " | Communication | Contrats RH | Paies RH | Contrats Partenaires | Avant-vente | Service technique | sudo"
+    },
+    {
+        "username": "dgatel",
+        "nom": "gatel",
+        "prenom": "david",
+        "email": "david.gatel@sardines-and-cie.sar",
+        "motdepasse": "bonjour",
+        "role": "administrateur",
+        "groupe": " | Communication | Contrats RH | Paies RH | Contrats Partenaires | Avant-vente | Service technique | sudo"
+    },
+    {
+        "username": "sdambielle",
+        "nom": "dambielle",
+        "prenom": "sarah",
+        "email": "sarah.dambielle@sardines-and-cie.sar",
+        "motdepasse": "bonjour",
+        "role": "moderateur",
+        "groupe": " | Communication | Contrats RH | Paies RH | Avant-vente | sudo"
+    },
+    {
+        "username": "mfrançois-régis",
+        "nom": "françois-régis",
+        "prenom": "menguy",
+        "email": "francois-rgis.menguy@sardines-and-cie.sar",
+        "motdepasse": "bonjour",
+        "role": "administrateur",
+        "groupe": " | Communication | Contrats RH | Paies RH | Contrats Partenaires | Avant-vente | Service technique | sudo"
+    },
+    {
+        "username": "jbeck",
+        "nom": "beck",
+        "prenom": "jean-baptiste",
+        "email": "jean-batiste.beck@sardines-and-cie.sar",
+        "motdepasse": "123",
+        "role": "utilisateur",
+        "groupe": " | ALONE"
+    },
+    {
+        "username": "lperard",
+        "nom": "perard",
+        "prenom": "louis",
+        "email": "louis.perard@sardines-and-cie.sar",
+        "motdepasse": "bonjour",
+        "role": "utilisateur",
+        "groupe": " | Paies RH | ALONE"
+    }
+]

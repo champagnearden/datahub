@@ -1,0 +1,44 @@
+[
+    {
+        "nom": "file:.bash_logout",
+        "path": "/var/www/sardines/intranet/FTP/",
+        "visibility": "me",
+        "owner": "sdambielle",
+        "groupes": " | Communication | Contrats RH | Paies RH | Avant-vente | sudo"
+    },
+    {
+        "nom": "file:.bashrc",
+        "path": "/var/www/sardines/intranet/FTP/",
+        "visibility": "grp",
+        "owner": "cmenweg",
+        "groupes": " | Communication | Contrats RH | Paies RH | Contrats Partenaires | Avant-vente | Service technique | sudo"
+    },
+    {
+        "nom": "file:everyone",
+        "path": "/var/www/sardines/intranet/FTP/",
+        "visibility": "all",
+        "owner": "jbeck",
+        "groupes": " | ALONE"
+    },
+    {
+        "nom": "file:groupes",
+        "path": "/var/www/sardines/intranet/FTP/",
+        "visibility": "grp",
+        "owner": "jbeck",
+        "groupes": " | ALONE"
+    },
+    {
+        "nom": "file:me",
+        "path": "/var/www/sardines/intranet/FTP/",
+        "visibility": "me",
+        "owner": "jbeck",
+        "groupes": " | ALONE"
+    },
+    {
+        "nom": "file:devanture.png",
+        "path": "/var/www/sardines/intranet/FTP/",
+        "visibility": "me",
+        "owner": "jbeck",
+        "groupes": " | ALONE"
+    }
+]

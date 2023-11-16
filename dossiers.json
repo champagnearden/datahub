@@ -1,0 +1,26 @@
+[
+    {
+        "nom": "moi",
+        "path": "/var/www/sardines/intranet/FTP/",
+        "visibility": "me",
+        "owner": "cmenweg"
+    },
+    {
+        "nom": "groupes",
+        "path": "/var/www/sardines/intranet/FTP/",
+        "visibility": "grp",
+        "owner": "cmenweg"
+    },
+    {
+        "nom": "everyone",
+        "path": "/var/www/sardines/intranet/FTP/",
+        "visibility": "all",
+        "owner": "cmenweg"
+    },
+    {
+        "nom": "test",
+        "path": "/var/www/sardines/intranet/FTP/",
+        "visibility": "me",
+        "owner": "jbeck"
+    }
+]
