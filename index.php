@@ -1,7 +1,7 @@
 <?php
 include ("functions.php");
 headd("Accueil");
-nav("index.php");
+nav("index");
 ?>
 <div class='textblue policemain mediumsize text-center bgmaincolor'>
 	<br>
@@ -10,13 +10,13 @@ nav("index.php");
 </div>
 <br>
 <div class='container textblue policemain mediumsize text-center'>
-	Bienvenue sur l'intranet de Sardines&Cie 
+	Bienvenue sur Datahub 
 	<br><br>
 	<i class='policesecond'>
 		<?php 
 		$d=date('H');
 		if (!isset($_SESSION['pre_nom'])){
-			echo "Veuillez vous connecter pour accéder au reste de l'intranet";
+			echo "Veuillez vous connecter pour accéder à l'espace d'échange";
 		} elseif ($d < 6 || $d > 17) {
 			echo "Bonsoir ".$_SESSION['pre_nom'];
 		}elseif ($d < 13 || $d >= 6) {
@@ -36,7 +36,6 @@ nav("index.php");
 			echo" href='/logout.php'>Se connecter</a>";
 	}
 	echo "
-</div> 
-<br><br>";
+</div>";
 footer();
 ?>

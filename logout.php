@@ -9,7 +9,7 @@ nav("deconnexion.php");
 	<div class='text-center mx-auto d-block'>
 		<b class='text-center textblue policemain mediumsize'>DECONNEXION</b>
 		<br><br>
-		<p class='mediumsize policesecond textblue'>Vous vous êtes bien déconnecté de l'Intranet Sardines&Cie</p>
+		<p class='mediumsize policesecond textblue'>Vous vous êtes bien déconnecté de DataHub</p>
 		<br>
 		<i class='smallsize policesecond textblue'>Pour vous reconnecter, veuillez cliquer sur le bouton suivant : </i>
 		<br><br>
@@ -19,7 +19,7 @@ nav("deconnexion.php");
 	</div>
 	<br>
 	<div class='text-center'>
-		<button type='button' class='btn bgmaincolor text-white center-block' onclick = 'location.href = "index.php"'>Retour accueil</button>
+		<button type='button' class='btn bgmaincolor text-white center-block' onclick = 'location.href = "/"'>Retour accueil</button>
 	</div>
 </div>
 <br>

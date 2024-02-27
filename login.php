@@ -11,7 +11,7 @@ headd("Connexion");
 nav("login.php");
 
 if(isset($_SESSION['pre_nom'])){
-    header("Location: /index.php");
+    header("Location: /");
 }
 ?>
 

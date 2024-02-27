@@ -162,7 +162,7 @@
       }
       if(boolval($pass)){
         echo "<div class'raw'>
-        <button class='btn bgmaincolor text-white btn-sm' onclick='if(confirm(\"Êtes-vous sûre de vouloir supprimer le répertoire ".$a[$i]." ?\")){window.location.href=\"./index.php?DelDoss=".$a[$i]."\"}'>-</button>&emsp;<a class='textblue policesecond minisize' href='".$a[$i]."'>".ucwords(strtolower($a[$i]))."</a> $sub</div>";
+        <button class='btn bgmaincolor text-white btn-sm' onclick='if(confirm(\"Êtes-vous sûre de vouloir supprimer le répertoire ".$a[$i]." ?\")){window.location.href=\"./?DelDoss=".$a[$i]."\"}'>-</button>&emsp;<a class='textblue policesecond minisize' href='".$a[$i]."'>".ucwords(strtolower($a[$i]))."</a> $sub</div>";
       }
     }
   }
@@ -210,7 +210,7 @@
       if(boolval($pass)){
         $f=str_replace("file:", "", $a[$i]);
         echo "<div class='raw'>
-          <button class='btn bgmaincolor text-white btn-sm' onclick='if(confirm(\"Êtes-vous sûre de vouloir supprimer le fichier ".$f." ?\")){window.location.href=\"./index.php?DelFic=".$a[$i]."\"}'>-</button>&emsp;
+          <button class='btn bgmaincolor text-white btn-sm' onclick='if(confirm(\"Êtes-vous sûre de vouloir supprimer le fichier ".$f." ?\")){window.location.href=\"./?DelFic=".$a[$i]."\"}'>-</button>&emsp;
           <a class='textblue policesecond minisize' href='./".$a[$i]."' download='$f'>".ucwords(strtolower($f))."</a> $sub</div>";
       }
     }

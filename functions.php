@@ -10,7 +10,7 @@ foreach($ips as $ip){
 			<script>
 				var str = prompt(\"Non non, vous êtes banni !\\nVous pouvez dire ce que vous voulez vous l'avez cherché !\");
 				if (str==null || str==''){str='Partage_à_tes_camarades_sur_webex';}
-				window.location.href='http://www.sardines-and-cie.sar?EasterEgg=\"'+str+'\"';
+				window.location.href='/?EasterEgg=\"'+str+'\"';
 			</script>";
 	}
 }
@@ -55,9 +55,9 @@ function nav($page){
  </script>
 <nav class='navbar navbar-expand-sm bgmaincolor navbar-dark fixed-top py-3 policesecond' >
 	&emsp;
-	<a class='navbar-brand' href='/index.php'>
+	<a class='navbar-brand' href='/'>
     &emsp;
-    <img src='images/cgd.png' alt='Logo' height='20%' width='20%'>
+    <img src='/images/cgd.png' alt='Logo' height='20%' width='20%'>
   </a>
   <button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#collapsibleNavbar'>
     <span class='navbar-toggler-icon'></span>
@@ -65,7 +65,7 @@ function nav($page){
 	<ul class='navbar-nav collapse navbar-collapse' id='collapsibleNavbar'>
 		<li class='nav-item'>
 			<a class='nav-link";
-	if ($page == "index.php") {
+	if ($page == "index") {
 		echo " active'";
 	}else {
 		echo "'";
@@ -91,7 +91,7 @@ function nav($page){
 		}else {
 			echo "'";
 		}
-		echo "href='/FTP/index.php' title='-Zone de dépôt\n-Gestion des fichiers partagés\n-Consultation des dossiers personnels'>Espace de fichiers</a>
+		echo "href='/FTP/' title='-Zone de dépôt\n-Gestion des fichiers partagés\n-Consultation des dossiers personnels'>Espace de fichiers</a>
 		</li>";
 	}
 	echo "
@@ -106,7 +106,7 @@ function nav($page){
 		echo "'";
 	}
 	if (isset($_SESSION['pre_nom'])){
- 		echo "title='Page de déconnexion' href='logout.php' class='btn btn-outline-dark btn-sm'>Se déconnecter</a></li>";
+ 		echo "title='Page de déconnexion' href='/logout.php' class='btn btn-outline-dark btn-sm'>Se déconnecter</a></li>";
 	}else {
 		echo"title='Page de connexion\nCréation de compte' href='login.php'>Se connecter</a>
 		</li>";
@@ -169,8 +169,8 @@ function session_verif($salaries,$second=false){
 			<div class='text-center'><br>
 				<br>
                 Vous allez êtreredirigé dans quelques instants...
-                <script>document.location.href='index.php'</script>
-				<button type='button' class='btn bgmaincolor text-white center-block' onclick = 'location.href = \"index.php\"'>Continuer</button>
+                <script>document.location.href='/'</script>
+				<button type='button' class='btn bgmaincolor text-white center-block' onclick = 'location.href = \"/\"'>Continuer</button>
 			</div>
 		</div>
 		";
@@ -211,7 +211,7 @@ function session_verif($salaries,$second=false){
 			<p class='mediumsize policesecond textblue'>Attention, au bout de 3 tentatives vous serez banni de l'intranet !</p>
 			<div class='text-center'>
 				<br><br>
-				<button type='button' class='btn bgmaincolor text-white center-block' onclick = 'location.href = \"/connexion.php\"'>Réessayez</button>
+				<button type='button' class='btn bgmaincolor text-white center-block' onclick = 'location.href = \"/login.php\"'>Réessayez</button>
 			</div>
 		</div>
 		";
