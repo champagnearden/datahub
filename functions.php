@@ -136,14 +136,15 @@ function nav($page){
 <br><br><br><br><br><br>";
 }
 
-function str_contains($seek, $long){
-    $seek=($seek=="")?" ":$seek;
-    if (strpos($long, $seek) === false) {
-        return false;
-    }else{
-        return true;
-    }
-}
+//function str_contains($seek, $long){
+//    $seek=($seek=="")?" ":$seek;
+//    if (strpos($long, $seek) === false) {
+//        return false;
+//    }else{
+//        return true;
+//    }
+//}
+
 function session_verif($salaries,$second=false){
 	$pass=false;
 	foreach($salaries as $salarie){
