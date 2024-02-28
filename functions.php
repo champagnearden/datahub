@@ -220,7 +220,7 @@ function session_verif($salaries,$second=false){
 }
 
 function footer(){
-	echo '</div><footer class="jumbotron bgmaincolor text-center text-white"><br>	
+	echo '</div><br><br><footer class="jumbotron bgmaincolor text-center text-white"><br>	
 	&copy '.strftime("%Y").' CyberData | <a href="mailto:jbbeck42@gmail.com">jbbeck42@gmail.com</a> | <p id="date">'.date("j-n-Y H:i:s").'
 		<script>
 			setInterval(function(){
