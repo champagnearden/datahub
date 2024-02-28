@@ -14,6 +14,18 @@ foreach($ips as $ip){
 			</script>";
 	}
 }
+unset($ips);
+$const = (new Consts())->get();
+
+class Consts {
+	public $consts;
+	function __construct() {
+		$this -> consts = json_decode(file_get_contents("const.json"), true);
+	}
+	function get() {
+		return $this -> consts;
+	}
+}
 
 function headd($tpage){
 	if (session_status()<2){
@@ -156,10 +168,10 @@ function session_verif($salaries,$second=false){
 			}
 		}
 	}
+	nav("Bienvenue");
 	if ($pass) {
 		$_SESSION['role'] = $salarie['role'];
 		$_SESSION['username'] = $salarie['username'];
-		nav("Bienvenue");
 		echo "
 		<br>
 		<div class='text-center mx-auto d-block'>
@@ -175,11 +187,10 @@ function session_verif($salaries,$second=false){
 		</div>
 		";
 		$_SESSION['tentative']=0;
-	}	else {
-		nav("Bienvenue");
-		$_SESSION['tentative']++;
+	} else {
+		isset($_SESSION['tentative']) ? $_SESSION['tentative']++ : $_SESSION['tentative']=1;
 		if ($_SESSION['tentative']>=3){
-			$ips=json_decode(file_get_contents("banned_ip.json"),true);
+			$ips=json_decode(file_get_contents("banned_ip.json"), true);
 			$ips=($ips == null)? array() : $ips;
 			$banned=0;
 			foreach($ips as $ip){
@@ -193,7 +204,7 @@ function session_verif($salaries,$second=false){
 					"date" => date("j-n-Y H:i:s"),
 					"ip"=>$_SERVER['REMOTE_ADDR'])
 				);
-				file_put_contents("banned_ip.json",json_encode($ips));
+				file_put_contents("banned_ip.json", json_encode($ips));
 			}
 			header('Location: functions.php');
 			die();
@@ -219,8 +230,8 @@ function session_verif($salaries,$second=false){
 	}
 }
 
-function footer(){
-	echo '</div><br><br><footer class="jumbotron bgmaincolor text-center text-white"><br>	
+function footer(){	
+	echo '</div><br><br><br><br><footer class="jumbotron bgmaincolor text-center text-white"><br>	
 	&copy '.strftime("%Y").' CyberData | <a href="mailto:jbbeck42@gmail.com">jbbeck42@gmail.com</a> | <p id="date">'.date("j-n-Y H:i:s").'
 		<script>
 			setInterval(function(){

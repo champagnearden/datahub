@@ -564,13 +564,13 @@ figure{
 }
 
 footer {
-  position: relative;
+  position: fixed;
   bottom: 0px;
   left: 0px;
   right: 0px;
   padding-bottom: 1rem;
 }
 
-#p {
+#date {
   margin-bottom: 0%;
 }

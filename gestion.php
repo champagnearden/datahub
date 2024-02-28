@@ -43,13 +43,13 @@ if(isset($_POST['email'])){
 ?>
 
 <div style="display : <?php if ($_SESSION['role'] != 'utilisateur'){echo 'block;';  }else{echo 'none;';}?>" class="textblue policesecond bigsize container text-center">
-    Cette page est réservée aux administrateurs et modérateurs, pour la gestion des salariés et des groupes. 
+    Cette page est réservée aux administrateurs et modérateurs, pour la gestion des utilisateurs et des groupes. 
 </div>
 <br>
 <hr style="display : <?php if ($_SESSION['role'] != 'utilisateur'){echo 'block;';  }else{echo 'none;';}?>" class="textblue">
 <br>
 <div class=" container-fluid textblue text-center policesecond">
-    <b class="mediumsize">Liste des salariés</b>
+    <b class="mediumsize">Liste des utilisateurs</b>
     <br>
 </div>
 <br>
@@ -72,7 +72,7 @@ if(isset($_POST['email'])){
                 <?php
                 $salaries = json_decode(file_get_contents("./accounts.json"), true);
                 foreach ($salaries as $salarie) {
-                    if ($_SESSION['role']=="administrateur"){
+                    if ($_SESSION['role']==$const["ADMIN"]){
                         echo '
                         <tr>
                             <th scope="row">'.$salarie["username"].'</th>
@@ -97,14 +97,14 @@ if(isset($_POST['email'])){
                             echo '
                             </td>
                         </tr>'
-                    ;}else if ($_SESSION['role']=="moderateur"){
+                    ;}else if ($_SESSION['role']==$const["MODO"]){
                         echo '
                         <tr>
                             <th scope="row">'.$salarie['username'].'</th>
                             <td>'.$salarie['nom'].'</td>
                             <td>'.$salarie['prenom'].'</td>
                             <td>'.$salarie['email'].'</td>
-                            <td>'; if($salarie["role"]=="administrateur"||$salarie["role"]=="moderateur" && $salarie["username"]!=$_SESSION['username']){echo "*****";}else{echo "
+                            <td>'; if($salarie["role"]==$const["ADMIN"]||$salarie["role"]==$const["MODO"] && $salarie["username"]!=$_SESSION['username']){echo "*****";}else{echo "
                                 <form action='' method='post'>
                                     <input type='password' name='newmdp' value='".$salarie['motdepasse']."' id='".$salarie['username']."' onmouseenter=\"document.getElementById('".$salarie['username']."').type='text'\" onmouseleave=\"document.getElementById('".$salarie['username']."').type='password'\">
                                     <input type='hidden' name='email' value='".$salarie['email']."'>
@@ -115,7 +115,7 @@ if(isset($_POST['email'])){
                             <td>'.$salarie["groupe"].'</td>
                             
                         </tr>'
-                    ;}else if ($_SESSION['role']=="utilisateur"){
+                    ;}else if ($_SESSION['role']==$const["USER"] && ( $salarie["role"] != $const["USER"] || $salarie["username"] == $_SESSION["username"])){
                         echo '
                         <tr>
                             <th scope="row">'.$salarie["username"].'</th>
@@ -192,9 +192,9 @@ if(isset($_POST['email'])){
             <div class="col-sm mb-4">
                 <label for="role" class="form-label text-white">Rôle :</label>
                 <select class="form-select form-select-lg textblue" id="role" name="role" required>
-                  <option value="utilisateur">Utilisateur</option>
-                  <option value="moderateur">Modérateur</option>
-                  <option value="administrateur">Administrateur</option>
+                  <option value=$const["USER"]>Utilisateur</option>
+                  <option value=$const["MODO"]>Modérateur</option>
+                  <option value=$const["ADMIN"]>Administrateur</option>
                 </select>
             </div>
             <div class="col-sm mb-4">
@@ -354,9 +354,9 @@ if(isset($_POST['email'])){
                 <input type="radio" name="choix" value="roles">
                 <label for="ch_roles">Choix Rôles</label>
                 <select class="form-select form-select-lg" id="ch_roles" name="ch_roles[]" multiple>
-                    <option value="administrateur">administrateur</option>
-                    <option value="moderateur">moderateur</option>
-                    <option value="utilisateur" selected>utilisateur</option>
+                    <option value=$const["ADMIN"]>administrateur</option>
+                    <option value=$const["MODO"]>moderateur</option>
+                    <option value=$const["USER"] selected>utilisateur</option>
                 </select>
                 <br>
                 <button type="submit" class="btn bg-white textblue" id="seek">Rechercher</button>
@@ -400,7 +400,7 @@ if(isset($_POST['email'])){
                 }
                 $tabmail=array();
                 foreach (json_decode(file_get_contents("./accounts.json"), true) as $salarie) {
-                    if ($_SESSION['role']=="administrateur"){
+                    if ($_SESSION['role']==$const["ADMIN"]){
                         $unique="";
                         foreach($_POST as $tab=>$v){
                             if(is_string($v)){
@@ -434,7 +434,7 @@ if(isset($_POST['email'])){
                             }
                         }
                     }
-                    if ($_SESSION['role']=="moderateur"){
+                    if ($_SESSION['role']==$const["MODO"]){
                         $unique="";
                         foreach($_POST as $tab=>$v){
                             if(is_string($v)){
@@ -460,8 +460,8 @@ if(isset($_POST['email'])){
                                         <td>'.$salarie["nom"].'</td>
                                         <td>'.$salarie["email"].'</td>
                                         <td>'; 
-                                            if($salarie["role"]=="administrateur"
-                                             ||$salarie["role"]=="moderateur" && $salarie["username"]!=$_SESSION['username']
+                                            if($salarie["role"]==$const["ADMIN"]
+                                             ||$salarie["role"]==$const["MODO"] && $salarie["username"]!=$_SESSION['username']
                                              ){
                                                 echo "*****";
                                             }else{
@@ -476,7 +476,7 @@ if(isset($_POST['email'])){
                             }
                         }
                     }
-                    if ($_SESSION['role']=="utilisateur"){
+                    if ($_SESSION['role']==$const["USER"]){
                         $unique="";
                         foreach($_POST as $tab=>$v){
                             if(is_string($v)){
@@ -535,9 +535,9 @@ if(isset($_POST['email'])){
                     <th scope="col">Rôle
                         <form action="" method="post">
                             <select class="form-select form-select-lg" name="newrole">
-                                <option value="administrateur">administrateur</option>
-                                <option value="moderateur">moderateur</option>
-                                <option value="utilisateur">utilisateur</option>
+                                <option value=$const["ADMIN"]>administrateur</option>
+                                <option value=$const["MODO"]>moderateur</option>
+                                <option value=$const["USER"]>utilisateur</option>
                             </select>
                             <input type="hidden" name="email" value="<?php echo implode("|",$tabmail); ?>">
                             <button type="submit" class="btn bgmaincolor text-white">OK</button>
