@@ -2,7 +2,7 @@
 
 session_start();
 
-$salaries = json_decode(file_get_contents("salariés.json"), true);
+$salaries = json_decode(file_get_contents("accounts.json"), true);
 foreach($salaries as $key => $salarie) {
     if($salarie['email'] == $_POST['email']) {
         exec('sudo deluser '.$salarie['username']);
@@ -11,7 +11,7 @@ foreach($salaries as $key => $salarie) {
         break;
     }
 }
-file_put_contents("salariés.json", json_encode($salaries));
+file_put_contents("accounts.json", json_encode($salaries));
 header("Location: ./gestion.php");
 
 ?>

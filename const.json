@@ -1,5 +1,8 @@
 {
-    "USER": "utilisateur",
-    "MODO": "moderateur",
-    "ADMIN": "administrateur"
+    "roles": {
+        "USER": "utilisateur",
+        "MODO": "moderateur",
+        "ADMIN": "administrateur"
+    }
+    
 }
