@@ -158,7 +158,7 @@ if(isset($_POST['email'])){
         <div class="row textblue">
             <div class="col-sm">
                 <br>
-                <form action="/ajouter_salarie.php" method="post">
+                <form action="/add_user.php" method="post">
                     <div class="form-floating ">
                       <input type="text" class="form-control" id="prenom" placeholder="Entrer votre prenom" name="prenom" required>
                       <label for="prenom">Prénom</label>
@@ -260,7 +260,7 @@ if(isset($_POST['email'])){
     </div>
     <br>
     <div class="bgmaincolor container-fluid policesecond">
-        <form action="/ajouter_groupe.php" method="post"><br>
+        <form action="/add_group.php" method="post"><br>
             <div class="form-floating textblue">
               <input type="text" class="form-control " id="nom_grp" placeholder="Entrer le nom du groupe" name="nom_grp" required>
               <label for="nom">Nom du groupe</label><br>

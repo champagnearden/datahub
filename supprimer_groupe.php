@@ -11,7 +11,6 @@ foreach($groupes as $key => $groupe) {
             $u['groupe'] = str_replace(" | ".$groupe["nom"], "", $u['groupe']);
             array_push($copy_users, $u);
         }
-        exec("sudo groupdel ".$groupe['nom']);
         unset($groupes[$key]);
         break;
     }
