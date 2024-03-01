@@ -8,33 +8,32 @@ if (!isset($_SESSION['pre_nom'])){
     die();
 }
 
-if(isset($_POST['username'])){
-    $_POST['username']=explode(",", $_POST['username']);
-    foreach($_POST['username'] as $e){
-        $accounts=json_decode(file_get_contents("./accounts.json"), true);
-        $i=0;
-        foreach($accounts as $account){
-            $k=array_keys($account)[$i];
-            if($s['username']==$account){
+if ( isset($_POST["username"]) ){
+    $_POST["usernames"] = $_POST["username"];
+}
+if(isset($_POST['usernames'])){
+    $account=json_decode(file_get_contents("./accounts.json"), true);
+    foreach(explode(",", $_POST['usernames']) as $salarie ) {
+        for($c=0; $c < sizeof($account); $c++) {
+            if ($account[$c]['username'] == $salarie) {
+                if ( isset($_POST['newmdp']) ) {
+                    $account[$c]['motdepasse'] = $_POST['newmdp'];
+                    echo "<script>
+                    alert('Le mot de passe de ".$account[$c]['username']." à bien été changé en ".$account[$c]['motdepasse'][0];
+                    for($i=1;$i<strlen($account[$c]['motdepasse'])-1;$i++){
+                        echo "*";
+                    }
+                    echo $account[$c]['motdepasse'][$i]."');
+                    </script>";
+                } else if ( isset($_POST['newrole']) ) {
+                    $account[$c]['role']=$_POST['newrole'];
+                } else if ( isset($_POST['newgrp']) ) {
+                    $account[$c]['groupe']=$_POST["newgrp"];
+                }
+                file_put_contents("./accounts.json", json_encode($account));
                 break;
             }
-            $i++;
         }
-        if(isset($_POST['newmdp'])){
-            $account[$k]['motdepasse']=$_POST['newmdp'];
-            echo "<script>alert('Le mot de passe de ".$account[$k]['username']." à bien été changé en ".$account[$k]['motdepasse'][0];
-            for($i=1;$i<strlen($account[$k]['motdepasse'])-1;$i++){
-                echo "*";
-            }
-            echo $account[$k]['motdepasse'][$i]."');</script>";
-        }
-        if(isset($_POST['newrole'])){
-            $account[$k]['role']=$_POST['newrole'];
-        }
-        if(isset($_POST['newgrp'])){
-            $account[$k]['groupe']=$_POST["newgrp"];
-        }
-        file_put_contents("./accounts.json", json_encode($account));
     }
 }
 
@@ -254,7 +253,7 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
             <td>'.$groupes[$i].'</td>
             <td style="border: none">
                 <form action="supprimer_groupe.php" method="post">
-                    <input type="hidden" name="id" value="'.$i.'" >
+                    <input type="hidden" name="nom_grp" value="'.$groupes[$i].'" >
                     <input type="submit" class="btn btn-sm bgmaincolor text-white material-icons" value="close">
                 </form>                        
             </td>
@@ -327,264 +326,201 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
     } else{
         echo "<h1>Aucune adresse IP n'est actuellement bannie !</h1>";
     }
-    echo <<< HTML
-        </div>
+    echo "</div></div><br><hr class='textblue'>";
+}
+echo <<< HTML
+    <br>
+    <div class='container textblue policesecond'>
+        <div class="container textblue policesecond">
+            <b class="mediumsize">Recherche filtrée</b>
         </div>
         <br>
-        <hr class='textblue'>
+        <div class="row" style="background-color:lightgray">
+            <br>
+HTML;
+$groupes = json_decode(file_get_contents("./groupes.json"), true);
+echo <<< HTML
+        <form action="gestion.php#seek" method="post">
+            <input type="radio" name="choix" value="users">
+            <label for="ch_users">Choix Nom d'utilisateurs</label>
+            <select class="form-select form-select-lg" id="ch_users" name="ch_users[]" multiple>
+HTML;
+foreach($salaries as $salarie){
+    echo '<option value="'.$salarie["username"].'" selected>'.$salarie["username"].'</option>';
+}
+echo <<< HTML
+            </select>
+            <br>
+            <input type="radio" name="choix" value="groups" checked>
+            <label for="ch_groupes">Choix Groupes</label>
+            <select class="form-select form-select-lg" id="ch_groupes" name="ch_groupes[]" multiple>
+HTML;
+foreach($groupes as $grp){
+    echo '<option value="'.$grp.'" selected>'.$grp.'</option>';
+}
+echo <<< HTML
+            </select>
+            <br>
+            <input type="radio" name="choix" value="roles">
+            <label for="ch_roles">Choix Rôles</label>
+            <select class="form-select form-select-lg" id="ch_roles" name="ch_roles[]" multiple>
+HTML;
+foreach ($const["roles"] as $name => $role){
+    echo '<option value="'.$role.'" selected>'.$role.'</option>';
+}
+echo <<< HTML
+            </select>
+            <br>
+            <button type="submit" class="btn bg-white textblue" id="seek">Rechercher</button>
+        </form>
         <br>
-        <div class='container textblue policesecond'>
-            <div class="container textblue policesecond">
-                <b class="mediumsize">Gestion de masse</b>
-            </div>
-            <br>
-            <div class="row" style="background-color:lightgray">
-                <br>
-    HTML;
-    $groupes = json_decode(file_get_contents("./groupes.json"), true);
-    echo <<< HTML
-            <form action="gestion.php#seek" method="post">
-                <input type="radio" name="choix" value="users">
-                <label for="ch_users">Choix Nom d'utilisateurs</label>
-                <select class="form-select form-select-lg" id="ch_users" name="ch_users[]" multiple>
-    HTML;
-    foreach($salaries as $salarie){
-        echo '<option value="'.$salarie["username"].'" selected>'.$salarie["username"].'</option>';
-    }
-    echo <<< HTML
-                </select>
-                <br>
-                <input type="radio" name="choix" value="groups" checked>
-                <label for="ch_groupes">Choix Groupes</label>
-                <select class="form-select form-select-lg" id="ch_groupes" name="ch_groupes[]" multiple>
-    HTML;
-    foreach($groupes as $grp){
-        echo '<option value="'.$grp.'" selected>'.$grp.'</option>';
-    }
-    echo <<< HTML
-                </select>
-                <br>
-                <input type="radio" name="choix" value="roles">
-                <label for="ch_roles">Choix Rôles</label>
-                <select class="form-select form-select-lg" id="ch_roles" name="ch_roles[]" multiple>
-    HTML;
-    foreach ($const["roles"] as $name => $role){
-        echo '<option value="'.$role.'" selected>'.$role.'</option>';
-    }
-    echo <<< HTML
-                </select>
-                <br>
-                <button type="submit" class="btn bg-white textblue" id="seek">Rechercher</button>
-            </form>
-            <br>
-            <br>
-            <br>
-        </div>
         <br>
         <br>
     </div>
-    HTML; 
-    if(!isset($_POST['choix'])){
-        echo "</div>";
-        footer();
-        die();
+    <br>
+    <br>
+</div>
+HTML; 
+if(!isset($_POST['choix'])){
+    echo "</div>";
+    footer();
+    die();
+}
+echo <<< HTML
+    <div class='container textblue policesecond'>
+        <table class="table">
+            <tbody>
+HTML;
+if(isset($_POST['choix'])){
+    $salaries=json_decode(file_get_contents("./accounts.json"), true);
+    switch ($_POST['choix']) {
+        case 'users':
+            $salaries = array_filter($salaries, function($salarie) {
+                return in_array($salarie['username'], $_POST['ch_users']);
+            });
+            break;
+        case 'groups':
+            $salaries = array_filter($salaries, function($salarie) {
+                return count(array_intersect($salarie['groupe'], $_POST['ch_groupes'])) > 0;
+            });                
+            break;
+        case 'roles':
+            $salaries = array_filter($salaries, function($salarie) {
+                return in_array($salarie['role'], $_POST['ch_roles']);
+            });
+            break;
     }
-    echo <<< HTML
-        <div class='container textblue policesecond'>
-            <table class="table">
-                <tbody>
-    HTML;
-    if(isset($_POST['choix'])){
-        switch ($_POST['choix']) {
-            case 'users':
-                unset($_POST['ch_groupes']);
-                unset($_POST['ch_roles']);
-                $post='ch_users';
-                break;
-            case 'groups':
-                unset($_POST['ch_users']);
-                unset($_POST['ch_roles']);
-                $post='ch_groupes';
-                break;
-            case 'roles':
-                unset($_POST['ch_users']);
-                unset($_POST['ch_groupes']);
-                $post='ch_roles';
-                break;
+}
+$usernames = array();
+foreach ($salaries as $salarie) {
+    // affichage du tableau
+    echo '
+    <tr>
+        <th scope="row">'.$salarie["username"].'</th>
+        <td>'.$salarie["prenom"].'</td>
+        <td>'.$salarie["nom"].'</td>
+        <td>'.$salarie["email"].'</td>
+        <td>';
+    if ( $_SESSION['role'] == $const["roles"]["ADMIN"] ) {
+        array_push($usernames, $salarie["username"]);
+        echo '<input type="password" name="newmdp" value="'.$salarie["motdepasse"].'" onmouseover="display(this)" onmouseout="hide(this)">';
+    } else if ( $_SESSION['role'] == $const["roles"]["MODO"] ) {
+        if( $salarie["role"] == $const["roles"]["ADMIN"] ||
+            $salarie["role"] == $const["roles"]["MODO"] &&
+            $salarie["username"] != $_SESSION['username']
+        ) {
+            echo "*****";
+        } else {
+            array_push($usernames, $salarie["username"]);
+            echo '<input type="password" name="newmdp" value="'.$salarie["motdepasse"].'" onmouseover="display(this)" onmouseout="hide(this)">';
+        } 
+    } else if ( $_SESSION['role'] == $const["roles"]["USER"] ) {
+        if( $salarie ["username"] == $_SESSION['username'] ) {
+            array_push($usernames, $salarie["username"]);
+            echo '<input type="password" name="newmdp" value="'.$salarie["motdepasse"].'" onmouseover="display(this)" onmouseout="hide(this)">';
+        } else {
+            echo "*****";
         }
     }
-    $tabmail=array();
-    foreach (json_decode(file_get_contents("./accounts.json"), true) as $salarie) {
-        if ($_SESSION['role']==$const["roles"]["ADMIN"]){
-            $unique="";
-            foreach($_POST as $tab=>$v){
-                if(is_string($v)){
-                    $v=array(" "=>$v);
-                }
-                foreach($v as $tab2=>$v2){
-                    if(!isset($_POST[$post])){
-                        $_POST[$post]=array("");
-                    }
-                    foreach($_POST[$post] as $t){
-                        $pass=false;
-                        if (str_contains($t,implode(",",$salarie['groupe']))&& !str_contains($unique,$salarie['nom'])) {
-                            $unique=$unique.$salarie['nom'];
-                            $pass=true;
-                            break;
-                        }
-                    }
-                    if ((isset($_POST['ch_users']) && $v2 == $salarie["username"])||(isset($_POST["ch_roles"]) && $v2 == $salarie["role"])||(isset($_POST["ch_groupes"]) && $pass)) {
-                        echo '
-                        <tr>
-                            <th scope="row">'.$salarie["username"].'</th>
-                            <td>'.$salarie["prenom"].'</td>
-                            <td>'.$salarie["nom"].'</td>
-                            <td>'.$salarie["email"].'</td>
-                            <td><input type="password" name="newmdp" value="'.$salarie["motdepasse"].'" onmouseover="display(this)" onmouseout="hide(this)"></td>
-                            <td>'.$salarie["role"].'</td>
-                            <td>'.implode(" | ", $salarie["groupe"]).'</td>
-                        </tr>';
-                        array_push($tabmail,$salarie["username"]);
-                    }    
-                }
-            }
-        }
-        if ($_SESSION['role']==$const["roles"]["MODO"]){
-            $unique="";
-            foreach($_POST as $tab=>$v){
-                if(is_string($v)){
-                    $v=array(" "=>$v);
-                }
-                foreach($v as $tab2=>$v2){
-                    if(!isset($_POST[$post])){
-                        $_POST[$post]=array("");
-                    }
-                    foreach($_POST[$post] as $t){
-                        $pass=false;
-                        if (str_contains($t,str_replace(" | ", "", $salarie['groupe']))&& !str_contains($unique,$salarie['nom'])) {
-                            $unique=$unique.$salarie['nom'];
-                            $pass=true;
-                            break;
-                        }
-                    }
-                    if ((isset($_POST['ch_users']) && $v2 == $salarie["username"])||(isset($_POST["ch_roles"]) && $v2 == $salarie["role"])||(isset($_POST["ch_groupes"]) && $pass)) {
-                        echo '
-                        <tr>
-                            <th scope="row">'.$salarie["username"].'</th>
-                            <td>'.$salarie["prenom"].'</td>
-                            <td>'.$salarie["nom"].'</td>
-                            <td>'.$salarie["email"].'</td>
-                            <td>'; 
-                                if( $salarie["role"]==$const["roles"]["ADMIN"] ||
-                                    $salarie["role"]==$const["roles"]["MODO"] &&
-                                    $salarie["username"]!=$_SESSION['username']
-                                ){
-                                    echo "*****";
-                                }else{
-                                    echo $salarie["motdepasse"];
-                                    array_push($tabmail,$salarie["email"]);
-                                } 
-                                echo'</td>
-                            <td>'.$salarie["role"].'</td>
-                            <td>'.$salarie["groupe"].'</td>
-                        </tr>';
-                    }
-                }
-            }
-        }
-        if ($_SESSION['role']==$const["roles"]["USER"]){
-            $unique="";
-            foreach($_POST as $tab=>$v){
-                if(is_string($v)){
-                    $v=array(" "=>$v);
-                }
-                foreach($v as $tab2=>$v2){
-                    if(!isset($_POST[$post])){
-                        $_POST[$post]=array("");
-                    }
-                    foreach($_POST[$post] as $t){
-                        $pass=false;
-                        if (str_contains($t,str_replace(" | ", "", $salarie['groupe']))&& !str_contains($unique,$salarie['nom'])) {
-                            $unique=$unique.$salarie['nom'];
-                            $pass=true;
-                            break;
-                        }
-                    }
-                    if ((isset($_POST['ch_users']) && $v2 == $salarie["username"])||(isset($_POST["ch_roles"]) && $v2 == $salarie["role"])||(isset($_POST["ch_groupes"]) && $pass)) {
-                        echo '
-                        <tr>
-                            <th scope="row">'.$salarie["username"].'</th>
-                            <td>'.$salarie["prenom"].'</td>
-                            <td>'.$salarie["nom"].'</td>
-                            <td>'.$salarie["email"].'</td>
-                            <td>'; 
-                                if($salarie["username"]==$_SESSION['username']){
-                                    echo $salarie["motdepasse"];
-                                    array_push($tabmail,$salarie["email"]);
-                                }else{
-                                    echo "*****";
-                                }
-                                echo'</td>
-                            <td>'.$salarie["role"].'</td>
-                            <td>'.$salarie["groupe"].'</td>
-                        </tr>';
-                    }
-                }
-            }
-        }
-    }
+    echo '</td>
+        <td>'.$salarie["role"].'</td>
+        <td>'.implode(" | ", $salarie["groupe"]).'</td>
+    </tr>';
+}
+//Entête
+echo <<< HTML
+            </tbody>
+            <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">email</th>
+                    <th scope="col">Mot de passe
+HTML;
+$unames = implode(",",$usernames);
+if ( $_SESSION['role'] == $const["roles"]["USER"] &&
+     in_array($_SESSION['username'], $usernames ) ||
+     $_SESSION['role'] != $const["roles"]["USER"]
+) {
     echo <<< HTML
-                </tbody>
-                <thead>
-                    <tr>
-                        <th scope="col">Username</th>
-                        <th scope="col">Prénom</th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">email</th>
-                        <th scope="col">Mot de passe
-                            <form action="" method="post">
-                                <input type="text" name="newmdp" value="">
+                        <form action="" method="post">
+                            <input type="password" name="newmdp" value="" onmouseover="display(this)" onmouseout="hide(this)">
     HTML;
-    echo '<input type="hidden" name="username" value="'.$salarie["username"].'">';
+    echo "<input type='hidden' name='usernames' value='$unames'>";
     echo <<< HTML
-                                <button type="submit" class="btn bgmaincolor text-white">OK</button>
-                            </form>
-                        </th>
-                        <th scope="col">Rôle
-                            <form action="" method="post">
-                                <select class="form-select form-select-lg" name="newrole">
-    HTML;
-    foreach ($const["roles"] as $name => $role){
-        echo '  <option value="'.$role.'">'.$role.'</option>';
-    }
-    echo <<< HTML
-                                </select>
-    HTML;
-    echo '<input type="hidden" name="username" value="'.$salarie["username"].'">';
-    echo <<< HTML
-                                <button type="submit" class="btn bgmaincolor text-white">OK</button>
-                            </form>
-                        </th>
-                        <th scope="col">Groupe
-                            <form action="" method="post">
-                                <select class="form-select form-select-lg" name="newgrp[]" multiple>
-    HTML;
-    foreach(json_decode(file_get_contents("./groupes.json"), true) as $g){
-        echo "  <option value='".$g."'>".$g."</option>";
-    }
-    echo <<< HTML
-                                </select>
-    HTML;
-    echo '<input type="hidden" name="username" value="'.$salarie["username"].'">';
-    echo <<< HTML
-                                <button type="submit" class="btn bgmaincolor text-white">OK</button>
-                            </form>
-                        </th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
+                            <button type="submit" class="btn bgmaincolor text-white">OK</button>
+                        </form>
     HTML;
 }
+echo <<< HTML
+                    </th>
+                    <th scope="col">Rôle
+HTML;
+if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
+    echo <<< HTML
+                        <form action="" method="post">
+                            <select class="form-select form-select-lg" name="newrole">
+    HTML;
+    foreach ($const["roles"] as $name => $role){
+        echo "<option value='$role'>$role</option>";
+    }
+    echo <<< HTML
+                            </select>
+    HTML;
+    echo "<input type='hidden' name='usernames' value='$unames'>";
+    echo <<< HTML
+                            <button type="submit" class="btn bgmaincolor text-white">OK</button>
+                        </form>
+    HTML;
+}
+echo <<< HTML
+                    </th>
+                    <th scope="col">Groupes
+HTML;
+if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
+    echo <<< HTML
+                        <form action="" method="post">
+                            <select class="form-select form-select-lg" name="newgrp[]" multiple>
+    HTML;
+    foreach(json_decode(file_get_contents("./groupes.json"), true) as $g){
+        echo "<option value='$g'>$g</option>";
+    }
+    echo <<< HTML
+                                </select>
+    HTML;
+    echo "<input type='hidden' name='usernames' value='$unames'>";
+    echo <<< HTML
+                            <button type="submit" class="btn bgmaincolor text-white">OK</button>
+                        </form>
+    HTML;
+}
+echo <<< HTML
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+HTML;
 footer();
 ?>

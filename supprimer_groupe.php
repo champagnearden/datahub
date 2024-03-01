@@ -1,25 +1,26 @@
 <?php
-
 session_start();
+$groupes = json_decode(file_get_contents("./groupes.json"), true);
+$users = json_decode(file_get_contents("./accounts.json"), true);
 
-$groupes = json_decode(file_get_contents("groupes.json"), true);
-$users = json_decode(file_get_contents("accounts.json"), true);
-$copy_users = array();
-foreach($groupes as $key => $groupe) {
-    if($groupe['id'] == $_POST['id']) {
-        foreach($users as $u){
-            $u['groupe'] = str_replace(" | ".$groupe["nom"], "", $u['groupe']);
-            array_push($copy_users, $u);
+for ($i = 0; $i < sizeof($groupes); $i++) {
+    if ($groupes[$i] == $_POST['nom_grp']) {
+        for ($j = 0; $j < sizeof($users); $j++) {
+            $index = array_search($_POST["nom_grp"], $users[$j]["groupe"]);
+            if ($index !== false) {
+                unset($users[$j]["groupe"][$index]);
+                $users[$j]["groupe"] = array_values($users[$j]["groupe"]); // Reindex the array
+                print_r($users[$j]["groupe"]);
+            }
         }
-        exec("sudo groupdel ".$groupe['nom']);
-        unset($groupes[$key]);
+        exec("sudo groupdel " . $groupes[$i]);
+        unset($groupes[$i]);
+        $groupes = array_values($groupes); // Reindex the array
         break;
     }
 }
-file_put_contents("groupes.json", json_encode($groupes));
-file_put_contents("accounts.json", json_encode($copy_users));
 
-
+file_put_contents("./groupes.json", json_encode($groupes));
+file_put_contents("./accounts.json", json_encode($users));
 header("Location: ./gestion.php");
-
 ?>
