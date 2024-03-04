@@ -13,7 +13,6 @@ for ($i = 0; $i < sizeof($groupes); $i++) {
                 print_r($users[$j]["groupe"]);
             }
         }
-        exec("sudo groupdel " . $groupes[$i]);
         unset($groupes[$i]);
         $groupes = array_values($groupes); // Reindex the array
         break;
