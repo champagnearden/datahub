@@ -49,7 +49,7 @@ if(isset($_SESSION['username'])){
 	echo '
 <div id="gestion" style="display: none;">
 	<hr>';
-	if($_SESSION['role']=='utilisateur'){
+	if($_SESSION['role']==$const["USER"]){
 		echo '
 	<p>
 		Dans cette page vous ne trouverez que la liste de tous les salariés. 
@@ -58,7 +58,7 @@ if(isset($_SESSION['username'])){
 		<br>
 		Cependant, vous pouvez modifier votre mot de passe et celui-ci sera effectif immédiatement.
 	</p>';
-	}else if($_SESSION['role']=='moderateur'){
+	}else if($_SESSION['role']==$const["MODO"]){
 		echo "
 	<p>
 		En tant que modérateur vous avez accès à toutes les fonctionnalités de l'intranet de Sardines & cie !
@@ -99,7 +99,7 @@ if(isset($_SESSION['username'])){
 		</ul>
 		Vous pouvez supprimer une IP de la liste noire des IP pour la débannir et ainsi que l'intranet soit joignable depuis cette IP.
 	</p>";
-	}else if($_SESSION['role']=='administrateur'){
+	}else if($_SESSION['role']==$const["ADMIN"]){
 		echo "
 	<p>
 		En tant qu'administrateur vous avez accès à toutes les fonctionnalités de l'intranet de Sardines & cie !

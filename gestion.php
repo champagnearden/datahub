@@ -140,7 +140,7 @@ if ($_SESSION['role'] != $const["roles"]["USER"]){
         </table>
     </div>
 </div>
-<hr style="display : <?php if ($_SESSION['role'] != 'utilisateur'){echo 'block;';  }else{echo 'none;';}?>" class="container textblue">
+<hr style="display : <?php if ($_SESSION['role'] != $const["USER"]){echo 'block;';  }else{echo 'none;';}?>" class="container textblue">
 <br>
 <?php
 if ( $_SESSION['role'] == $const["roles"]["ADMIN"] ) {
