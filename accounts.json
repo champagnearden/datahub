@@ -1,1 +1,116 @@
-[{"username":"cmenweg","nom":"MENWEG","prenom":"CLEMENT","email":"clement.menweg@sardines-and-cie.sar","motdepasse":"bonjour","role":"administrateur","groupe":["Communication","Contrats RH","Paies RH","Contrats Partenaires","Avant-vente","Service technique","sudo"]},{"username":"dgatel","nom":"gatel","prenom":"david","email":"david.gatel@sardines-and-cie.sar","motdepasse":"bonjour","role":"administrateur","groupe":["Communication","Contrats RH","Paies RH","Contrats Partenaires","Avant-vente","Service technique","sudo"]},{"username":"sdambielle","nom":"dambielle","prenom":"sarah","email":"sarah.dambielle@sardines-and-cie.sar","motdepasse":"bonjour","role":"moderateur","groupe":["Communication","Contrats RH","Paies RH","Avant-vente","sudo"]},{"username":"mfran\u00e7ois-r\u00e9gis","nom":"fran\u00e7ois-r\u00e9gis","prenom":"menguy","email":"francois-rgis.menguy@sardines-and-cie.sar","motdepasse":"bonjour","role":"administrateur","groupe":["Communication","Contrats RH","Paies RH","Contrats Partenaires","Avant-vente","Service technique","sudo"]},{"username":"jbeck","nom":"beck","prenom":"jean-baptiste","email":"jean-batiste.beck@sardines-and-cie.sar","motdepasse":"123","role":"utilisateur","groupe":["ALONE"]},{"username":"lperard","nom":"perard","prenom":"louis","email":"louis.perard@sardines-and-cie.sar","motdepasse":"bonjour","role":"utilisateur","groupe":["Paies RH","ALONE"]}]
+[
+    {
+        "username": "cmenweg",
+        "nom": "MENWEG",
+        "prenom": "CLEMENT",
+        "email": "clement.menweg@sardines-and-cie.sar",
+        "motdepasse": "$2y$10$QiML9.XV/fbRF.dqLSlos.W5xjQ47Yrqa5C.ULfbuivjScMSgZEuC",
+        "role": "administrateur",
+        "date_creation": "2022-01-01",
+        "date_modif": "Jamais",
+        "groupe": [
+            "Communication",
+            "Contrats RH",
+            "Paies RH",
+            "Contrats Partenaires",
+            "Avant-vente",
+            "Service technique",
+            "sudo"
+        ]
+    },
+    {
+        "username": "dgatel",
+        "nom": "gatel",
+        "prenom": "david",
+        "email": "david.gatel@sardines-and-cie.sar",
+        "motdepasse": "$2y$10$QiML9.XV/fbRF.dqLSlos.W5xjQ47Yrqa5C.ULfbuivjScMSgZEuC",
+        "role": "administrateur",
+        "date_creation": "2022-01-01",
+        "date_modif": "Jamais",
+        "groupe": [
+            "Communication",
+            "Contrats RH",
+            "Paies RH",
+            "Contrats Partenaires",
+            "Avant-vente",
+            "Service technique",
+            "sudo"
+        ]
+    },
+    {
+        "username": "sdambielle",
+        "nom": "dambielle",
+        "prenom": "sarah",
+        "email": "sarah.dambielle@sardines-and-cie.sar",
+        "motdepasse": "$2y$10$QiML9.XV/fbRF.dqLSlos.W5xjQ47Yrqa5C.ULfbuivjScMSgZEuC",
+        "role": "moderateur",
+        "date_creation": "2022-01-01",
+        "date_modif": "Jamais",
+        "groupe": [
+            "Communication",
+            "Contrats RH",
+            "Paies RH",
+            "Avant-vente",
+            "sudo"
+        ]
+    },
+    {
+        "username": "mfrançois-régis",
+        "nom": "françois-régis",
+        "prenom": "menguy",
+        "email": "francois-rgis.menguy@sardines-and-cie.sar",
+        "motdepasse": "$2y$10$QiML9.XV/fbRF.dqLSlos.W5xjQ47Yrqa5C.ULfbuivjScMSgZEuC",
+        "role": "administrateur",
+        "date_creation": "2022-01-01",
+        "date_modif": "Jamais",
+        "groupe": [
+            "Communication",
+            "Contrats RH",
+            "Paies RH",
+            "Contrats Partenaires",
+            "Avant-vente",
+            "Service technique",
+            "sudo"
+        ]
+    },
+    {
+        "username": "jbeck",
+        "nom": "beck",
+        "prenom": "jean-baptiste",
+        "email": "jean-batiste.beck@sardines-and-cie.sar",
+        "motdepasse": "123",
+        "role": "utilisateur",
+        "date_creation": "2022-01-01",
+        "date_modif": "Jamais",
+        "groupe": [
+            "ALONE"
+        ]
+    },
+    {
+        "username": "lperard",
+        "nom": "perard",
+        "prenom": "louis",
+        "email": "louis.perard@sardines-and-cie.sar",
+        "motdepasse": "$2y$10$QiML9.XV/fbRF.dqLSlos.W5xjQ47Yrqa5C.ULfbuivjScMSgZEuC",
+        "role": "utilisateur",
+        "date_creation": "2022-01-01",
+        "date_modif": "Jamais",
+        "groupe": [
+            "Paies RH",
+            "ALONE"
+        ]
+    },
+    {
+        "username": "test",
+        "prenom": "test",
+        "nom": "test",
+        "motdepasse": "$2y$10$QiML9.XV/fbRF.dqLSlos.W5xjQ47Yrqa5C.ULfbuivjScMSgZEuC",
+        "email": "test@etud.univ-ubs.fr",
+        "role": "utilisateur",
+        "groupe": [
+            "ALONE"
+        ],
+        "date_creation": "Tue, 05 Mar 2024 09:51:57 +0100",
+        "date_modif": "Jamais"
+    }
+]

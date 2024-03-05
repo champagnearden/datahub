@@ -11,26 +11,27 @@ if (!isset($_SESSION['pre_nom'])){
 if ( isset($_POST["username"]) ){
     $_POST["usernames"] = $_POST["username"];
 }
+$salaries = json_decode(file_get_contents("./accounts.json"), true);
+
 if(isset($_POST['usernames'])){
-    $account=json_decode(file_get_contents("./accounts.json"), true);
     foreach(explode(",", $_POST['usernames']) as $salarie ) {
-        for($c=0; $c < sizeof($account); $c++) {
-            if ($account[$c]['username'] == $salarie) {
+        for($c=0; $c < sizeof($salaries); $c++) {
+            if ($salaries[$c]['username'] == $salarie) {
                 if ( isset($_POST['newmdp']) ) {
-                    $account[$c]['motdepasse'] = $_POST['newmdp'];
+                    $salaries[$c]['motdepasse'] = hash_password($_POST['newmdp']);
                     echo "<script>
-                    alert('Le mot de passe de ".$account[$c]['username']." à bien été changé en ".$account[$c]['motdepasse'][0];
-                    for($i=1;$i<strlen($account[$c]['motdepasse'])-1;$i++){
+                    alert('Le mot de passe de ".$salaries[$c]['username']." à bien été changé en ".$salaries[$c]['motdepasse'][0];
+                    for($i=1;$i<strlen($salaries[$c]['motdepasse'])-1;$i++){
                         echo "*";
                     }
-                    echo $account[$c]['motdepasse'][$i]."');
+                    echo $salaries[$c]['motdepasse'][$i]."');
                     </script>";
                 } else if ( isset($_POST['newrole']) ) {
-                    $account[$c]['role']=$_POST['newrole'];
+                    $salaries[$c]['role']=$_POST['newrole'];
                 } else if ( isset($_POST['newgrp']) ) {
-                    $account[$c]['groupe']=$_POST["newgrp"];
+                    $salaries[$c]['groupe']=$_POST["newgrp"];
                 }
-                file_put_contents("./accounts.json", json_encode($account));
+                file_put_contents("./accounts.json", json_encode($salaries));
                 break;
             }
         }
@@ -47,104 +48,17 @@ if ($_SESSION['role'] != $const["roles"]["USER"]){
     <br>
     HTML;
 }
-?>
-<script>
-    function display(self) {
-        self.type='text';
-    }
-    function hide(self) {
-        self.type='password';
-    }
-</script>
-<div class=" container-fluid textblue text-center policesecond">
-    <b class="mediumsize">Liste des utilisateurs</b>
-    <br>
-</div>
-<br>
-<div class="container">
-    <div class="row">
-        <br>
-        <table class="table policesecond textblue table-bordered" style="background-color:lightgray;">
-            <thead class="text-center">
-                <tr>
-                    <th>Username</th>
-                    <th>Prénom</th>
-                    <th>Nom</th>
-                    <th>Mail</th>
-                    <th>Mot de passe</th>
-                    <th>Rôle</th>
-                    <th>Groupe</th>
-                </tr>
-            </thead>
-            <tbody>
-<?php
-    $salaries = json_decode(file_get_contents("./accounts.json"), true);
-    foreach ($salaries as $salarie) {
-        $salarie["groupe"] = implode(" | ", $salarie["groupe"]);
-        echo '
-            <tr>
-                <th scope="row">'.$salarie["username"].'</th>
-                <td>'.$salarie["prenom"].'</td>
-                <td>'.$salarie["nom"].'</td>
-                <td>'.$salarie["email"].'</td>
-                <td>';
-        if ( $_SESSION['role'] == $const["roles"]["ADMIN"] ) {
-            echo "
-            <form action='' method='post'>
-                <input type='password' name='newmdp' value='".$salarie['motdepasse']."' onmouseover='display(this)' onmouseout='hide(this)'>
-                <input type='hidden' name='username' value='".$salarie['username']."'>
-            <button type='submit' class='btn bgmaincolor text-white'>OK</button>
-            </form>";
-        } else if ( $_SESSION['role'] == $const["roles"]["MODO"] ) {
-            if( $salarie["role"] == $const["roles"]["ADMIN"] ||
-                $salarie["role"] == $const["roles"]["MODO"] && 
-                $salarie["username"] != $_SESSION['username'] 
-            ) {
-                    echo "*****";
-            } else {
-                echo "<form action='' method='post'>
-                    <input type='password' name='newmdp' value='".$salarie['motdepasse']."' onmouseover='display(this)' onmouseout='hide(this)'>
-                    <input type='hidden' name='username' value='".$salarie['username']."'>
-                <button type='submit' class='btn bgmaincolor text-white'>OK</button>
-                </form>";
-            }
-        } else if ( $_SESSION['role'] == $const["roles"]["USER"] ) {
-            if( $salarie["username"] == $_SESSION['username']) {
-                echo "
-                <form action='' method='post'>
-                    <input type='password' name='newmdp' value='".$salarie['motdepasse']."' onmouseover='display(this)' onmouseout='hide(this)'>
-                    <input type='hidden' name='username' value='".$salarie['username']."'>
-                <button type='submit' class='btn bgmaincolor text-white'>OK</button>
-                </form>";
-            } else {
-                echo "*****";
-            }
-        }
-        echo '</td>
-                <td>'.$salarie["role"].'</td>
-                <td>'.$salarie["groupe"].'</td>
-                <td style="border: none">';
-                if( $_SESSION['username'] != $salarie["username"] ){
-                    echo '
-                    <form action="del_user.php" method="post">
-                        <input type="hidden" name="username" value="'.$salarie["username"].'" >
-                        <input type="submit" class="btn btn-sm bgmaincolor text-white material-icons" value="close">
-                    </form> ';
-                }
-        echo '
-                </td>
-            </tr>';
-    }
-?>
-            </tbody>
-        </table>
-    </div>
-</div>
-<hr style="display : <?php if ($_SESSION['role'] != 'utilisateur'){echo 'block;';  }else{echo 'none;';}?>" class="container textblue">
-<br>
-<?php
+
 if ( $_SESSION['role'] == $const["roles"]["ADMIN"] ) {
     echo <<< HTML
+    <script>
+        function display(self) {
+            self.type='text';
+        }
+        function hide(self) {
+            self.type='password';
+        }
+    </script>
     <div class="container textblue policesecond">
         <b class="mediumsize">Ajouter un utilisateur</b>
     </div>
@@ -392,7 +306,6 @@ echo <<< HTML
             <tbody>
 HTML;
 if(isset($_POST['choix'])){
-    $salaries=json_decode(file_get_contents("./accounts.json"), true);
     switch ($_POST['choix']) {
         case 'users':
             $salaries = array_filter($salaries, function($salarie) {
@@ -420,27 +333,23 @@ foreach ($salaries as $salarie) {
         <td>'.$salarie["prenom"].'</td>
         <td>'.$salarie["nom"].'</td>
         <td>'.$salarie["email"].'</td>
+        <td>'.$salarie["date_creation"].'</td>
         <td>';
-    if ( $_SESSION['role'] == $const["roles"]["ADMIN"] ) {
-        array_push($usernames, $salarie["username"]);
-        echo '<input type="password" name="newmdp" value="'.$salarie["motdepasse"].'" onmouseover="display(this)" onmouseout="hide(this)">';
-    } else if ( $_SESSION['role'] == $const["roles"]["MODO"] ) {
-        if( $salarie["role"] == $const["roles"]["ADMIN"] ||
+    if ( 
+        $_SESSION['role'] == $const["roles"]["ADMIN"] ||
+        $_SESSION['role'] == $const["roles"]["MODO"] &&
+        (
+            $salarie["role"] == $const["roles"]["ADMIN"] ||
             $salarie["role"] == $const["roles"]["MODO"] &&
             $salarie["username"] != $_SESSION['username']
-        ) {
-            echo "*****";
-        } else {
-            array_push($usernames, $salarie["username"]);
-            echo '<input type="password" name="newmdp" value="'.$salarie["motdepasse"].'" onmouseover="display(this)" onmouseout="hide(this)">';
-        } 
-    } else if ( $_SESSION['role'] == $const["roles"]["USER"] ) {
-        if( $salarie ["username"] == $_SESSION['username'] ) {
-            array_push($usernames, $salarie["username"]);
-            echo '<input type="password" name="newmdp" value="'.$salarie["motdepasse"].'" onmouseover="display(this)" onmouseout="hide(this)">';
-        } else {
-            echo "*****";
-        }
+        ) ||
+        $_SESSION['role'] == $const["roles"]["USER"] && 
+        $salarie ["username"] == $_SESSION['username']
+    ) {
+        array_push($usernames, $salarie["username"]);
+        echo $salarie["date_modif"];
+    } else {
+        echo "*****";
     }
     echo '</td>
         <td>'.$salarie["role"].'</td>
@@ -456,7 +365,7 @@ echo <<< HTML
                     <th scope="col">Prénom</th>
                     <th scope="col">Nom</th>
                     <th scope="col">email</th>
-                    <th scope="col">Mot de passe
+                    <th scope="col">Créé le</th>
 HTML;
 $unames = implode(",",$usernames);
 if ( $_SESSION['role'] == $const["roles"]["USER"] &&
@@ -464,17 +373,10 @@ if ( $_SESSION['role'] == $const["roles"]["USER"] &&
      $_SESSION['role'] != $const["roles"]["USER"]
 ) {
     echo <<< HTML
-                        <form action="" method="post">
-                            <input type="password" name="newmdp" value="" onmouseover="display(this)" onmouseout="hide(this)">
-    HTML;
-    echo "<input type='hidden' name='usernames' value='$unames'>";
-    echo <<< HTML
-                            <button type="submit" class="btn bgmaincolor text-white">OK</button>
-                        </form>
+        <th scope="col">Modifié le</th>
     HTML;
 }
 echo <<< HTML
-                    </th>
                     <th scope="col">Rôle
 HTML;
 if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
