@@ -245,7 +245,7 @@ function session_verif($salaries,$second=false){
 	}
 }
 
-hash_password(string $password): string {
+function hash_password(string $password): string {
 	return  password_hash($password, PASSWORD_BCRYPT);
 }
 
