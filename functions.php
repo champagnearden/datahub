@@ -112,7 +112,7 @@ function nav($page){
 	if (isset($_SESSION['pren_nom'])){
 		echo " traitdroit";
 	}
-	if ($page == "connexion.php" || $page == "deconnexion.php") {
+	if ($page == "login.php" || $page == "delogin.php") {
 		echo " active'";
 	}else {
 		echo "'";

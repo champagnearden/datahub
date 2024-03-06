@@ -4,7 +4,7 @@ headd("Gestion");
 nav("gestion.php");
 
 if (!isset($_SESSION['pre_nom'])){
-    header("Location: /connexion.php");
+    header("Location: /login.php");
     die();
 }
 
@@ -331,7 +331,7 @@ foreach ($salaries as $salarie) {
         <th scope="row">'.$salarie["username"].'</th>
         <td>'.$salarie["prenom"].'</td>
         <td>'.$salarie["nom"].'</td>
-        <td>'.$salarie["email"].'</td>
+        <td><a href="mailto:"'.$salarie["email"].'">'.$salarie["email"].'</a></td>
         <td>'.$salarie["date_creation"].'</td>
         <td>';
     if ( 
@@ -353,7 +353,27 @@ foreach ($salaries as $salarie) {
     echo '</td>
         <td>'.$salarie["role"].'</td>
         <td>'.implode(" | ", $salarie["groupe"]).'</td>
-    </tr>';
+        ';
+    if (
+        $_SESSION["username"] != $salarie["username"] &&
+        (
+            $_SESSION["role"] == $const["roles"]["ADMIN"] || 
+            $_SESSION["role"] == $const["roles"]["MODO"] && 
+            $salarie["role"] == $const["roles"]["USER"]
+        )
+    ) {
+        echo '<td class="text-center align-middle">
+            <form action="del_user.php" method="post">
+                <input type="hidden" name="username" value='.$salarie["username"].'></input>
+                <button class="btn btn-danger">X</button>
+            </form></td>';
+    }else if ( 
+        $_SESSION["role"] == $const["roles"]["MODO"] &&
+        $salarie["role"] != $const["roles"]["USER"]
+    ) {
+        echo '<td class="text-center align-middle"><button class="btn btn-danger" disabled>X</button></td>';
+    }
+    echo '</tr>';
 }
 //Entête
 echo <<< HTML
@@ -381,17 +401,21 @@ HTML;
 if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
     echo <<< HTML
                         <form action="" method="post">
-                            <select class="form-select form-select-lg" name="newrole">
+                            <div class="input-group">
+                                <select class="form-control form-select form-select-lg search-multiple" name="newrole">
     HTML;
     foreach ($const["roles"] as $name => $role){
         echo "<option value='$role'>$role</option>";
     }
     echo <<< HTML
-                            </select>
+                                </select>
     HTML;
     echo "<input type='hidden' name='usernames' value='$unames'>";
     echo <<< HTML
-                            <button type="submit" class="btn bgmaincolor text-white">OK</button>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn bgmaincolor text-white searchOk">OK</button>
+                                </div>
+                            </div>
                         </form>
     HTML;
 }
@@ -402,7 +426,8 @@ HTML;
 if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
     echo <<< HTML
                         <form action="" method="post">
-                            <select class="form-select form-select-lg" name="newgrp[]" multiple>
+                            <div class="input-group">
+                                <select class="form-control form-select form-select-lg search-multiple" name="newgrp[]" multiple>
     HTML;
     foreach(json_decode(file_get_contents("./groupes.json"), true) as $g){
         echo "<option value='$g'>$g</option>";
@@ -412,12 +437,26 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
     HTML;
     echo "<input type='hidden' name='usernames' value='$unames'>";
     echo <<< HTML
-                            <button type="submit" class="btn bgmaincolor text-white">OK</button>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn bgmaincolor text-white searchOk">OK</button>
+                                </div>
+                            </div>
                         </form>
     HTML;
 }
+echo '</th>';
+if (
+    $_SESSION["role"] == $const["roles"]["ADMIN"] || 
+    $_SESSION["role"] == $const["roles"]["MODO"] && 
+    (
+        $salarie["role"] == $const["roles"]["USER"]
+    )
+) {
+    echo <<< HTML
+                    <th scope="col">Supprimer</th>
+    HTML;
+}
 echo <<< HTML
-                    </th>
                 </tr>
             </thead>
         </table>

@@ -575,6 +575,6 @@ footer {
   margin-bottom: 0%;
 }
 
-select[multiple] {
+.search-multiple, .searchOk{
   height: 3rem;
 }
