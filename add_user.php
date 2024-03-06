@@ -1,4 +1,5 @@
 <?php
+include "functions.php";
 session_start();
 $salaries = json_decode(file_get_contents("accounts.json"), true);
 $_POST["email"] = $_POST["email"]."@etud.univ-ubs.fr";

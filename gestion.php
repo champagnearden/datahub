@@ -244,6 +244,11 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
 }
 echo <<< HTML
     <br>
+    <script>
+        function autoselect(id) {
+            document.getElementById(id).checked = true;
+        }
+    </script>
     <div class='container textblue policesecond'>
         <div class="container textblue policesecond">
             <b class="mediumsize">Recherche filtrée</b>
@@ -255,9 +260,9 @@ HTML;
 $groupes = json_decode(file_get_contents("./groupes.json"), true);
 echo <<< HTML
         <form action="gestion.php#seek" method="post">
-            <input type="radio" name="choix" value="users">
+            <input type="radio" name="choix" value="users" id="users">
             <label for="ch_users">Choix Nom d'utilisateurs</label>
-            <select class="form-select form-select-lg" id="ch_users" name="ch_users[]" multiple>
+            <select class="form-select form-select-lg" id="ch_users" name="ch_users[]" onclick="autoselect('users')" multiple>
 HTML;
 foreach($salaries as $salarie){
     echo '<option value="'.$salarie["username"].'" selected>'.$salarie["username"].'</option>';
@@ -265,9 +270,9 @@ foreach($salaries as $salarie){
 echo <<< HTML
             </select>
             <br>
-            <input type="radio" name="choix" value="groups" checked>
+            <input type="radio" name="choix" value="groups" id="groupes" checked>
             <label for="ch_groupes">Choix Groupes</label>
-            <select class="form-select form-select-lg" id="ch_groupes" name="ch_groupes[]" multiple>
+            <select class="form-select form-select-lg" id="ch_groupes" name="ch_groupes[]" onclick="autoselect('groupes')" multiple>
 HTML;
 foreach($groupes as $grp){
     echo '<option value="'.$grp.'" selected>'.$grp.'</option>';
@@ -275,9 +280,9 @@ foreach($groupes as $grp){
 echo <<< HTML
             </select>
             <br>
-            <input type="radio" name="choix" value="roles">
+            <input type="radio" name="choix" value="roles" id="roles">
             <label for="ch_roles">Choix Rôles</label>
-            <select class="form-select form-select-lg" id="ch_roles" name="ch_roles[]" multiple>
+            <select class="form-select form-select-lg" id="ch_roles" name="ch_roles[]" onclick="autoselect('roles')"multiple>
 HTML;
 foreach ($const["roles"] as $name => $role){
     echo '<option value="'.$role.'" selected>'.$role.'</option>';
@@ -287,42 +292,35 @@ echo <<< HTML
             <br>
             <button type="submit" class="btn bg-white textblue" id="seek">Rechercher</button>
         </form>
-        <br>
-        <br>
-        <br>
     </div>
-    <br>
-    <br>
 </div>
-HTML; 
-if(!isset($_POST['choix'])){
-    echo "</div>";
-    footer();
-    die();
-}
-echo <<< HTML
     <div class='container textblue policesecond'>
-        <table class="table">
-            <tbody>
+        <table class="table table-striped table-hover">
+            <tbody class="table-bordered">
 HTML;
-if(isset($_POST['choix'])){
-    switch ($_POST['choix']) {
-        case 'users':
-            $salaries = array_filter($salaries, function($salarie) {
-                return in_array($salarie['username'], $_POST['ch_users']);
-            });
-            break;
-        case 'groups':
-            $salaries = array_filter($salaries, function($salarie) {
-                return count(array_intersect($salarie['groupe'], $_POST['ch_groupes'])) > 0;
-            });                
-            break;
-        case 'roles':
-            $salaries = array_filter($salaries, function($salarie) {
-                return in_array($salarie['role'], $_POST['ch_roles']);
-            });
-            break;
+if (!isset($_POST["choix"])){
+    $_POST["choix"] = 'users';
+    $_POST["ch_users"] = array();
+    foreach ($salaries as $salarie) {
+        array_push($_POST["ch_users"], $salarie["username"]);
     }
+}
+switch ($_POST['choix']) {
+    case 'users':
+        $salaries = array_filter($salaries, function($salarie) {
+            return in_array($salarie['username'], $_POST['ch_users']);
+        });
+        break;
+    case 'groups':
+        $salaries = array_filter($salaries, function($salarie) {
+            return count(array_intersect($salarie['groupe'], $_POST['ch_groupes'])) > 0;
+        });                
+        break;
+    case 'roles':
+        $salaries = array_filter($salaries, function($salarie) {
+            return in_array($salarie['role'], $_POST['ch_roles']);
+        });
+        break;
 }
 $usernames = array();
 foreach ($salaries as $salarie) {
@@ -359,12 +357,12 @@ foreach ($salaries as $salarie) {
 //Entête
 echo <<< HTML
             </tbody>
-            <thead>
-                <tr>
+            <thead style="background-color: black;">
+                <tr class="table-active" style="color: white;">
                     <th scope="col">Username</th>
                     <th scope="col">Prénom</th>
                     <th scope="col">Nom</th>
-                    <th scope="col">email</th>
+                    <th scope="col">Email</th>
                     <th scope="col">Créé le</th>
 HTML;
 $unames = implode(",",$usernames);
