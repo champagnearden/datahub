@@ -17,8 +17,9 @@ if(isset($_SESSION['pre_nom'])){
 
 
 <div class='container container-fluid policemain textblue mediumsize text-center'><br>
-  Vous êtes arrivé sur la page de connexion<br> 
-  <i class="smallsize policesecond">Veuillez renseigner vos identifiants de connexion</i>
+  <?php echo $const['LOGIN']['HOME']; ?>
+  <br> 
+  <i class="smallsize policesecond"><?php echo $const['LOGIN']['ENTER_LOGIN_ID']; ?></i>
 </div> <br>
 
 <div class="item-center text-center bgmaincolor textblue container ">
@@ -26,14 +27,14 @@ if(isset($_SESSION['pre_nom'])){
 
     <form action="check.php" method="post"><br>
       <div class="form-floating">
-        <input type="text" class="form-control" id="username" placeholder="Entrer votre identifiant" name="username" required>
-        <label for="username">Identifiant</label><br>
+        <input type="text" class="form-control" id="username" placeholder="<?php echo $const['LOGIN']['ID_PLACEHOLDER']; ?>" name="username" required>
+        <label for="username"><?php echo $const['LOGIN']['ID']; ?></label><br>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="motdepasse" placeholder="Entrer votre mot de passe" name="motdepasse" required>
-        <label for="motdepasse">Mot de passe</label><br>
+        <input type="password" class="form-control" id="motdepasse" placeholder="<?php echo $const['LOGIN']['PASSWORD_PLACEHOLDER']; ?>" name="motdepasse" required>
+        <label for="motdepasse"><?php echo $const['LOGIN']['PASSWORD']; ?></label><br>
       </div>
-      <button type="submit" class="btn bg-white textblue">Se connecter</button>
+      <button type="submit" class="btn bg-white textblue"><?php echo $const['LOGIN']['LOGIN']; ?></button>
     </form>
   </div>
   <br>
@@ -44,7 +45,7 @@ if(isset($_SESSION['pre_nom'])){
 
 /*function conf($p,$n,$m,$e){
     $de = $_POST['email'];
-    $objet = "Confirmation de création de compte";
+    $objet = $const['LOGIN']['CONFIRM_CREATE'];
     $msg = "
     <head>
         <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet'>
@@ -55,7 +56,7 @@ if(isset($_SESSION['pre_nom'])){
                 <input type='hidden' name='nom' value='$n'>
                 <input type='hidden' name='motdepasse' value='$m'>
                 <input type='hidden' name='email' value='$e'>
-                <button type='submit' class='btn bg-warning'>Confirmer l'ajout</button><br><br>
+                <button type='submit' class='btn bg-warning'>".$const['LOGIN']['CONFIRM_ADD']."</button><br><br>
             </form>
             ";
 
@@ -67,23 +68,24 @@ if(isset($_SESSION['pre_nom'])){
         //Server settings
         $mail->SMTPDebug = 0;                      //Enable verbose debug output
         $mail->isSMTP();                                            //Send using SMTP
-        $mail->Host       = 'smtp-relay.sendinblue.com';                     //Set the SMTP server to send through
+        $mail->Host       = $const['conf']['MAIL_HOST'];                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $mail->Username   = 'sardines.and.cie@gmail.com';                     //SMTP username
-        $mail->Password   = 'chJLY02ADd1X8y9n';                               //SMTP password
+        $mail->Username   = $const['conf']['MAIL_USERNAME'];                     //SMTP username
+        $mail->Password   = $const['conf']['MAIL_PASSWORD'];;                               //SMTP password
         $mail->SMTPSecure = 'tls';            //Enable implicit TLS encryption
         $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
         //Recipients
-        $mail->setFrom('no-reply@sardines-and-cie.sar', $de);
-        $mail->addAddress('sardines.and.cie@gmail.com', 'sardinesandcie');     //Add a recipient
+        $mail->setFrom('no-reply'.$const['conf']['MAL_DOMAIN'], $de);
+        $mail->addAddress($const['conf']['MAIL_SENDER'], $const['conf']['MAIL_PSEUDO']);     //Add a recipient
         //$mail->addAddress('david.gatel@univ-rennes1.fr', 'dgatel');     //Add a recipient
         //$mail->addAddress('francoisregis.menguy@orange.com', 'fmenguy');     //Add a recipient
 
-        //$mail->addCC('dambiellesarah1@gmail.com', 'Sarah');
-        //$mail->addCC('jbbeck42@gmail.com', 'JB');
-        //$mail->addCC('clement@menweg.net', 'Clem');
-        //$mail->addCC('louisperard7@gmail.com', 'Louis');
+        // loop through the admins and add their mails
+        $admins = json_decode(file_get_contents("accounts.json"), true);
+        foreach($admins as $admin){
+            $mail->addCC($admin['email'], ucwords($admin['prenom']));
+        }
 
 
         //Content
@@ -93,9 +95,9 @@ if(isset($_SESSION['pre_nom'])){
         $mail->AltBody = $msg;
 
         $mail->send();
-        echo 'Le mail à bien été envoyé';
+        echo $const['LOGIN']['CONFIRM_SENT'];
     } catch (Exception $e) {
-        echo "Le mail n'a pas été envoyé : {$mail->ErrorInfo}";
+        echo $const['LOGIN']['SENT_ERROR']."{$mail->ErrorInfo}";
 }*/
 
 
@@ -106,40 +108,37 @@ if(isset($_POST['motdepasse'])){
 ?>
 <hr class="container textblue"><br>
 <div class="container textblue policesecond">
-    <b class="mediumsize">Demander la création d'un compte salarié</b></div><br>
-
+    <b class="mediumsize"><?php echo $const['LOGIN']['ASK_CREATE']; ?></b></div><br>
     <div class="bgmaincolor container policesecond">
         <div class="row textblue">
 
             <div class="col-sm"><br>
                 <form action="" method="post">
                     <div class="form-floating ">
-                      <input type="text" class="form-control" id="prenom" placeholder="Entrer votre prenom" name="prenom" required>
-                      <label for="prenom">Prénom</label><br>
+                      <input type="text" class="form-control" id="prenom" placeholder="<?php echo $const['LOGIN']['PRENOM_PLACEHOLDER']; ?>" name="prenom" required>
+                      <label for="prenom"><?php echo $const['LOGIN']['PRENOM']; ?></label><br>
                     </div>
             </div>
             <div class="col-sm"><br>
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="nom" placeholder="Entrer votre nom" name="nom" required>
-                  <label for="nom">Nom</label><br>
+                  <input type="text" class="form-control" id="nom" placeholder="<?php echo $const['LOGIN']['NOM_PLACEHOLDER']; ?>" name="nom" required>
+                  <label for="nom"><?php echo $const['LOGIN']['NOM']; ?></label><br>
                 </div>
             </div>
             <div class="col-sm"><br>
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="motdepasse" placeholder="Entrer votre mot de passe" name="motdepasse" required>
-                    <label for="motdepasse">Mot de passe</label><br>
+                    <input type="password" class="form-control" id="motdepasse" placeholder="<?php echo $const['LOGIN']['PASSWORD_PLACEHOLDER']; ?>" name="motdepasse" required>
+                    <label for="motdepasse"><?php echo $const['LOGIN']['PASSWORD']; ?></label><br>
                 </div>
             </div>
         </div>
 
         <div class="form-floating input-group mb-4 textblue" >
-          <input type="text" class="form-control" id="email" placeholder="Entrer votre email" name="email" required>
-          <label for="email">Email</label><br>
-          <span class="input-group-text textblue">@sardines-and-cie.sar</span>
+          <input type="text" class="form-control" id="email" placeholder="<?php echo $const['LOGIN']['EMAIL_PLACEHOLDER']; ?>" name="email" required>
+          <label for="email"><?php echo $const['LOGIN']['EMAIL']; ?></label><br>
+          <span class="input-group-text textblue"><?php echo $const['conf']['MAIL_DOMAIN']; ?></span>
         </div>
-
-        <button type="submit" name="ajouter salariés" class="btn bg-white textblue">Ajouter</button><br><br>
-
+        <button type="submit" class="btn bg-white textblue"><?php echo $const['LOGIN']['ADD']; ?></button><br><br>
                 </form>
     </div>
 </div>

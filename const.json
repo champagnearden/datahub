@@ -1,8 +1,128 @@
 {
+    "fr":{
+        "INDEX":{
+            "WELCOME": "Bienvenue sur Datahub",
+            "FORCE_LOGIN": "Veuillez vous connecter pour accéder à l'espace d'échange",
+            "EVENING": "Bonsoir ",
+            "MORNING": "Bonjour ",
+            "AFTERNOON": "Bon après-midi ",
+            "LOGOUT": "Se déconnecter"
+        },
+        "FUNCTIONS": {
+            "HOME": "Accueil",
+            "GESTION_TITLE": "Page de gestion des utilisateurs \nAnnuaire",
+            "GESTION": "Gestion",
+            "FTP_TITLE": "-Zone de dépôt\n-Gestion des fichiers partagés\n-Consultation des dossiers personnels",
+            "FTP": "Espace de fichiers",
+            "LOGOUT_TITLE": "Page de déconnexion",
+            "LOGOUT": "Se déconnecter",
+            "LOGIN_TITLE": "Page de connexion\nCréation de compte",
+            "HELP": "Aide",
+            "LOGGED_AS": "Vous êtes connecté en tant que ",
+            "NOT_LOGGED": "Vous n'êtes pas connecté",
+            "WELCOME": "Bienvenue",
+            "REDIRECT": "Vous allez être redirigé dans quelques instants...",
+            "CONTINUE": "Continuer",
+            "LOGIN_ERROR": "Erreur de connexion",
+            "WRONG_CREDS": "Votre identifiant ou mot de passe est incorrect.",
+            "REMAINS": "Il vous reste ",
+            "ATTEMPT": " tentative",
+            "WARNING": "Attention, au bout de 3 tentatives vous serez banni de l'intranet !",
+            "RETRY": "Réessayez",
+            "BAN": "Non non, vous êtes banni !\nVous pouvez dire ce que vous voulez vous l'avez cherché !"
+        },
+        "CHECK": {
+            "REDIRECT": "Vous allez être redirigé dans quelques instants..."
+        },
+        "LOGIN": {
+            "HOME": "Vous êtes arrivé sur la page de connexion",
+            "ENTER_LOGIN_ID": "Veuillez renseigner vos identifiants de connexion",
+            "ID_PLACEHOLDER": "Entrez votre identifiant",
+            "ID": "Identifiant",
+            "PASSWORD_PLACEHOLDER": "Entrez votre mot de passe",
+            "PASSWORD": "Mot de passe",
+            "LOGIN": "Se connecter",
+            "CONFIRM_CREATE": "Confirmation de création de compte",
+            "CONFIRM_ADD": "Confirmer l'ajout",
+            "CONFIRM_SENT": "Le mail à ben été envoyé",
+            "SENT_ERROR": "Le mail n'a pas été envoyé: ",
+            "ASK_CREATE": "Demander la création d'un compte salarié",
+            "PRENOM_PLACEHOLDER": "Entrez votre prénom",
+            "PRENOM": "Prénom",
+            "NOM_PLACEHOLDER": "Entrez votre nom",
+            "NOM": "Nom",
+            "EMAIL_PLACEHOLDER": "Entrez votre adresse mail",
+            "EMAIL": "Email",
+            "ADD": "Ajouter"
+        },
+        "LOGOUT": {
+            "LOGOUT": "Déconnexion",
+            "SUCCESSFULL_LOGOUT": "Vous êtes bien déconnecté de DataHub",
+            "RECONNECT": "Pour vous reconnecter, veuillez cliquer sur le bouton suivant : ",
+            "BACK": "Retour Accueil"
+        },
+        "FAQ": {
+            "TITLE": "Foire Aux Questions",
+            "INTRANET": "Intranet",
+            "HOME": "L'accueil de l'intranet ne contient que le logo de Sardines & cie ainsi que un bouton de connexion.",
+            "HOME_2": "Toutes les autres fonctionnalitées nécessitent d'être connecté (cf ",
+            "GESTION_USER": "Dans cette page vous ne trouverez que la liste de tous les salariés.<br>Etant donné votre niveau de responsabilité à l'égard de l'entreprise, vous ne pouvez voir le mot de passe des autres utilisateurs.<br>Cependant, vous pouvez modifier votre mot de passe et celui-ci sera effectif immédiatement.",
+            "GESTION_MODO":"En tant que modérateur vous avez accès à toutes les fonctionnalités de l'intranet de Sardines & cie !<br>Vous avez la possibilité de modérer les utilisateurs ainsi que les modérateurs mais <b>PAS</b> les administrateurs.<br>Pour cela, différents outils s'offrent à vous:<ul><li>Liste des salariés</li><li>Liste des groupes</li><li>Ajouter un groupe</li><li>Liste noire d'IP</li><li>Modification de masse</li></ul><br>La liste des salariés permet de modifier les mot de passe individuellement ainsi que de vous donner les informations relatives à chaque salarié.<br><br>La liste des groupes permet de connaitre l'ensemble des groupes existants ainsi que la possibilité de pouvoir en supprimer un à un.<br>Lorsque vous supprimez un groupe, celui-ci est automatiquement retiré des salariés.<br><br>Vous pouvez ajouter un groupe en entrant le nom du groupe souhaité. Il faudra ensuite l'attribuer à chaque utilisateur souhaité.<br><br>Pour utiliser la modification de masse vous devez suivre les étapes suivantes:<ol><li>Sélectionner le type de recherche (nom d'utilisateur, groupes ou rôles)</li><li>Sélectionner les critères de recherche</li><li>Cliquer sur \"Rechercher\"</li></ol>Vous pourrez ensuite modifier le champ que vous souhaitez:<ul><li>Mot de passe</li><li>Rôle</li><li>Groupes</li></ul>Vous pouvez supprimer une IP de la liste noire des IP pour la débannir et ainsi que l'intranet soit joignable depuis cette IP.",
+            "GESTION_ADMIN": "En tant qu'administrateur vous avez accès à toutes les fonctionnalités de l'intranet de Sardines & cie !<br>Vous avez la possibilité de modérer les utilisateurs, les modérateurs ainsi que les administrateurs.<br>Pour cela, différents outils s'offrent à vous:<ul><li>Liste des salariés</li><li>Liste des groupes</li><li>Ajouter un groupe</li><li>Liste noire d'IP</li><li>Modification de masse</li></ul><br>La liste des salariés permet de modifier les mot de passe individuellement ainsi que de vous donner les informations relatives à chaque salarié. <br>Du fait de votre rôle d'administrateur, vous pouvez supprimer un salarié, un modérateur ainsi qu'un administrateur (sauf vous-même).<br><br>La liste des groupes permet de connaitre l'ensemble des groupes existants ainsi que la possibilité de pouvoir en supprimer un à un.<br>Lorsque vous supprimez un groupe, celui-ci est automatiquement retiré des salariés.<br><br>Vous pouvez ajouter un groupe en entrant le nom du groupe souhaité. Il faudra ensuite l'attribuer à chaque utilisateur souhaité.<br><br>Pour utiliser la modification de masse vous devez suivre les étapes suivantes:<ol><li>Sélectionner le type de recherche (nom d'utilisateur, groupes ou rôles)</li><li>Sélectionner les critères de recherche</li><li>Cliquer sur \"Rechercher\"</li></ol>Vous pourrez ensuite modifier le champ que vous souhaitez:<ul><li>Mot de passe</li><li>Rôle</li><li>Groupes</li></ul>Vous pouvez supprimer une IP de la liste noire des IP pour la débannir et ainsi que l'intranet soit joignable depuis cette IP.",
+            "FTP": "La page \"Espace de fichiers\" permet d'échanger des dossiers et des fichiers.<br>Cet espace permet donc les fonctionnalités suivantes:<h5><ul><li>Création d'un répertoire</li><li>Création d'un répetoire partagé</li><li>Téléversement d'un fichier</li><li>Téléchargement d'un fichier</li><li>Choix de l'accès du fichier à téléverser</li><li>Suppression de l'ensemble d'un répertoire partagé</li><li>Suppression d'un fichier en particulier</li></ul></h5>Les différents mode de partage sont les suivants:<br>&emsp;Moi seulement: <small>Seul vous pouvez consulter le document</small><br>&emsp;Mes groupes: <small>Seuls les membres possédant au moins un groupe en commun avec vous pouvent consulter le document</small><br>&emsp;Tout le monde: <small>Tout le monde peut consulter le document</small><br><br><ul><li><strong>Création d'un répertoire:</strong><ol><li>Rentrer le nom souhaité dans le champ \"Nom du dossier\"</li><li>Sélectionner le mode de partage du dossier (par défaut uniquement vous)</li><li>Cliquer sur \"Créer le dossier\"</li></ol></li><br><li><strong>Publication d'un fichier:</strong><ol><li>Cliquer sur \"Choisir un fichier\"</li><li>Sélectionner le fichier à publier</li><li>Cliquer sur \"Ouvrir\"</li><li>Sélectionner le mode de partage du fichier (par défaut uniquement vous)</li><li>Cliquer sur \"Importer\"</li></ol></li><br><li><strong>Téléchargement d'un fichier:</strong><ol><li>Naviguer jusqu'au fichier</li><li>Cliquer sur le nom du fichier à télécharger</li></ol></li><br><li><strong>Suppression d'un répertoire ou d'un fichier:</strong><ol><li>Naviguer jusqu'au fichier / dossier</li><li>Cliquer sur le bouton \"-\" à gauche du nom du fichier / dossier à supprimer</li></ol></li></ul>",
+            "LOGIN": "La page de connexion se divise en deux parties:<ul><li>Connexion à un compte existant</li><li>Demande de création d'un compte</li></ul>Vous pouvez vous connecter à votre compte en rentrant votre identifiant et votre mot de passe puis en cliquant sur \"Se connecter\".<br>Si vous ne possédez pas de compte, vous pouvez demander la création d'un compte slarié en remplissant le formulaire.<br><h2>Vous serez <b>banni</b> au bout de <strong>3 essais</strong> infructueux</h2>L'intranet ne banni pas le compte mais l'adresse IP utilisée. Demandez alors à un modérateur de débannir l'IP.",
+            "HELP": "La page d'aide est ici pour vous informer de toutes les informations que vous pourrez retrouver sur l'intranet de Sardines & cie. <br>Si vous pensez que des informations sont manquantes, n'hésitez pas à contacter un de vos superieurs !<br>L'équipe techinque se chargera de résoudre votre problème en un temps record !"
+        },
+        "GESTION": {
+            "ROLES": {
+                "USER": "Utilisateur",
+                "MODO": "Moderateur",
+                "ADMIN": "Administrateur"
+            },
+            "PASSWORD_CHANGED_1": "Le mot de passe de ",
+            "PASSWORD_CHANGED_2": " a bien été changé en",
+            "RESERVED": "Cette page est réservée aux administrateurs et modérateurs, pour la gestion des utilisateurs et des groupes.",
+            "ADD_USER": "Ajouter un utilisateur",
+            "USERNAME_PLACEHOLDER": "Entrez le nom d'utilisateur",
+            "USERNAME": "Nom d'utilisateur",
+            "ROLE": "Rôle :",
+            "GROUP": "Groupe :",
+            "LIST_GROUPS": "Liste des groupes",
+            "ID": "ID",
+            "ADD_GROUP": "Ajouter un groupe",
+            "GROUP_NAME_PLACEHOLDER": "Entrez le nom du groupe",
+            "GROUP_NAME": "Nom du groupe",
+            "BAN_IP": "IP bannies",
+            "DATE": "Date",
+            "IP": "Adresse",
+            "NO_BAN_IP": "Aucune adresse IP n'est actuellement bannie !",
+            "FILTERED_SEARCH": "Recherche filtrée",
+            "CHOICE_USERNAME": "Choix Nom d'utilisateur",
+            "CHOICE_GROUPS": "Choix Groupes",
+            "CHOICE_ROLES": "Choix Rôles",
+            "SEARCH": "Rechercher",
+            "REMOVE_BUTTON": "X",
+            "CREATED_ON": "Créé le",
+            "OK": "OK",
+            "GROUPS": "Groupes",
+            "REMOVE": "Supprimer"
+        }
+    },
+    "en":{
+
+    },
     "roles": {
         "USER": "utilisateur",
         "MODO": "moderateur",
         "ADMIN": "administrateur"
+    },
+    "conf": {
+        "MAIL_DOMAIN": "@sardines-and-cie.sar",
+        "MAIL_USERNAME": "sardines.and.cie@gmail.com",
+        "MAIL_HOST": "smtp-relay.sendinblue.com",
+        "MAIL_PASSWORD": "chJLY02ADd1X8y9n",
+        "MAIL_SENDER": "sardines.and.cie@gmail.com",
+        "MAIL_PSEUDO": "sardinesandcie"
     }
     
 }

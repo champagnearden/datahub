@@ -1,6 +1,6 @@
 <?php
 include "functions.php";
-headd("Gestion");
+headd($const["FUNCTIONS"]["GESTION"]);
 nav("gestion.php");
 
 if (!isset($_SESSION['pre_nom'])){
@@ -20,7 +20,7 @@ if(isset($_POST['usernames'])){
                 if ( isset($_POST['newmdp']) ) {
                     $salaries[$c]['motdepasse'] = hash_password($_POST['newmdp']);
                     echo "<script>
-                    alert('Le mot de passe de ".$salaries[$c]['username']." à bien été changé en ".$salaries[$c]['motdepasse'][0];
+                    alert('".$const["GESTION"]["PASSWORD_CHANGED_1"].$salaries[$c]['username'].$const["GESTION"]["PASSWORD_CHANGED_2"].$salaries[$c]['motdepasse'][0];
                     for($i=1;$i<strlen($salaries[$c]['motdepasse'])-1;$i++){
                         echo "*";
                     }
@@ -39,9 +39,8 @@ if(isset($_POST['usernames'])){
 }
 
 if ($_SESSION['role'] != $const["roles"]["USER"]){
+    echo '<div class="textblue policesecond bigsize container text-center">'.$const["GESTION"]["RESERVED"];
     echo <<< HTML
-    <div class="textblue policesecond bigsize container text-center">
-        Cette page est réservée aux administrateurs et modérateurs, pour la gestion des utilisateurs et des groupes. 
     </div>
     <br>
     <hr class="textblue">
@@ -60,7 +59,11 @@ if ( $_SESSION['role'] == $const["roles"]["ADMIN"] ) {
         }
     </script>
     <div class="container textblue policesecond">
-        <b class="mediumsize">Ajouter un utilisateur</b>
+        <b class="mediumsize">
+    HTML;
+    echo $const["GESTION"]["ADD_USER"];
+    echo <<< HTML
+        </b>
     </div>
     <br>
     <div class="bgmaincolor container policesecond">
@@ -69,24 +72,38 @@ if ( $_SESSION['role'] == $const["roles"]["ADMIN"] ) {
                 <div class="col-sm">
                     <br>
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="username" placeholder="Entrer le nom d'utilisateur" name="username" required>
-                        <label for="username">Nom d'utilisateur</label>
+    HTML;
+    echo '
+                        <input type="text" class="form-control" id="username" placeholder="'.$const["GESTION"]["USERNAME_PLACEHOLDER"].'" name="username" required>
+                        <label for="username">
+    ';
+    echo $const["GESTION"]["USERNAME"];
+    echo <<< HTML
+                        </label>
                         <br>
                     </div>
                 </div>
                 <div class="col-sm">
                     <br>
                     <div class="form-floating ">
-                        <input type="text" class="form-control" id="prenom" placeholder="Entrer votre prenom" name="prenom" required>
-                        <label for="prenom">Prénom</label>
+    HTML;
+    echo '
+                        <input type="text" class="form-control" id="prenom" placeholder="'.$const["LOGIN"]["PRENOM_PLACEHOLDER"].'" name="prenom" required>
+                        <label for="prenom">'.$const["LOGIN"]["PRENOM"].'</label>
+    ';
+    echo <<< HTML
                         <br>
                     </div>
                 </div>
                 <div class="col-sm">
                 <br>
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="nom" placeholder="Entrer votre nom" name="nom" required>
-                        <label for="nom">Nom</label>
+    HTML;
+    echo '
+                        <input type="text" class="form-control" id="nom" placeholder="'.$const["LOGIN"]["NOM_PLACEHOLDER"].'" name="nom" required>
+                        <label for="nom">'.$const["LOGIN"]["NOM"].'</label>
+    ';
+    echo <<< HTML
                         <br>
                     </div>
                 </div>
@@ -95,31 +112,49 @@ if ( $_SESSION['role'] == $const["roles"]["ADMIN"] ) {
                 <div class="col-sm">
                     <br>
                     <div class="form-floating">
-                        <input type="password" class="form-control" id="motdepasse" placeholder="Entrer votre mot de passe" name="motdepasse" onmouseenter="display(this)" onmouseleave="hide(this)" required>
-                        <label for="motdepasse">Mot de passe</label>
+    HTML;
+    echo '
+                        <input type="password" class="form-control" id="motdepasse" placeholder="'.$const["LOGIN"]["PASSWORD_PLACEHOLDER"].'" name="motdepasse" onmouseenter="display(this)" onmouseleave="hide(this)" required>
+                        <label for="motdepasse">'.$const["LOGIN"]["PASSWORD"].'</label>
+    ';
+    echo <<< HTML
                         <br>
                     </div>
                 </div>
             </div>
             <div class="form-floating input-group mb-4 textblue" >
-                <input type="text" class="form-control" id="email" placeholder="Entrer votre email" name="email" required>
-                <label for="email">Email</label>
+    HTML;
+    echo '
+                <input type="text" class="form-control" id="email" placeholder="'.$const["LOGIN"]["EMAIL_PLACEHOLDER"].'" name="email" required>
+                <label for="email">'.$const["LOGIN"]["EMAIL"].'</label>
+    ';
+    echo <<< HTML
                 <br>
-                <span class="input-group-text textblue">@etud.univ-ubs.fr</span>
+                <span class="input-group-text textblue">
+    HTML;
+    echo $const["conf"]["MAIL_DOMAIN"];
+    echo <<< HTML
+                </span>
             </div>
             <div class="row">
                 <div class="col-sm mb-4">
-                    <label for="role" class="form-label text-white">Rôle :</label>
-                    <select class="form-select form-select-lg textblue" id="role" name="role" required>
     HTML;
+    echo '
+                    <label for="role" class="form-label text-white">'.$const["GESTION"]["ROLE"].'</label>
+                    <select class="form-select form-select-lg textblue" id="role" name="role" required>
+    ';
     foreach ($const["roles"] as $key => $value) {
-        echo "<option value='$value'>$key</option>";
+        echo "<option value='$value'>".$const['GESTION']["ROLES"][$key]."</option>";
     }
     echo <<< HTML
                     </select>
                 </div>
                 <div class="col-sm mb-4">
-                    <label for="groupe" class="form-label text-white">Groupe :</label>
+    HTML;
+    echo '
+                    <label for="groupe" class="form-label text-white">'.$const["GESTION"]["GROUP"].'</label>
+    ';
+    echo <<< HTML
                     <tbody>
                         <select multiple class="form-select form-select-lg textblue" id="groupe" name="groupe[]" required>
     HTML;
@@ -132,7 +167,11 @@ if ( $_SESSION['role'] == $const["roles"]["ADMIN"] ) {
                     </tbody>
                 </div>
             </div>
-            <button type="submit" class="btn bg-white textblue">Ajouter</button><br><br>
+    HTML;
+    echo '
+            <button type="submit" class="btn bg-white textblue">'.$const["LOGIN"]["ADD"].'</button><br><br>
+    ';
+    echo <<< HTML
         </form>
     </div>
     <br>
@@ -145,7 +184,11 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
         <div class="container">
         <br>
         <div class=" container-fluid textblue text-center policesecond">
-            <b class="mediumsize">Liste des groupes</b>
+    HTML;
+    echo '
+            <b class="mediumsize">'.$const["GESTION"]["LIST_GROUPS"].'</b>
+    ';
+    echo <<< HTML
             <br>
         </div>
         <br>
@@ -153,8 +196,12 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
             <table class="table policesecond textblue table-bordered" style="background-color:lightgray;">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nom</th>
+    HTML;
+    echo '
+                        <th>'.$const["GESTION"]["ID"].'</th>
+                        <th>'.$const["LOGIN"]["NOM"].'</th>
+    ';
+    echo <<< HTML
                     </tr>
                 </thead>
                 <tbody>
@@ -181,23 +228,35 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
         <hr class='container textblue'>
         <br>
         <div class="container textblue policesecond">
-            <b class="mediumsize">Ajouter un groupe</b>
+            <b class="mediumsize">
+    HTML;
+    echo $const["GESTION"]["ADD_GROUP"];
+    echo <<< HTML
+            </b>
         </div>
         <br>
         <div class="bgmaincolor container-fluid policesecond">
             <form action="/add_group.php" method="post"><br>
                 <div class="form-floating textblue">
-                <input type="text" class="form-control " id="nom_grp" placeholder="Entrer le nom du groupe" name="nom_grp" required>
-                <label for="nom">Nom du groupe</label><br>
+    HTML;
+    echo '
+                <input type="text" class="form-control " id="nom_grp" placeholder="'.$const["GESTION"]["GROUP_NAME_PLACEHOLDER"].'" name="nom_grp" required>
+                <label for="nom">'.$const["GESTION"]["GROUP_NAME"].'</label><br>
                 </div>
-                <button type="submit" name="ajouter des groupes" class="btn bg-white textblue">Ajouter</button><br><br>
+                <button type="submit" name="ajouter des groupes" class="btn bg-white textblue">'.$const["LOGIN"]["ADD"].'</button><br><br>
+    ';
+    echo <<< HTML
             </form>
         </div>
         <br>
         <hr class='container textblue'>
         <br>
         <div class=" container-fluid textblue text-center policesecond">
-            <b class="mediumsize">IP bannies</b>
+            <b class="mediumsize">
+    HTML;
+    echo $const["GESTION"]["BAN_IP"];
+    echo <<< HTML
+            </b>
             <br>
         </div>
         <br>
@@ -217,8 +276,12 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
             <table class="table policesecond textblue table-bordered" style="background-color:lightgray;">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>IP</th>
+        HTML;
+        echo '
+                    <th>'.$const["GESTION"]["DATE"].'</th>
+                    <th>'.$const["GESTION"]["IP"].'</th>
+        ';
+        echo <<< HTML
                 </tr>
             </thead>
             <tbody>
@@ -238,7 +301,7 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
         echo '</tbody>
         </table>';
     } else{
-        echo "<h1>Aucune adresse IP n'est actuellement bannie !</h1>";
+        echo '<h1>'.$const["GESTION"]["NO_BAN_IP"].'</h1>';
     }
     echo "</div></div><br><hr class='textblue'>";
 }
@@ -251,7 +314,11 @@ echo <<< HTML
     </script>
     <div class='container textblue policesecond' >
         <div class="container textblue policesecond">
-            <b class="mediumsize">Recherche filtrée</b>
+            <b class="mediumsize">
+HTML;
+echo $const["GESTION"]["FILTERED_SEARCH"];
+echo <<< HTML
+            </b>
         </div>
         <br>
         <div class="row" style="background-color:lightgray; padding-bottom: 1rem;">
@@ -261,36 +328,40 @@ $groupes = json_decode(file_get_contents("./groupes.json"), true);
 echo <<< HTML
             <form action="gestion.php#seek" method="post">
                 <input type="radio" name="choix" value="users" id="users">
-                <label for="ch_users">Choix Nom d'utilisateurs</label>
-                <select class="form-select form-select-lg" id="ch_users" name="ch_users[]" onclick="autoselect('users')" multiple>
 HTML;
+echo '
+                <label for="ch_users">'.$const["GESTION"]["CHOICE_USERNAME"].'</label>
+                <select class="form-select form-select-lg" id="ch_users" name="ch_users[]" onclick="autoselect(\'users\')" multiple>
+';
 foreach($salaries as $salarie){
     echo '<option value="'.$salarie["username"].'" selected>'.$salarie["username"].'</option>';
 }
-echo <<< HTML
+echo '
                 </select>
                 <br>
                 <input type="radio" name="choix" value="groups" id="groupes" checked>
-                <label for="ch_groupes">Choix Groupes</label>
-                <select class="form-select form-select-lg" id="ch_groupes" name="ch_groupes[]" onclick="autoselect('groupes')" multiple>
-HTML;
+                <label for="ch_groupes">'.$const["GESTION"]["CHOICE_GROUPS"].'</label>
+                <select class="form-select form-select-lg" id="ch_groupes" name="ch_groupes[]" onclick="autoselect(\'groupes\')" multiple>
+';
 foreach($groupes as $grp){
     echo '<option value="'.$grp.'" selected>'.$grp.'</option>';
 }
-echo <<< HTML
+echo '
                 </select>
                 <br>
                 <input type="radio" name="choix" value="roles" id="roles">
-                <label for="ch_roles">Choix Rôles</label>
-                <select class="form-select form-select-lg" id="ch_roles" name="ch_roles[]" onclick="autoselect('roles')"multiple>
-HTML;
+                <label for="ch_roles">'.$const["GESTION"]["CHOICE_ROLES"].'</label>
+                <select class="form-select form-select-lg" id="ch_roles" name="ch_roles[]" onclick="autoselect(\'roles\')"multiple>
+';
 foreach ($const["roles"] as $name => $role){
-    echo '<option value="'.$role.'" selected>'.$role.'</option>';
+    echo '<option value="'.$role.'" selected>'.$const["GESTION"]["ROLES"][$name].'</option>';
 }
-echo <<< HTML
+echo '
                 </select>
                 <br>
-                <button type="submit" class="btn bg-white textblue" id="seek">Rechercher</button>
+                <button type="submit" class="btn bg-white textblue" id="seek">v'.$const["GESTION"]["SEARCH"].'</button>
+';
+echo <<< HTML
             </form>
         </div>
     </div>
@@ -351,7 +422,7 @@ foreach ($salaries as $salarie) {
         echo "*****";
     }
     echo '</td>
-        <td>'.$salarie["role"].'</td>
+        <td>'.$const["GESTION"]["ROLES"][array_search($salarie["role"], $const["roles"])].'</td>
         <td>'.implode(" | ", $salarie["groupe"]).'</td>
         ';
     if (
@@ -365,13 +436,14 @@ foreach ($salaries as $salarie) {
         echo '<td class="text-center align-middle">
             <form action="del_user.php" method="post">
                 <input type="hidden" name="username" value='.$salarie["username"].'></input>
-                <button class="btn btn-danger">X</button>
+                <button class="btn btn-danger">'.$const["GESTION"]["REMOVE_BUTTON"].'</button>
             </form></td>';
     }else if ( 
+        $_SESSION["username"] == $salarie["username"] ||
         $_SESSION["role"] == $const["roles"]["MODO"] &&
         $salarie["role"] != $const["roles"]["USER"]
     ) {
-        echo '<td class="text-center align-middle"><button class="btn btn-danger" disabled>X</button></td>';
+        echo '<td class="text-center align-middle"><button class="btn btn-danger" disabled>'.$const["GESTION"]["REMOVE_BUTTON"].'</button></td>';
     }
     echo '</tr>';
 }
@@ -380,24 +452,25 @@ echo <<< HTML
             </tbody>
             <thead style="background-color: black;">
                 <tr class="table-active" style="color: white;">
-                    <th scope="col">Username</th>
-                    <th scope="col">Prénom</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Créé le</th>
 HTML;
+echo '
+                    <th scope="col">'.$const["GESTION"]["USERNAME"].'</th>
+                    <th scope="col">'.$const["LOGIN"]["PRENOM"].'</th>
+                    <th scope="col">'.$const["LOGIN"]["NOM"].'</th>
+                    <th scope="col">'.$const["LOGIN"]["EMAIL"].'</th>
+                    <th scope="col">'.$const["GESTION"]["CREATED_ON"].'</th>';
 $unames = implode(",",$usernames);
-if ( $_SESSION['role'] == $const["roles"]["USER"] &&
-     in_array($_SESSION['username'], $usernames ) ||
-     $_SESSION['role'] != $const["roles"]["USER"]
+if ( 
+    $_SESSION['role'] == $const["roles"]["USER"] &&
+    in_array($_SESSION['username'], $usernames ) ||
+    $_SESSION['role'] != $const["roles"]["USER"]
 ) {
     echo <<< HTML
         <th scope="col">Modifié le</th>
     HTML;
 }
-echo <<< HTML
-                    <th scope="col">Rôle
-HTML;
+echo '
+                    <th scope="col">'.$const["GESTION"]["ROLE"];
 if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
     echo <<< HTML
                         <form action="" method="post">
@@ -405,24 +478,21 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
                                 <select class="form-control form-select form-select-lg search-multiple" name="newrole">
     HTML;
     foreach ($const["roles"] as $name => $role){
-        echo "<option value='$role'>$role</option>";
+        echo "<option value='$role'>".$const['GESTION']["ROLES"][$name]."</option>";
     }
-    echo <<< HTML
+    echo '
                                 </select>
-    HTML;
-    echo "<input type='hidden' name='usernames' value='$unames'>";
-    echo <<< HTML
+                                <input type="hidden" name="usernames" value="'.$unames.'">
                                 <div class="input-group-append">
-                                    <button type="submit" class="btn bgmaincolor text-white searchOk">OK</button>
+                                    <button type="submit" class="btn bgmaincolor text-white searchOk">'.$const["GESTION"]["OK"].'</button>
                                 </div>
                             </div>
                         </form>
-    HTML;
+    ';
 }
-echo <<< HTML
+echo '
                     </th>
-                    <th scope="col">Groupes
-HTML;
+                    <th scope="col">'.$const["GESTION"]["GROUPS"];
 if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
     echo <<< HTML
                         <form action="" method="post">
@@ -432,17 +502,16 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
     foreach(json_decode(file_get_contents("./groupes.json"), true) as $g){
         echo "<option value='$g'>$g</option>";
     }
-    echo <<< HTML
+    echo "";
+    echo '
                                 </select>
-    HTML;
-    echo "<input type='hidden' name='usernames' value='$unames'>";
-    echo <<< HTML
+                                <input type="hidden" name="usernames" value="'.$unames.'">
                                 <div class="input-group-append">
-                                    <button type="submit" class="btn bgmaincolor text-white searchOk">OK</button>
+                                    <button type="submit" class="btn bgmaincolor text-white searchOk">'.$const["GESTION"]["OK"].'</button>
                                 </div>
                             </div>
                         </form>
-    HTML;
+    ';
 }
 echo '</th>';
 if (
@@ -452,9 +521,9 @@ if (
         $salarie["role"] == $const["roles"]["USER"]
     )
 ) {
-    echo <<< HTML
-                    <th scope="col">Supprimer</th>
-    HTML;
+    echo '
+                    <th scope="col">'.$const["GESTION"]["REMOVE"].'</th>
+    ';
 }
 echo <<< HTML
                 </tr>

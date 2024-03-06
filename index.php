@@ -1,6 +1,6 @@
 <?php
 include ("functions.php");
-headd("Accueil");
+headd($const["FUNCTIONS"]["HOME"]);
 nav("index");
 ?>
 <div class='textblue policemain mediumsize text-center bgmaincolor'>
@@ -10,19 +10,19 @@ nav("index");
 </div>
 <br>
 <div class='container textblue policemain mediumsize text-center'>
-	Bienvenue sur Datahub 
+	<?php echo $const["INDEX"]["WELCOME"]?>
 	<br><br>
 	<i class='policesecond'>
 		<?php 
 		$d=date('H');
 		if (!isset($_SESSION['pre_nom'])){
-			echo "Veuillez vous connecter pour accéder à l'espace d'échange";
+			echo $const["INDEX"]["FORCE_LOGIN"];
 		} elseif ($d < 6 || $d > 17) {
-			echo "Bonsoir ".$_SESSION['pre_nom'];
+			echo $const["INDEX"]["EVENING"].$_SESSION['pre_nom'];
 		}elseif ($d < 13 || $d >= 6) {
-			echo "Bonjour ".$_SESSION['pre_nom'];
+			echo $const["INDEX"]["MORNING"].$_SESSION['pre_nom'];
 		}else{
-			echo "Bonne après-midi ".$_SESSION['pre_nom'];
+			echo $const["INDEX"]["AFTERNOON"].$_SESSION['pre_nom'];
 		}
 		?>
 	</i>
@@ -30,10 +30,10 @@ nav("index");
 	<a class='btn bgmaincolor text-white policesecond'
 	<?php
 	if (isset($_SESSION['pre_nom'])){
-	 	echo " href='/logout.php' class='btn btn-outline-dark btn-sm'>Se déconnecter</a>";
+	 	echo " href='/logout.php' class='btn btn-outline-dark btn-sm'>".$const["INDEX"]["LOGOUT"]."</a>";
 	}
 	else {
-			echo" href='/logout.php'>Se connecter</a>";
+			echo" href='/logout.php'>".$const["LOGIN"]["LOGIN"]."</a>";
 	}
 	echo "
 </div>";
