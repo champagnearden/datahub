@@ -574,3 +574,7 @@ footer {
 #date {
   margin-bottom: 0%;
 }
+
+.search-multiple, .searchOk{
+  height: 3rem;
+}

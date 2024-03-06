@@ -112,7 +112,7 @@ function nav($page){
 	if (isset($_SESSION['pren_nom'])){
 		echo " traitdroit";
 	}
-	if ($page == "connexion.php" || $page == "deconnexion.php") {
+	if ($page == "login.php" || $page == "delogin.php") {
 		echo " active'";
 	}else {
 		echo "'";
@@ -157,11 +157,26 @@ function nav($page){
 //    }
 //}
 
+function verify_password(string $password, string $hash): bool {
+	$BCRYPT_PREFIX = '$2y$';
+    if (0 == strncmp($hash, $BCRYPT_PREFIX, strlen($BCRYPT_PREFIX))) {
+		var_dump($password);
+		$hash = password_hash("test", PASSWORD_BCRYPT);
+		$crypt = crypt("test", $hash);
+		var_dump($hash);
+		var_dump($crypt);
+		var_dump(hash_equals($hash, crypt($password, $hash)));
+        return hash_equals($hash, crypt($password, $hash));
+    } else {
+        return FALSE; # throw new Exception;
+    }
+}
+
 function session_verif($salaries,$second=false){
 	$pass=false;
 	foreach($salaries as $salarie){
 		if($_POST['username'] == $salarie['username']){
-			if($_POST['motdepasse'] == $salarie['motdepasse']){
+			if( password_verify($_POST['motdepasse'], $salarie['motdepasse']) ) {
 				$_SESSION['pre_nom'] = ucwords(strtolower($salarie['prenom'])) . " " . ucwords(strtolower($salarie['nom']));
 				$pass=true;
 				break;
@@ -228,6 +243,10 @@ function session_verif($salaries,$second=false){
 		";
 		
 	}
+}
+
+function hash_password(string $password): string {
+	return  password_hash($password, PASSWORD_BCRYPT);
 }
 
 function footer(){	

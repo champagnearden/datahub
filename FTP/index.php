@@ -10,7 +10,7 @@
   headd("FTP");
   
   if(!isset($_SESSION['username'])){
-    header("Location: ".$s."connexion.php");
+    header("Location: ".$s."login.php");
     die();
   }
   nav("fichiers.php");
@@ -109,7 +109,7 @@
   exec("ls -1a '$path'",$a);
   exec("ls -la '$path'",$b);
   if(!isset($_SESSION['pre_nom'])){
-    header("Location: ".$s."connexion.php");
+    header("Location: ".$s."login.php");
   }
   $path=substr(getcwd(),strlen($s), strlen(getcwd()));
     echo "<div class='container textblue policesecond mediumsize'> <p class='policemain'>Bienvenue dans votre espace de fichiers</p>

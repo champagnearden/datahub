@@ -3,7 +3,7 @@ include "functions.php";
 headd("Deconnexion");
 session_unset(); 
 session_destroy();
-nav("deconnexion.php");
+nav("logout.php");
 ?>
 	<br>
 	<div class='text-center mx-auto d-block'>
