@@ -574,3 +574,7 @@ footer {
 #date {
   margin-bottom: 0%;
 }
+
+select[multiple] {
+  height: 3rem;
+}

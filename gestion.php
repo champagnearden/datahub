@@ -95,7 +95,7 @@ if ( $_SESSION['role'] == $const["roles"]["ADMIN"] ) {
                 <div class="col-sm">
                     <br>
                     <div class="form-floating">
-                        <input type="password" class="form-control" id="motdepasse" placeholder="Entrer votre mot de passe" name="motdepasse" required>
+                        <input type="password" class="form-control" id="motdepasse" placeholder="Entrer votre mot de passe" name="motdepasse" onmouseenter="display(this)" onmouseleave="hide(this)" required>
                         <label for="motdepasse">Mot de passe</label>
                         <br>
                     </div>
@@ -249,52 +249,53 @@ echo <<< HTML
             document.getElementById(id).checked = true;
         }
     </script>
-    <div class='container textblue policesecond'>
+    <div class='container textblue policesecond' >
         <div class="container textblue policesecond">
             <b class="mediumsize">Recherche filtrée</b>
         </div>
         <br>
-        <div class="row" style="background-color:lightgray">
+        <div class="row" style="background-color:lightgray; padding-bottom: 1rem;">
             <br>
 HTML;
 $groupes = json_decode(file_get_contents("./groupes.json"), true);
 echo <<< HTML
-        <form action="gestion.php#seek" method="post">
-            <input type="radio" name="choix" value="users" id="users">
-            <label for="ch_users">Choix Nom d'utilisateurs</label>
-            <select class="form-select form-select-lg" id="ch_users" name="ch_users[]" onclick="autoselect('users')" multiple>
+            <form action="gestion.php#seek" method="post">
+                <input type="radio" name="choix" value="users" id="users">
+                <label for="ch_users">Choix Nom d'utilisateurs</label>
+                <select class="form-select form-select-lg" id="ch_users" name="ch_users[]" onclick="autoselect('users')" multiple>
 HTML;
 foreach($salaries as $salarie){
     echo '<option value="'.$salarie["username"].'" selected>'.$salarie["username"].'</option>';
 }
 echo <<< HTML
-            </select>
-            <br>
-            <input type="radio" name="choix" value="groups" id="groupes" checked>
-            <label for="ch_groupes">Choix Groupes</label>
-            <select class="form-select form-select-lg" id="ch_groupes" name="ch_groupes[]" onclick="autoselect('groupes')" multiple>
+                </select>
+                <br>
+                <input type="radio" name="choix" value="groups" id="groupes" checked>
+                <label for="ch_groupes">Choix Groupes</label>
+                <select class="form-select form-select-lg" id="ch_groupes" name="ch_groupes[]" onclick="autoselect('groupes')" multiple>
 HTML;
 foreach($groupes as $grp){
     echo '<option value="'.$grp.'" selected>'.$grp.'</option>';
 }
 echo <<< HTML
-            </select>
-            <br>
-            <input type="radio" name="choix" value="roles" id="roles">
-            <label for="ch_roles">Choix Rôles</label>
-            <select class="form-select form-select-lg" id="ch_roles" name="ch_roles[]" onclick="autoselect('roles')"multiple>
+                </select>
+                <br>
+                <input type="radio" name="choix" value="roles" id="roles">
+                <label for="ch_roles">Choix Rôles</label>
+                <select class="form-select form-select-lg" id="ch_roles" name="ch_roles[]" onclick="autoselect('roles')"multiple>
 HTML;
 foreach ($const["roles"] as $name => $role){
     echo '<option value="'.$role.'" selected>'.$role.'</option>';
 }
 echo <<< HTML
-            </select>
-            <br>
-            <button type="submit" class="btn bg-white textblue" id="seek">Rechercher</button>
-        </form>
+                </select>
+                <br>
+                <button type="submit" class="btn bg-white textblue" id="seek">Rechercher</button>
+            </form>
+        </div>
     </div>
-</div>
-    <div class='container textblue policesecond'>
+    <hr>
+    <div class='container textblue policesecond table-responsive' style="padding: 0%;">
         <table class="table table-striped table-hover">
             <tbody class="table-bordered">
 HTML;
