@@ -1,6 +1,7 @@
 <?php
 headd("");
-$ips=json_decode(file_get_contents("/banned_ip.json"),true);
+$prefix=$_SERVER['DOCUMENT_ROOT'];
+$ips=json_decode(file_get_contents("$prefix/banned_ip.json"),true);
 $ips=($ips == null)? array() : $ips;
 foreach($ips as $ip){
 	if ($ip['ip'] == $_SERVER['REMOTE_ADDR']){
@@ -19,7 +20,8 @@ $const = (new Consts()) -> get_lang();
 class Consts {
 	public $consts;
 	function __construct() {
-		$this -> consts = json_decode(file_get_contents("/const.json"), true);
+		global $prefix;
+		$this -> consts = json_decode(file_get_contents("$prefix/const.json"), true);
 	}
 	public function get() {
 		return $this -> consts;

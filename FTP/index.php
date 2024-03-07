@@ -1,55 +1,40 @@
 <?php
-  include("/functions.php");
-  $p=explode("\\",getcwd());
-  $i=0;
-  headd("FTP");
+  $path=substr(getcwd(), strlen($_SERVER['DOCUMENT_ROOT'])+1);
+  str_replace("\\", "/", $path);
+  $p=count(explode("/", $path));
+  $prefix="";
+  for ($i=0; $i < $p; $i++) {
+    $prefix.="../";
+  }
   
-  if(!isset($_SESSION['username'])){
+  include "$prefix/functions.php";
+  if(!isset($_SESSION['pre_nom'])){
     header("Location: /login.php");
     die();
   }
+  headd("FTP");
+  
+  if(!isset($_SESSION['username'])){
+    header("Location: $prefix/login.php");
+    die();
+  }
   nav("fichiers.php");
-  $path=getcwd()."/";
-  $salarie=json_decode(file_get_contents("/accounts.json"), true);
-  $dossiers=json_decode(file_get_contents("/dossiers.json"), true);
+  $salarie=json_decode(file_get_contents("$prefix/accounts.json"), true);
+  $dossiers=json_decode(file_get_contents("$prefix/dossiers.json"), true);
   $dossiers = ($dossiers == null) ? array() : $dossiers ;
-  $fichiers=json_decode(file_get_contents("/fichiers.json"), true);
+  $fichiers=json_decode(file_get_contents("$prefix/fichiers.json"), true);
   $fichiers = ($fichiers == null) ? array() : $fichiers ;
+
   if(isset($_POST['AddDoss'])){
     $str=$_POST['AddDoss'];
-    $str=str_replace("'","",$str);
-    $str=str_replace('"','',$str);
-    $str=trim($str);
-    $validity=1;
-    foreach($dossiers as $dos){
-      if($dos['path'].$dos['nom'] == $path.$str){
-        unset($validity);
-        break;
-      }
-    }
-    $lvl=0700;
-    if (isset($validity) && $str!==""){
-      switch ($_POST['role']) {
-        case 'grp':
-          $lvl=0770;
-          break;
-        case 'all':
-          $lvl=0777;
-          break;
-        case 'me':
-          $lvl=0700;
-          break;
-      }
-      array_push($dossiers, array(
-        "nom" => $str, 
-        "path" => $path,
-        "visibility" => $_POST['role'], 
-        "owner" => $_SESSION['username'], 
-      ));
-      file_put_contents("/dossiers.json", json_encode($dossiers));
-    }else{
-      echo "<script> alert('".$const['FTP']['FILE_FAILED']."');</script>";
-    }
+    array_push($dossiers, array(
+      "id" => uniqid(),
+      "nom" => $str, 
+      "path" => $path,
+      "visibility" => $_POST['role'], 
+      "owner" => $_SESSION['username'], 
+    ));
+      file_put_contents("$prefix/dossiers.json", json_encode($dossiers));
     unset($_POST['AddDoss']);
   }
   if(isset($_FILES['fic']['tmp_name']) && $_FILES['fic']['name']!="" && $_FILES['fic']['error']==0){
@@ -64,13 +49,14 @@
         }
       }
       array_push($fichiers, array(
+        "id" => uniqid(),
         "nom" => $str, 
         "path" => $path,
         "visibility" => $_POST['role'], 
         "owner" => $_SESSION['username'], 
         "groupes" => $grps
       ));
-      file_put_contents("/fichiers.json", json_encode($fichiers));
+      file_put_contents("$prefix/fichiers.json", json_encode($fichiers));
     unset($_FILES['fic']);
   }
   $size=sizeof($fichiers);
@@ -81,80 +67,84 @@
         array_splice($fichiers, $i,1);
       }
     }
-    file_put_contents("/fichiers.json", json_encode($fichiers));
+    file_put_contents($prefix."fichiers.json", json_encode($fichiers));
     header("Location: ./");
   }
   if(isset($_GET['DelDoss'])){
     $sd=sizeof($dossiers);
     for($i=0;$i<$sd;$i++){
-      if($dossiers[$i]['nom']==$_GET['DelDoss']){
-        array_splice($dossiers, $i,1);
+      if($dossiers[$i]['id']==$_GET['DelDoss']){
+        unset($dossiers[$i]);
+        break;
       }
     }
-    file_put_contents("/dossiers.json", json_encode($dossiers));
-    header("Location: ./");
+    file_put_contents("$prefix/dossiers.json", json_encode($dossiers));
   }
-  if(!isset($_SESSION['pre_nom'])){
-    header("Location: /login.php");
-  }
-  echo "<div class='container textblue policesecond mediumsize'>
-  <p class='policemain'>".$const['FTP']['WELCOME']."</p>
-  <p>".$const['FTP']['ACCESS_REPO']."</p>
-  <i>".$const['FTP']['CURRENTLY_IN']." $path</i>
-  <br><br>";
-  $s=sizeof($a);
-  echo "<div class='row'><div class='col-sm-6' style='background-color:lightgray'><b>".$const['FTP']['MY_REPO']."</b><div class='raw'><a class='textblue policesecond minisize' href='..'>".$const['FTP']['BACK']."</a></div>";
-  for($i=2;$i<$s;$i++){
-    if ($b[$i+1][0] == "d"){
-      foreach ($dossiers as $d) {
-        $pass=0;
-        if($d['nom']==$a[$i]){
-          switch ($d['visibility']) {
-            case 'me':
-              if ($d['owner']==$_SESSION['username']){
-                $pass=1;
-              }
-              break;
-            case 'grp':
-              $grps="";
-              $k=array_keys($salarie);
-              $c=0;
-              foreach($salarie as $salar){
-                if($salar['username'] == $_SESSION['username']){
-                  $grps=explode(" | ", $salar['groupe']);
-                  $sg=sizeof($grps);
-                  break;
-                }
-                $c++;
-              }
-              for($j=0;$j<$sg;$j++){
-                if(str_contains($grps[$j],$salarie[$k[$c]]['groupe'])){
-                  $pass=1;
-                  break;
-                }
-              }
-              break;
-            case 'all':
-              $pass=1;
-              break;
+  echo "
+  <div class='container textblue policesecond mediumsize'>
+    <p class='policemain'>".$const['FTP']['WELCOME']."</p>
+    <p>".$const['FTP']['ACCESS_REPO']."</p>
+    <i>".$const['FTP']['CURRENTLY_IN']." $path/</i>
+    <br><br>
+    <div class='row'>
+      <div class='col-sm-6' style='background-color:lightgray'>
+        <b>".$const['FTP']['MY_REPO']."</b>
+        <div class='raw'>
+          <a class='textblue policesecond minisize' href='..'>".$const['FTP']['BACK']."</a>
+        </div>
+  ";
+  foreach ($dossiers as $d) {
+    switch ($d['visibility']) {
+      case 'me':
+        if ($d['owner']==$_SESSION['username']){
+          dispDir($d);
+        }
+        break;
+      case 'grp':
+        // Given the directory is showed to the groups of owner
+        $current_user = array_search($_SESSION["username"], array_column($salarie, 'username'));
+        foreach($salarie as $salar){
+          if($salar['username'] == $d['owner']){
+            // We found the owner of the directory, compare its groups with the user ones
+            // get the current user groups
+            $common = array_intersect($salar['groupe'], $salarie[$current_user]['groupe']);
+            if(sizeof($common) > 0){
+              dispDir($d);
+            }
+            break;
           }
         }
-        if($_SESSION['username']==$d['owner']){
-          $sub="<sub><small>(".$const['FTP']['ME'].")</small></sub>";
-        }else{
-          $sub="<sub><small>(".$d['owner'].")</small></sub>";
-        }
-        if (boolval($pass)) {
-          break;
-        }
-      }
-      if(boolval($pass)){
-        echo "<div class'raw'>
-        <button class='btn bgmaincolor text-white btn-sm' onclick='if(confirm(\"".$const['FTP']['CONFIRM_FOLDER'].$a[$i]." ?\")){window.location.href=\"./?DelDoss=".$a[$i]."\"}'>-</button>&emsp;<a class='textblue policesecond minisize' href='".$a[$i]."'>".ucwords(strtolower($a[$i]))."</a> $sub</div>";
-      }
+        break;
+      case 'all':
+        dispDir($d);
+        break;
     }
   }
-  echo "<br></div><div class='col-sm-6' style='background-color:lightgray'><b>".$const['FTP']['MY_FILES']."</b><br>";
+  function dispDir($dir){
+    global $const;
+    if($_SESSION['username']==$dir['owner']) {
+      $sub = "<sub><small>(".$const['FTP']['ME'].")</small></sub>";
+    } else {
+      $sub = "<sub><small>(".$dir['owner'].")</small></sub>";
+    }
+    echo "
+    <div class'raw'>
+      <form action='' method='post' id='form_goto'>
+        <a class='btn bgmaincolor text-white btn-sm' onclick='if(confirm(\"".$const['FTP']['CONFIRM_FOLDER'].$dir['nom']." ?\")){window.location.href=\"./?DelDoss=".$dir['id']."\"}'>-</a>
+        &emsp;
+        <input type='hidden' class='textblue policesecond minisize' name='id' value='".$dir['id']."'>
+        <a class='textblue policesecond minisize' onclick='document.getElementById(\"form_goto\").submit()' style='cursor: pointer;'>".$dir['nom']."</a>
+        $sub
+      </form>
+    </div>";
+  }
+  echo "
+    <br>
+  </div>
+  <div class='col-sm-6' style='background-color:lightgray'>
+    <b>".$const['FTP']['MY_FILES']."</b>
+    <br>
+    ";
   for($i=0;$i<$s;$i++){
     if ($b[$i+1][0] == "-" && $a[$i]!="index.php"){
       foreach ($fichiers as $f) {

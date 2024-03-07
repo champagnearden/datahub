@@ -1,23 +1,27 @@
 [
     {
+        "id": 1,
         "nom": "moi",
         "path": "/var/www/sardines/intranet/FTP/",
         "visibility": "me",
         "owner": "cmenweg"
     },
     {
+        "id": 2,
         "nom": "groupes",
         "path": "/var/www/sardines/intranet/FTP/",
         "visibility": "grp",
         "owner": "cmenweg"
     },
     {
+        "id": 3,
         "nom": "everyone",
         "path": "/var/www/sardines/intranet/FTP/",
         "visibility": "all",
         "owner": "cmenweg"
     },
     {
+        "id": 4,
         "nom": "test",
         "path": "/var/www/sardines/intranet/FTP/",
         "visibility": "me",
