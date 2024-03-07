@@ -22,4 +22,5 @@ for ($i = 0; $i < sizeof($groupes); $i++) {
 file_put_contents("./groupes.json", json_encode($groupes));
 file_put_contents("./accounts.json", json_encode($users));
 header("Location: ./gestion.php");
+die();
 ?>

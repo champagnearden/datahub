@@ -11,5 +11,5 @@ foreach($salaries as $key => $salarie) {
 }
 file_put_contents("./accounts.json", json_encode($salaries));
 header("Location: ./gestion.php");
-
+die();
 ?>

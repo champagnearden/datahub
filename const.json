@@ -5,8 +5,7 @@
             "FORCE_LOGIN": "Veuillez vous connecter pour accéder à l'espace d'échange",
             "EVENING": "Bonsoir ",
             "MORNING": "Bonjour ",
-            "AFTERNOON": "Bon après-midi ",
-            "LOGOUT": "Se déconnecter"
+            "AFTERNOON": "Bon après-midi "
         },
         "FUNCTIONS": {
             "HOME": "Accueil",
@@ -30,9 +29,6 @@
             "WARNING": "Attention, au bout de 3 tentatives vous serez banni !",
             "RETRY": "Réessayez",
             "BAN": "Non non, vous êtes banni !\nVous pouvez dire ce que vous voulez vous l'avez cherché !"
-        },
-        "CHECK": {
-            "REDIRECT": "Vous allez être redirigé dans quelques instants..."
         },
         "LOGIN": {
             "HOME": "Vous êtes arrivé sur la page de connexion",
@@ -106,6 +102,27 @@
             "OK": "OK",
             "GROUPS": "Groupes",
             "REMOVE": "Supprimer"
+        },
+        "FTP": {
+            "FILE_FAILED": "Impossible de créer le fichier, le nom est invalide !",
+            "ACCESS_REPO": "Cliquez sur le lien pour accéder au dossier",
+            "CURRENTLY_IN": "Vous vous trouvez actuellement dans le répertoire",
+            "MY_REPO": "Mes dossiers",
+            "WELCOME": "Bienvenue dans votre espace de fichiers",
+            "BACK": "Précédent",
+            "ME": "Moi",
+            "CONFIRM_FOLDER": "Êtes-vous sûre de vouloir supprimer le répertoire ",
+            "CONFIRM_FILE": "Êtes-vous sûre de vouloir supprimer le fichier ",
+            "MY_FILES": "Mes fichiers",
+            "NO_QUOTES": "Les guillements et apostrophes seront supprimés !",
+            "CREATE_FOLDER": "Créer un dossier",
+            "FOLDER_NAME": "Nom du dossier",
+            "WHO": "Qui peut y accéder ?",
+            "ONLY_ME": "Moi seulement",
+            "GROUPS": "Mes groupes",
+            "ALL": "Tout le monde",
+            "CREATE": "Créer",
+            "UPLOAD": "Importer un fichier"
         }
     },
     "en":{
@@ -114,8 +131,7 @@
             "FORCE_LOGIN": "Login to access sharing space",
             "EVENING": "Good evening ",
             "MORNING": "Good morning ",
-            "AFTERNOON": "Good afternoon ",
-            "LOGOUT": "Logout"
+            "AFTERNOON": "Good afternoon "
         },
         "FUNCTIONS": {
             "HOME": "Home",
@@ -139,9 +155,6 @@
             "WARNING": "Warning, after 3 attempts you'll be ban !",
             "RETRY": "Try again",
             "BAN": "No no, you are banned\nYou can say whatever you want..."
-        },
-        "CHECK": {
-            "REDIRECT": "You will be redirect within few instants..."
         },
         "LOGIN": {
             "HOME": "You are on the login page",
@@ -215,6 +228,27 @@
             "OK": "OK",
             "GROUPS": "Groups",
             "REMOVE": "Delete"
+        },
+        "FTP": {
+            "FILE_FAILED": "Unable to create file, name is invalid !",
+            "ACCESS_REPO": "Click on the link to access the folder",
+            "CURRENTLY_IN": "You are currently in the folder",
+            "MY_REPO": "My folders",
+            "WELCOME": "Welcome to your space",
+            "BACK": "Back",
+            "ME": "Me",
+            "CONFIRM_FOLDER": "You are about to delete the folder",
+            "CONFIRM_FILE": "Are you sure you want to delete the file ",
+            "MY_FILES": "My files",
+            "NO_QUOTES": "Quotes will be deleted !",
+            "CREATE_FOLDER": "Create a folder",
+            "FOLDER_NAME": "Folder name",
+            "WHO": "Who can access it ?",
+            "ONLY_ME": "Only me",
+            "GROUPS": "My groups",
+            "ALL": "Everyone",
+            "CREATE": "Create",
+            "UPLOAD": "Upload a file"
         }
     },
     "roles": {
@@ -228,7 +262,8 @@
         "MAIL_HOST": "smtp-relay.sendinblue.com",
         "MAIL_PASSWORD": "chJLY02ADd1X8y9n",
         "MAIL_SENDER": "sardines.and.cie@gmail.com",
-        "MAIL_PSEUDO": "sardinesandcie"
+        "MAIL_PSEUDO": "sardinesandcie",
+        "DOMAIN": "datahub.com"
     }
     
 }

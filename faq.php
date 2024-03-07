@@ -26,7 +26,7 @@ nav("faq.php");
 				}
 				?>
 				<li>
-					<a href="#connexion" onclick="display('connexion');"><div><?php echo $const['LOGIN']['LOGIN']." / ".$const['INDEX']['LOGOUT']; ?></div></a>
+					<a href="#connexion" onclick="display('connexion');"><div><?php echo $const['LOGIN']['LOGIN']." / ".$const['FUNCTIONS']['LOGOUT']; ?></div></a>
 				</li>
 				<li>
 					<a href="#aide" onclick="display('aide');"><?php echo $const['FUNCTIONS']['HELP']; ?></a>
@@ -42,7 +42,7 @@ nav("faq.php");
 		<?php echo $const['FAQ']['HOME']; ?>
 		<br>
 		<?php echo $const['FAQ']['HOME_2']; ?>
-		<a href="#connexion" onclick="display('connexion-intranet');"><?php echo $const['LOGIN']['LOGIN']." / ".$const['INDEX']['LOGOUT']; ?></a>)
+		<a href="#connexion" onclick="display('connexion-intranet');"><?php echo $const['LOGIN']['LOGIN']." / ".$const['FUNCTIONS']['LOGOUT']; ?></a>)
 	</p>
 </div>
 <?php
@@ -50,11 +50,11 @@ if(isset($_SESSION['username'])){
 	echo '
 <div id="gestion" style="display: none;">
 	<hr>';
-	if($_SESSION['role']=='utilisateur'){
+	if($_SESSION['role']==$const['roles']['USER']){
 		echo "<p>".$const['FAQ']['GESTION_USER']."</p>";
-	}else if($_SESSION['role']=='moderateur'){
+	}else if($_SESSION['role']==$const['roles']['MODO']){
 		echo "<p>".$const['FAQ']['GESTION_MODO']."</p>";
-	}else if($_SESSION['role']=='administrateur'){
+	}else if($_SESSION['role']==$const['roles']['ADMIN']){
 		echo "<p>".$const['FAQ']['GESTION_ADMIN']."</p>";
 	}
 	echo "
@@ -96,7 +96,7 @@ if(isset($_SESSION['username'])){
 	let url = window.location.href;
 	url = url.replace('http://','');
 	url = url.replace('www.','');
-	url = url.replace('datahub.com/faq.php','');
+	url = url.replace('<?php echo $const['conf']['DOMAIN']; ?>/faq.php','');
 	if (url != ""){
 		display(url.replace("#",''));
 	}

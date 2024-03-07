@@ -1,6 +1,5 @@
 <?php
 headd("");
-chdir($_SERVER['DOCUMENT_ROOT']);
 $ips=json_decode(file_get_contents("banned_ip.json"),true);
 $ips=($ips == null)? array() : $ips;
 foreach($ips as $ip){

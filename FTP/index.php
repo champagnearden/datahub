@@ -53,7 +53,7 @@
       ));
       file_put_contents($s."dossiers.json", json_encode($dossiers));
     }else{
-      echo "<script> alert('Impossible de créer le fichier, le nom est invalide !');</script>";
+      echo "<script> alert('".$const['FTP']['FILE_FAILED']."');</script>";
     }
     unset($_POST['AddDoss']);
   }
@@ -103,10 +103,10 @@
     header("Location: ".$s."login.php");
   }
   $path=substr(getcwd(),strlen($s), strlen(getcwd()));
-    echo "<div class='container textblue policesecond mediumsize'> <p class='policemain'>Bienvenue dans votre espace de fichiers</p>
-    <p>Cliquez sur le lien pour accéder au dossier</p> <i>Vous vous trouvez actuellement dans le répertoire $path</i><br><br>";
+    echo "<div class='container textblue policesecond mediumsize'> <p class='policemain'>".$const['FTP']['WELCOME']."</p>
+    <p>".$const['FTP']['ACCESS_REPO']."</p> <i>".$const['FTP']['CURRENTLY_IN']." $path</i><br><br>";
   $s=sizeof($a);
-  echo "<div class='row'><div class='col-sm-6' style='background-color:lightgray'><b>Mes dossiers</b><div class='raw'><a class='textblue policesecond minisize' href='..'>Précédent</a></div>";
+  echo "<div class='row'><div class='col-sm-6' style='background-color:lightgray'><b>".$const['FTP']['MY_REPO']."</b><div class='raw'><a class='textblue policesecond minisize' href='..'>".$const['FTP']['BACK']."</a></div>";
   for($i=2;$i<$s;$i++){
     if ($b[$i+1][0] == "d"){
       foreach ($dossiers as $d) {
@@ -143,7 +143,7 @@
           }
         }
         if($_SESSION['username']==$d['owner']){
-          $sub="<sub><small>(moi)</small></sub>";
+          $sub="<sub><small>(".$const['FTP']['ME'].")</small></sub>";
         }else{
           $sub="<sub><small>(".$d['owner'].")</small></sub>";
         }
@@ -153,11 +153,11 @@
       }
       if(boolval($pass)){
         echo "<div class'raw'>
-        <button class='btn bgmaincolor text-white btn-sm' onclick='if(confirm(\"Êtes-vous sûre de vouloir supprimer le répertoire ".$a[$i]." ?\")){window.location.href=\"./?DelDoss=".$a[$i]."\"}'>-</button>&emsp;<a class='textblue policesecond minisize' href='".$a[$i]."'>".ucwords(strtolower($a[$i]))."</a> $sub</div>";
+        <button class='btn bgmaincolor text-white btn-sm' onclick='if(confirm(\"".$const['FTP']['CONFIRM_FOLDER'].$a[$i]." ?\")){window.location.href=\"./?DelDoss=".$a[$i]."\"}'>-</button>&emsp;<a class='textblue policesecond minisize' href='".$a[$i]."'>".ucwords(strtolower($a[$i]))."</a> $sub</div>";
       }
     }
   }
-  echo "<br></div><div class='col-sm-6' style='background-color:lightgray'><b>Mes fichiers</b><br>";
+  echo "<br></div><div class='col-sm-6' style='background-color:lightgray'><b>".$const['FTP']['MY_FILES']."</b><br>";
   for($i=0;$i<$s;$i++){
     if ($b[$i+1][0] == "-" && $a[$i]!="index.php"){
       foreach ($fichiers as $f) {
@@ -190,7 +190,7 @@
           }
         }
         if($_SESSION['username']==$f['owner']){
-          $sub="<sub><small>(moi)</small></sub>";
+          $sub="<sub><small>(".$const['FTP']['ME'].")</small></sub>";
         }else{
           $sub="<sub><small>(".$f['owner'].")</small></sub>";
         }
@@ -201,7 +201,7 @@
       if(boolval($pass)){
         $f=str_replace("file:", "", $a[$i]);
         echo "<div class='raw'>
-          <button class='btn bgmaincolor text-white btn-sm' onclick='if(confirm(\"Êtes-vous sûre de vouloir supprimer le fichier ".$f." ?\")){window.location.href=\"./?DelFic=".$a[$i]."\"}'>-</button>&emsp;
+          <button class='btn bgmaincolor text-white btn-sm' onclick='if(confirm(\"".$const['FTP']['CONFIRM_FILE'].$f." ?\")){window.location.href=\"./?DelFic=".$a[$i]."\"}'>-</button>&emsp;
           <a class='textblue policesecond minisize' href='./".$a[$i]."' download='$f'>".ucwords(strtolower($f))."</a> $sub</div>";
       }
     }
@@ -212,36 +212,36 @@
 <hr class='container textblue'><br>
 <div class='mx-auto d-block textblue '>
   <form action="" method="post">
-    <small><i>Les guillements et apostrophes seront supprimés !</i></small>
+    <small><i><?php echo $const['FTP']['NO_QUOTES']; ?></i></small>
     <br><br>
     <div class='container row'>
       <div class='col-sm-6'>
-        <p>&emsp;Créer un dossier</p>
+        <p>&emsp;<?php echo $const['FTP']['CREATE_FOLDER']; ?></p>
         <div class='textblue'>
-          <input class='textblue minisize policesecond' style='border-radius: 2%' type="text" name="AddDoss" placeholder="Nom du dossier" required>
-          <p>&emsp;Qui peut y accéder ?</p>
+          <input class='textblue minisize policesecond' style='border-radius: 2%' type="text" name="AddDoss" placeholder="<?php echo $const['FTP']['FOLDER_NAME']; ?>" required>
+          <p>&emsp;<?php echo $const['FTP']['WHO']; ?></p>
           <select id="role" name="role">
-            <option value="me">Moi seulement</option>
-            <option value="grp">Mes groupes</option>
-            <option value="all">Tout le monde</option>
+            <option value="me"><?php echo $const['FTP']['ONLY_ME']; ?></option>
+            <option value="grp"><?php echo $const['FTP']['GROUPS']; ?></option>
+            <option value="all"><?php echo $const['FTP']['ALL']; ?></option>
           </select>
           <br><br>
-          <button class='btn text-white smallsize bgmaincolor' type="submit" value='Créer le dossier'>Créer le dossier</button>
+          <button class='btn text-white smallsize bgmaincolor' type="submit" value='Créer le dossier'><?php echo $const['FTP']['CREATE']; ?></button>
   </form>
         </div>
       </div>
       <div class='col-sm-6'>
-        <p>Importer un fichier</p>
+        <p><?php echo $const['FTP']['UPLOAD']; ?></p>
         <form action="./" method="post" enctype="multipart/form-data">
           <input class='textblue minisize policesecond' style='border-radius: 2%' type="file" name="fic">
-          <p>&emsp;Qui peut y accéder ?</p>
+          <p>&emsp;<?php echo $const['FTP']['WHO']; ?></p>
             <select id="role" name="role">
-              <option value="me">Moi seulement</option>
-              <option value="grp">Mes groupes</option>
-              <option value="all">Tout le monde</option>
+              <option value="me"><?php echo $const['FTP']['ONLY_ME']; ?></option>
+              <option value="grp"><?php echo $const['FTP']['GROUPS']; ?></option>
+              <option value="all"><?php echo $const['FTP']['ALL']; ?></option>
             </select>
           <br><br>
-          <button class='btn text-white bgmaincolor policesecond' type="submit" value="Importer le fichier">Importer</button>
+          <button class='btn text-white bgmaincolor policesecond' type="submit" value="Importer le fichier"><?php echo $const['FTP']['UPLOAD']; ?></button>
         </form>
         <br>
       </div>

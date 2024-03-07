@@ -30,7 +30,7 @@ nav("index");
 	<a class='btn bgmaincolor text-white policesecond'
 	<?php
 	if (isset($_SESSION['pre_nom'])){
-	 	echo " href='/logout.php' class='btn btn-outline-dark btn-sm'>".$const["INDEX"]["LOGOUT"]."</a>";
+	 	echo " href='/logout.php' class='btn btn-outline-dark btn-sm'>".$const["FUNCTIONS"]["LOGOUT"]."</a>";
 	}
 	else {
 			echo" href='/logout.php'>".$const["LOGIN"]["LOGIN"]."</a>";

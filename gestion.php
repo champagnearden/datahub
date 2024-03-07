@@ -213,7 +213,7 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
             <th scope="row">'.$i.'</th>
             <td>'.$groupes[$i].'</td>
             <td style="border: none">
-                <form action="supprimer_groupe.php" method="post">
+                <form action="del_group.php" method="post">
                     <input type="hidden" name="nom_grp" value="'.$groupes[$i].'" >
                     <input type="submit" class="btn btn-sm bgmaincolor text-white material-icons" value="close">
                 </form>                        
@@ -436,14 +436,14 @@ foreach ($salaries as $salarie) {
         echo '<td class="text-center align-middle">
             <form action="del_user.php" method="post">
                 <input type="hidden" name="username" value='.$salarie["username"].'></input>
-                <button class="btn btn-danger">'.$const["GESTION"]["REMOVE_BUTTON"].'</button>
+                <input type="submit" class="btn btn-sm btn-danger text-white material-icons" value="close">
             </form></td>';
     }else if ( 
         $_SESSION["username"] == $salarie["username"] ||
         $_SESSION["role"] == $const["roles"]["MODO"] &&
         $salarie["role"] != $const["roles"]["USER"]
     ) {
-        echo '<td class="text-center align-middle"><button class="btn btn-danger" disabled>'.$const["GESTION"]["REMOVE_BUTTON"].'</button></td>';
+        echo '<td class="text-center align-middle"><input type="submit" class="btn btn-sm btn-danger text-white material-icons" value="close"></td>';
     }
     echo '</tr>';
 }

@@ -7,7 +7,7 @@ include ("functions.php");
 //require 'PHPMailer/src/Exception.php';
 //require 'PHPMailer/src/PHPMailer.php';
 //require 'PHPMailer/src/SMTP.php';
-headd("Connexion");
+headd($const["LOGIN"]["LOGIN"]);
 nav("login.php");
 
 if(isset($_SESSION['pre_nom'])){

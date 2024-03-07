@@ -10,5 +10,5 @@ echo "<script>alert('".var_dump($_POST)."')</script>";
 array_push($salaries, $_POST);
 file_put_contents("accounts.json", json_encode($salaries));
 header("Location: ./gestion.php");
-
+die();
 ?>
