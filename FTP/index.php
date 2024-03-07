@@ -52,10 +52,6 @@
         "owner" => $_SESSION['username'], 
       ));
       file_put_contents($s."dossiers.json", json_encode($dossiers));
-      mkdir("$path$str", $lvl);
-      exec("chmod $lvl '$path$str'");
-      exec("chmod '$path$str' ".$_SESSION['username']);
-      exec("cat index.php>'$path$str/index.php'");
     }else{
       echo "<script> alert('Impossible de créer le fichier, le nom est invalide !');</script>";
     }
@@ -85,8 +81,6 @@
   $size=sizeof($fichiers);
   //J'utilise un GET parceque je demande la confirmation, impossible avec un form...
   if(isset($_GET['DelFic'])){
-    exec("rm '$path/".$_GET['DelFic']."'");
-
     for($i=0;$i<$size;$i++){
       if($fichiers[$i]['nom']==$_GET['DelFic']){
         array_splice($fichiers, $i,1);
@@ -96,7 +90,6 @@
     header("Location: ./");
   }
   if(isset($_GET['DelDoss'])){
-    exec("rm -R '$path/".$_GET['DelDoss']."'");
     $sd=sizeof($dossiers);
     for($i=0;$i<$sd;$i++){
       if($dossiers[$i]['nom']==$_GET['DelDoss']){
@@ -106,8 +99,6 @@
     file_put_contents($s."dossiers.json", json_encode($dossiers));
     header("Location: ./");
   }
-  exec("ls -1a '$path'",$a);
-  exec("ls -la '$path'",$b);
   if(!isset($_SESSION['pre_nom'])){
     header("Location: ".$s."login.php");
   }
