@@ -1,24 +1,19 @@
 <?php
+  include("/functions.php");
   $p=explode("\\",getcwd());
   $i=0;
-  $s="";
-  while ($p[$i] !== "FTP") {
-    $s="$s".$p[$i]."/";
-    $i++;
-  }
-  include($s."functions.php");
   headd("FTP");
   
   if(!isset($_SESSION['username'])){
-    header("Location: ".$s."login.php");
+    header("Location: /login.php");
     die();
   }
   nav("fichiers.php");
   $path=getcwd()."/";
-  $salarie=json_decode(file_get_contents($s."accounts.json"), true);
-  $dossiers=json_decode(file_get_contents($s."dossiers.json"), true);
+  $salarie=json_decode(file_get_contents("/accounts.json"), true);
+  $dossiers=json_decode(file_get_contents("/dossiers.json"), true);
   $dossiers = ($dossiers == null) ? array() : $dossiers ;
-  $fichiers=json_decode(file_get_contents($s."fichiers.json"), true);
+  $fichiers=json_decode(file_get_contents("/fichiers.json"), true);
   $fichiers = ($fichiers == null) ? array() : $fichiers ;
   if(isset($_POST['AddDoss'])){
     $str=$_POST['AddDoss'];
@@ -51,7 +46,7 @@
         "visibility" => $_POST['role'], 
         "owner" => $_SESSION['username'], 
       ));
-      file_put_contents($s."dossiers.json", json_encode($dossiers));
+      file_put_contents("/dossiers.json", json_encode($dossiers));
     }else{
       echo "<script> alert('".$const['FTP']['FILE_FAILED']."');</script>";
     }
@@ -75,7 +70,7 @@
         "owner" => $_SESSION['username'], 
         "groupes" => $grps
       ));
-      file_put_contents($s."fichiers.json", json_encode($fichiers));
+      file_put_contents("/fichiers.json", json_encode($fichiers));
     unset($_FILES['fic']);
   }
   $size=sizeof($fichiers);
@@ -86,7 +81,7 @@
         array_splice($fichiers, $i,1);
       }
     }
-    file_put_contents($s."fichiers.json", json_encode($fichiers));
+    file_put_contents("/fichiers.json", json_encode($fichiers));
     header("Location: ./");
   }
   if(isset($_GET['DelDoss'])){
@@ -96,15 +91,17 @@
         array_splice($dossiers, $i,1);
       }
     }
-    file_put_contents($s."dossiers.json", json_encode($dossiers));
+    file_put_contents("/dossiers.json", json_encode($dossiers));
     header("Location: ./");
   }
   if(!isset($_SESSION['pre_nom'])){
-    header("Location: ".$s."login.php");
+    header("Location: /login.php");
   }
-  $path=substr(getcwd(),strlen($s), strlen(getcwd()));
-    echo "<div class='container textblue policesecond mediumsize'> <p class='policemain'>".$const['FTP']['WELCOME']."</p>
-    <p>".$const['FTP']['ACCESS_REPO']."</p> <i>".$const['FTP']['CURRENTLY_IN']." $path</i><br><br>";
+  echo "<div class='container textblue policesecond mediumsize'>
+  <p class='policemain'>".$const['FTP']['WELCOME']."</p>
+  <p>".$const['FTP']['ACCESS_REPO']."</p>
+  <i>".$const['FTP']['CURRENTLY_IN']." $path</i>
+  <br><br>";
   $s=sizeof($a);
   echo "<div class='row'><div class='col-sm-6' style='background-color:lightgray'><b>".$const['FTP']['MY_REPO']."</b><div class='raw'><a class='textblue policesecond minisize' href='..'>".$const['FTP']['BACK']."</a></div>";
   for($i=2;$i<$s;$i++){

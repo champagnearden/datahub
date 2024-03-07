@@ -1,6 +1,6 @@
 <?php
 headd("");
-$ips=json_decode(file_get_contents("banned_ip.json"),true);
+$ips=json_decode(file_get_contents("/banned_ip.json"),true);
 $ips=($ips == null)? array() : $ips;
 foreach($ips as $ip){
 	if ($ip['ip'] == $_SERVER['REMOTE_ADDR']){
@@ -19,7 +19,7 @@ $const = (new Consts()) -> get_lang();
 class Consts {
 	public $consts;
 	function __construct() {
-		$this -> consts = json_decode(file_get_contents("const.json"), true);
+		$this -> consts = json_decode(file_get_contents("/const.json"), true);
 	}
 	public function get() {
 		return $this -> consts;
@@ -200,7 +200,7 @@ function session_verif($salaries,$second=false){
 	} else {
 		isset($_SESSION['tentative']) ? $_SESSION['tentative']++ : $_SESSION['tentative']=1;
 		if ($_SESSION['tentative']>=3){
-			$ips=json_decode(file_get_contents("banned_ip.json"), true);
+			$ips=json_decode(file_get_contents("/banned_ip.json"), true);
 			$ips=($ips == null)? array() : $ips;
 			$banned=0;
 			foreach($ips as $ip){
