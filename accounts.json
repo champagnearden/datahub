@@ -12,10 +12,9 @@
             "Communication",
             "Contrats RH",
             "Paies RH",
-            "Contrats Partenaires",
             "Avant-vente",
             "Service technique",
-            "sudo"
+            "ALONE"
         ]
     },
     {
@@ -77,7 +76,7 @@
         "username": "jbeck",
         "nom": "beck",
         "prenom": "jean-baptiste",
-        "email": "jean-batiste.beck@sardines-and-cie.sar",
+        "email": "jean-baptiste.beck@sardines-and-cie.sar",
         "motdepasse": "$2y$10$.tsSoH/mUbgcF5E6DLpkWOIX2zI0NOXu0525PoJvfrfO80sm.5qzm",
         "role": "utilisateur",
         "date_creation": "2022-01-01",

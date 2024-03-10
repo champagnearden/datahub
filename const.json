@@ -101,7 +101,8 @@
             "CREATED_ON": "Créé le",
             "OK": "OK",
             "GROUPS": "Groupes",
-            "REMOVE": "Supprimer"
+            "REMOVE": "Supprimer",
+            "NEVER": "Jamais"
         },
         "FTP": {
             "FILE_FAILED": "Impossible de créer le fichier, le nom est invalide !",
@@ -227,7 +228,8 @@
             "CREATED_ON": "Created on",
             "OK": "OK",
             "GROUPS": "Groups",
-            "REMOVE": "Delete"
+            "REMOVE": "Delete",
+            "NEVER": "Never"
         },
         "FTP": {
             "FILE_FAILED": "Unable to create file, name is invalid !",

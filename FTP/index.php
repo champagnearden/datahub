@@ -135,6 +135,21 @@
     } else {
       $sub = "<sub><small>(".$dir['owner'].")</small></sub>";
     }
+    switch ($dir['visibility']) {
+      case 'me':
+        $vis = "<pre class='inline'  title='".$const['FTP']['WHO']."\n".$const['FTP']['ME']."'>-</pre>";
+        break;
+      case 'all':
+        $vis = "<pre class='inline'  title='".$const['FTP']['WHO']."\n".$const['FTP']['ALL']."'>+</pre>";
+        break;
+      default:
+        $vis = "<pre class='inline'  title='".$const['FTP']['WHO']."\n".$const['FTP']['GROUPS'].":\n";
+        foreach ($dir['visibility'] as $v) {
+          $vis .= "  -$v\n";
+        }
+        $vis .= "'>#</pre>";
+        break;
+    }
     $condition = $const['FTP']['CONFIRM_FOLDER'].$dir['nom'];
     echo "
     <div class'raw'>
@@ -142,7 +157,7 @@
         <input type='hidden' name='delDir' value='".$dir['id']."'>
         <a class='btn bgmaincolor text-white btn-sm' onclick=\"confirmDelete('$condition', 'delfolder_".$dir['id']."');\">-</a>
       </form>
-      &emsp;
+      $vis
       <form action='' method='post' id='form_goto_".$dir['id']."' class='inline'>
         <input type='hidden' name='goto' value='".$dir['id']."'>
         <a class='textblue policesecond minisize' onclick='document.getElementById(\"form_goto_".$dir['id']."\").submit()' style='cursor: pointer;'>".$dir['nom']."</a>
@@ -158,6 +173,21 @@
     } else {
       $sub = "<sub><small>(".$file['owner'].")</small></sub>";
     }
+    switch ($file['visibility']) {
+      case 'me':
+        $vis = "<pre class='inline' title='".$const['FTP']['WHO']."\n".$const['FTP']['ME']."'>-</pre>";
+        break;
+      case 'all':
+        $vis = "<pre class='inline' title='".$const['FTP']['WHO']."\n".$const['FTP']['ALL']."'>+</pre>";
+        break;
+      default:
+        $vis = "<pre class='inline' title='".$const['FTP']['WHO']."\n".$const['FTP']['GROUPS'].":\n";
+        foreach ($file['visibility'] as $v) {
+          $vis .= "  -$v\n";
+        }
+        $vis .= "'>#</pre>";
+        break;
+    }
     $condition = $const['FTP']['CONFIRM_FILE'].$file['nom'];
     echo "
     <div class='raw'>
@@ -165,7 +195,7 @@
         <input type='hidden' name='delFic' value='".$file['id']."'>
         <a class='btn bgmaincolor text-white btn-sm' onclick=\"confirmDelete('$condition', 'delfile_".$file['id']."');\">-</a>
       </form>
-      &emsp;
+      $vis
       <a class='textblue policesecond minisize' href='./".$file['nom']."' download='".$file['nom']."'>".$file['nom']."</a> 
       $sub
     </div>";

@@ -48,7 +48,10 @@ if ($_SESSION['role'] != $const["roles"]["USER"]){
     HTML;
 }
 
-if ( $_SESSION['role'] == $const["roles"]["ADMIN"] ) {
+if ( 
+    $_SESSION['role'] == $const["roles"]["ADMIN"] ||
+    $_SESSION['role'] == $const['roles']['MODO']
+) {
     echo <<< HTML
     <script>
         function display(self) {
@@ -143,8 +146,12 @@ if ( $_SESSION['role'] == $const["roles"]["ADMIN"] ) {
                     <label for="role" class="form-label text-white">'.$const["GESTION"]["ROLE"].'</label>
                     <select class="form-select form-select-lg textblue" id="role" name="role" required>
     ';
-    foreach ($const["roles"] as $key => $value) {
-        echo "<option value='$value'>".$const['GESTION']["ROLES"][$key]."</option>";
+    if ( $_SESSION['role'] == $const["roles"]["ADMIN"] ) {
+        foreach ($const["roles"] as $key => $value) {
+            echo "<option value='$value'>".$const['GESTION']["ROLES"][$key]."</option>";
+        }
+    } else if ($_SESSION['role'] == $const['roles']['MODO']){
+        echo "<option value='".$const['roles']['USER']."'>".$const['GESTION']["ROLES"]["USER"]."</option>";
     }
     echo <<< HTML
                     </select>
@@ -359,7 +366,7 @@ foreach ($const["roles"] as $name => $role){
 echo '
                 </select>
                 <br>
-                <button type="submit" class="btn bg-white textblue" id="seek">v'.$const["GESTION"]["SEARCH"].'</button>
+                <button type="submit" class="btn bg-white textblue" id="seek">'.$const["GESTION"]["SEARCH"].'</button>
 ';
 echo <<< HTML
             </form>
@@ -409,19 +416,16 @@ foreach ($salaries as $salarie) {
         $_SESSION['role'] == $const["roles"]["ADMIN"] ||
         $_SESSION['role'] == $const["roles"]["MODO"] &&
         (
-            $salarie["role"] == $const["roles"]["ADMIN"] ||
-            $salarie["role"] == $const["roles"]["MODO"] &&
-            $salarie["username"] != $_SESSION['username']
-        ) ||
-        $_SESSION['role'] == $const["roles"]["USER"] && 
-        $salarie ["username"] == $_SESSION['username']
+            $salarie["role"] == $const["roles"]["USER"]
+        )
     ) {
         array_push($usernames, $salarie["username"]);
         echo $salarie["date_modif"];
     } else {
         echo "*****";
     }
-    echo '</td>
+    echo '
+        </td>
         <td>'.$const["GESTION"]["ROLES"][array_search($salarie["role"], $const["roles"])].'</td>
         <td>'.implode(" | ", $salarie["groupe"]).'</td>
         ';
@@ -433,19 +437,24 @@ foreach ($salaries as $salarie) {
             $salarie["role"] == $const["roles"]["USER"]
         )
     ) {
-        echo '<td class="text-center align-middle">
+        echo '
+        <td class="text-center align-middle">
             <form action="del_user.php" method="post">
                 <input type="hidden" name="username" value='.$salarie["username"].'></input>
                 <input type="submit" class="btn btn-sm btn-danger text-white material-icons" value="close">
-            </form></td>';
-    }else if ( 
-        $_SESSION["username"] == $salarie["username"] ||
-        $_SESSION["role"] == $const["roles"]["MODO"] &&
-        $salarie["role"] != $const["roles"]["USER"]
-    ) {
-        echo '<td class="text-center align-middle"><input type="submit" class="btn btn-sm btn-danger text-white material-icons" value="close"></td>';
+            </form>
+        </td>
+        ';
+    }else {
+        echo '
+        <td class="text-center align-middle">
+            <input type="submit" class="btn btn-sm btn-danger text-white material-icons" value="close" disabled>
+        </td>
+        ';
     }
-    echo '</tr>';
+    echo '
+    </tr>
+    ';
 }
 //Entête
 echo <<< HTML
@@ -466,7 +475,7 @@ if (
     $_SESSION['role'] != $const["roles"]["USER"]
 ) {
     echo <<< HTML
-        <th scope="col">Modifié le</th>
+                    <th scope="col">Modifié le</th>
     HTML;
 }
 echo '
@@ -500,9 +509,10 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
                                 <select class="form-control form-select form-select-lg search-multiple" name="newgrp[]" multiple>
     HTML;
     foreach(json_decode(file_get_contents("./groupes.json"), true) as $g){
-        echo "<option value='$g'>$g</option>";
+        echo "
+                                    <option value='$g'>$g</option>
+        ";
     }
-    echo "";
     echo '
                                 </select>
                                 <input type="hidden" name="usernames" value="'.$unames.'">
@@ -513,18 +523,10 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
                         </form>
     ';
 }
-echo '</th>';
-if (
-    $_SESSION["role"] == $const["roles"]["ADMIN"] || 
-    $_SESSION["role"] == $const["roles"]["MODO"] && 
-    (
-        $salarie["role"] == $const["roles"]["USER"]
-    )
-) {
-    echo '
+echo '
+                    </th>
                     <th scope="col">'.$const["GESTION"]["REMOVE"].'</th>
-    ';
-}
+';
 echo <<< HTML
                 </tr>
             </thead>

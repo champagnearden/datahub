@@ -2,7 +2,7 @@
 include "functions.php";
 session_start();
 $salaries = json_decode(file_get_contents("accounts.json"), true);
-$_POST["email"] = $_POST["email"]."@etud.univ-ubs.fr";
+$_POST["email"] = $_POST["email"].$const['conf']['MAIL_DOMAIN'];
 $_POST["motdepasse"] = hash_password($_POST["motdepasse"]);
 $_POST["date_creation"] = date(DATE_RFC2822);
 $_POST["date_modif"] = "Jamais";
