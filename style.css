@@ -578,3 +578,7 @@ footer {
 .search-multiple, .searchOk{
   height: 3rem;
 }
+
+.inline {
+  display: inline;
+}

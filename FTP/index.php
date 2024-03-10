@@ -1,30 +1,38 @@
 <?php
-  $path=substr(getcwd(), strlen($_SERVER['DOCUMENT_ROOT'])+1);
-  str_replace("\\", "/", $path);
-  $p=count(explode("/", $path));
-  $prefix="";
-  for ($i=0; $i < $p; $i++) {
-    $prefix.="../";
-  }
-  
-  include "$prefix/functions.php";
+  include "../functions.php";
+
   if(!isset($_SESSION['pre_nom'])){
     header("Location: /login.php");
     die();
   }
   headd("FTP");
-  
-  if(!isset($_SESSION['username'])){
-    header("Location: $prefix/login.php");
-    die();
-  }
   nav("fichiers.php");
-  $salarie=json_decode(file_get_contents("$prefix/accounts.json"), true);
-  $dossiers=json_decode(file_get_contents("$prefix/dossiers.json"), true);
+  $salarie = json_decode(file_get_contents("../accounts.json"), true);
+  $dossiers = json_decode(file_get_contents("../dossiers.json"), true);
   $dossiers = ($dossiers == null) ? array() : $dossiers ;
-  $fichiers=json_decode(file_get_contents("$prefix/fichiers.json"), true);
+  $fichiers=json_decode(file_get_contents("../fichiers.json"), true);
   $fichiers = ($fichiers == null) ? array() : $fichiers ;
-
+  if (!isset($_SESSION['path'])) {
+    $_SESSION['path'] = "";
+  }
+  $path = "";
+  if (isset($_POST['goto'])) {
+    if ( $_POST['goto'] == ".." ) {
+      $ex = explode("/", $_SESSION['path']);
+      array_pop($ex);
+      $path = join("/", $ex);
+    } else {
+      foreach($dossiers as $d){
+        if($d['id']==$_POST['goto']){
+          $path = $d['path']."/".$d["nom"];
+          break;
+        }
+      }
+    }
+  } else {
+    $path = $_SESSION["path"];
+  }
+  $_SESSION['path'] = $path;
   if(isset($_POST['AddDoss'])){
     $str=$_POST['AddDoss'];
     array_push($dossiers, array(
@@ -34,90 +42,88 @@
       "visibility" => $_POST['role'], 
       "owner" => $_SESSION['username'], 
     ));
-      file_put_contents("$prefix/dossiers.json", json_encode($dossiers));
+      file_put_contents("../dossiers.json", json_encode($dossiers));
     unset($_POST['AddDoss']);
   }
-  if(isset($_FILES['fic']['tmp_name']) && $_FILES['fic']['name']!="" && $_FILES['fic']['error']==0){
-    $str=str_replace('%22','',$_FILES['fic']['name']);
-    $str=str_replace("'","",$str);
-    $str="file:$str";
-    move_uploaded_file($_FILES['fic']['tmp_name'],getcwd()."/$str");
-    foreach($salarie as $s){
-        if($s['username'] == $_SESSION['username']){
-          $grps=$s['groupe'];
-          break;
-        }
-      }
-      array_push($fichiers, array(
-        "id" => uniqid(),
-        "nom" => $str, 
-        "path" => $path,
-        "visibility" => $_POST['role'], 
-        "owner" => $_SESSION['username'], 
-        "groupes" => $grps
-      ));
-      file_put_contents("$prefix/fichiers.json", json_encode($fichiers));
+  if (
+    isset($_FILES['fic']['tmp_name']) && 
+    $_FILES['fic']['name'] != "" && 
+    $_FILES['fic']['error'] == 0
+  ){
+    $str = str_replace('%22','',$_FILES['fic']['name']);
+    $str = str_replace("'","",$str);
+    move_uploaded_file($_FILES['fic']['tmp_name'],"./files/$str");
+    array_push($fichiers, array(
+      "id" => uniqid(),
+      "nom" => $str, 
+      "path" => $path,
+      "visibility" => $_POST['role'], 
+      "owner" => $_SESSION['username']
+    ));
+    file_put_contents("../fichiers.json", json_encode($fichiers));
     unset($_FILES['fic']);
   }
-  $size=sizeof($fichiers);
-  //J'utilise un GET parceque je demande la confirmation, impossible avec un form...
-  if(isset($_GET['DelFic'])){
+  if(isset($_POST['delFic'])){
+    $size=sizeof($fichiers);
     for($i=0;$i<$size;$i++){
-      if($fichiers[$i]['nom']==$_GET['DelFic']){
-        array_splice($fichiers, $i,1);
+      if($fichiers[$i]['id']==$_POST['delFic']){
+        unset($fichiers[$i]);
       }
     }
-    file_put_contents($prefix."fichiers.json", json_encode($fichiers));
-    header("Location: ./");
+    file_put_contents("../fichiers.json", json_encode($fichiers));
   }
-  if(isset($_GET['DelDoss'])){
+  if(isset($_POST['delDir'])){
     $sd=sizeof($dossiers);
     for($i=0;$i<$sd;$i++){
-      if($dossiers[$i]['id']==$_GET['DelDoss']){
+      if($dossiers[$i]['id']==$_POST['delDir']){
         unset($dossiers[$i]);
         break;
       }
     }
-    file_put_contents("$prefix/dossiers.json", json_encode($dossiers));
+    file_put_contents("../dossiers.json", json_encode($dossiers));
   }
   echo "
   <div class='container textblue policesecond mediumsize'>
     <p class='policemain'>".$const['FTP']['WELCOME']."</p>
     <p>".$const['FTP']['ACCESS_REPO']."</p>
-    <i>".$const['FTP']['CURRENTLY_IN']." $path/</i>
-    <br><br>
+    <i>".$const['FTP']['CURRENTLY_IN']." </i><pre class='inline'>$path/</pre>
+    <br>
+  ";
+  if ( $path != "") {
+    echo "
+    <form action='' method='post' class='inline' id='form_goto_back'>
+      <input type='hidden' name='goto' value='..'>
+      <a class='textblue policesecond minisize' onclick='document.getElementById(\"form_goto_back\").submit()' style='cursor: pointer;'>".$const['FTP']['BACK']."</a>
+    </form>
+    ";
+  }
+  echo "
+  <br>
     <div class='row'>
       <div class='col-sm-6' style='background-color:lightgray'>
         <b>".$const['FTP']['MY_REPO']."</b>
-        <div class='raw'>
-          <a class='textblue policesecond minisize' href='..'>".$const['FTP']['BACK']."</a>
-        </div>
   ";
+  
+  $current_user = array_search($_SESSION["username"], array_column($salarie, 'username'));
   foreach ($dossiers as $d) {
-    switch ($d['visibility']) {
-      case 'me':
-        if ($d['owner']==$_SESSION['username']){
-          dispDir($d);
-        }
-        break;
-      case 'grp':
-        // Given the directory is showed to the groups of owner
-        $current_user = array_search($_SESSION["username"], array_column($salarie, 'username'));
-        foreach($salarie as $salar){
-          if($salar['username'] == $d['owner']){
-            // We found the owner of the directory, compare its groups with the user ones
-            // get the current user groups
-            $common = array_intersect($salar['groupe'], $salarie[$current_user]['groupe']);
-            if(sizeof($common) > 0){
-              dispDir($d);
-            }
-            break;
+    if ($d['path'] == $path) {
+      switch ($d['visibility']) {
+        case 'me':
+          if ($d['owner']==$_SESSION['username']){
+            dispDir($d);
           }
-        }
-        break;
-      case 'all':
-        dispDir($d);
-        break;
+          break;
+        case 'grp':
+          $owner = array_search($d['owner'], array_column($salarie, 'username'));
+          $common = array_intersect($salarie[$owner]['groupe'], $salarie[$current_user]['groupe']);
+          if(sizeof($common) > 0){
+            dispDir($d);
+          }
+          break;
+        case 'all':
+          dispDir($d);
+          break;
+      }
     }
   }
   function dispDir($dir){
@@ -127,74 +133,80 @@
     } else {
       $sub = "<sub><small>(".$dir['owner'].")</small></sub>";
     }
+    $condition = $const['FTP']['CONFIRM_FOLDER'].$dir['nom'];
     echo "
     <div class'raw'>
-      <form action='' method='post' id='form_goto'>
-        <a class='btn bgmaincolor text-white btn-sm' onclick='if(confirm(\"".$const['FTP']['CONFIRM_FOLDER'].$dir['nom']." ?\")){window.location.href=\"./?DelDoss=".$dir['id']."\"}'>-</a>
-        &emsp;
-        <input type='hidden' class='textblue policesecond minisize' name='id' value='".$dir['id']."'>
-        <a class='textblue policesecond minisize' onclick='document.getElementById(\"form_goto\").submit()' style='cursor: pointer;'>".$dir['nom']."</a>
+      <form action='' method='post' id='delfolder_".$dir['id']."' class='inline'>
+        <input type='hidden' name='delDir' value='".$dir['id']."'>
+        <a class='btn bgmaincolor text-white btn-sm' onclick=\"confirmDelete('$condition', 'delfolder_".$dir['id']."');\">-</a>
+      </form>
+      &emsp;
+      <form action='' method='post' id='form_goto_".$dir['id']."' class='inline'>
+        <input type='hidden' name='goto' value='".$dir['id']."'>
+        <a class='textblue policesecond minisize' onclick='document.getElementById(\"form_goto_".$dir['id']."\").submit()' style='cursor: pointer;'>".$dir['nom']."</a>
         $sub
       </form>
     </div>";
   }
+
+  function dispFile($file) {
+    global $const;
+    if($_SESSION['username']==$file['owner']) {
+      $sub = "<sub><small>(".$const['FTP']['ME'].")</small></sub>";
+    } else {
+      $sub = "<sub><small>(".$file['owner'].")</small></sub>";
+    }
+    $condition = $const['FTP']['CONFIRM_FILE'].$file['nom'];
+    echo "
+    <div class='raw'>
+      <form action='' method='post' id='delfile' class='inline'>
+        <input type='hidden' name='delFic' value='".$file['id']."'>
+        <a class='btn bgmaincolor text-white btn-sm' onclick=\"confirmDelete('$condition', 'delfile');\">-</a>
+      </form>
+      &emsp;
+      <a class='textblue policesecond minisize' href='./".$file['nom']."' download='".$file['nom']."'>".$file['nom']."</a> 
+      $sub
+    </div>";
+  }
+
   echo "
     <br>
   </div>
   <div class='col-sm-6' style='background-color:lightgray'>
     <b>".$const['FTP']['MY_FILES']."</b>
     <br>
-    ";
-  for($i=0;$i<$s;$i++){
-    if ($b[$i+1][0] == "-" && $a[$i]!="index.php"){
-      foreach ($fichiers as $f) {
-        $pass=0;
-        if($f['nom']==$a[$i]){
-          switch ($f['visibility']) {
-            case 'me':
-              if ($f['owner']==$_SESSION['username']){
-                $pass=1;
-              }
-              break;
-            case 'grp':
-              foreach($salarie as $salar){
-                if($salar['username'] == $_SESSION['username']){
-                  $grps=explode(" | ", $salar['groupe']);
-                  $sg=sizeof($grps);
-                  break;
-                }
-              }
-              for($j=1;$j<$sg;$j++){
-                if(str_contains($grps[$j],$f['groupes'])){
-                  $pass=1;
-                  break;
-                }
-              }
-              break;
-            case 'all':
-              $pass=1;
-              break;
+  ";
+  foreach ($fichiers as $f) {
+    if ($f ['path'] == $path) {
+      switch ($f['visibility']) {
+        case 'me':
+          if ($f['owner']==$_SESSION['username']) {
+            dispFile($f);
           }
-        }
-        if($_SESSION['username']==$f['owner']){
-          $sub="<sub><small>(".$const['FTP']['ME'].")</small></sub>";
-        }else{
-          $sub="<sub><small>(".$f['owner'].")</small></sub>";
-        }
-        if (boolval($pass)) {
           break;
-        }
-      }
-      if(boolval($pass)){
-        $f=str_replace("file:", "", $a[$i]);
-        echo "<div class='raw'>
-          <button class='btn bgmaincolor text-white btn-sm' onclick='if(confirm(\"".$const['FTP']['CONFIRM_FILE'].$f." ?\")){window.location.href=\"./?DelFic=".$a[$i]."\"}'>-</button>&emsp;
-          <a class='textblue policesecond minisize' href='./".$a[$i]."' download='$f'>".ucwords(strtolower($f))."</a> $sub</div>";
+        case 'grp':
+          $owner = array_search($f['owner'], array_column($salarie, 'username'));
+          $common = array_intersect($salarie[$owner]['groupe'], $salarie[$current_user]['groupe']);
+          if(sizeof($common) > 0){
+            dispFile($f);
+          }
+          break;
+        case 'all':
+          dispFile($f);
+          break;
       }
     }
   }
-  echo "</div>";
 ?>
+    <br>
+    </div>
+    <script>
+      function confirmDelete(condition, formId) {
+        if (confirm(condition + ' ?')) {
+          document.getElementById(formId).submit();
+        }
+      }
+    </script>
 </div><br>
 <hr class='container textblue'><br>
 <div class='mx-auto d-block textblue '>
