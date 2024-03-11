@@ -36,8 +36,12 @@
   if(isset($_POST['AddDoss'])){
     $str=$_POST['AddDoss'];
     $visi = $_POST['role'];
-    if ($visi == 'grp') {
+    if (
+      $visi == 'grp' ||
+      $visi == 'users' 
+    ) {
       $visi = $_POST['groups'];
+      array_unshift($visi, $_POST['role']);
     }
     array_push($dossiers, array(
       "id" => uniqid(),
@@ -58,8 +62,12 @@
     $str = str_replace("'","",$str);
     move_uploaded_file($_FILES['fic']['tmp_name'],"./files/$str");
     $visi = $_POST['role'];
-    if ($visi == 'grp') {
+    if (
+      $visi == 'grp' ||
+      $visi == 'users' 
+    ) {
       $visi = $_POST['groups'];
+      array_unshift($visi, $_POST['role']);
     }
     array_push($fichiers, array(
       "id" => uniqid(),
@@ -85,8 +93,10 @@
   <div class='container textblue policesecond mediumsize'>
     <p class='policemain'>".$const['FTP']['WELCOME']."</p>
     <p>".$const['FTP']['ACCESS_REPO']."</p>
-    <i>".$const['FTP']['CURRENTLY_IN']." </i><pre class='inline'>$path/</pre>
+    <i>".$const['FTP']['CURRENTLY_IN']." </i>
+    <pre class='inline'>$path/</pre>
     <br>
+    <a class='btn btn-sm bgmaincolor text-white material-icons' href='./'>refresh</a>
   ";
   if ( $path != "") {
     echo "
@@ -120,7 +130,11 @@
           dispDir($d);
           break;
         default:
-          $common = array_intersect($d['visibility'], $salarie[$current_user]['groupe']);
+          if ($d['visibility'][0] == "grp") {
+            $common = array_intersect($d['visibility'], $salarie[$current_user]['groupe']);
+          } else if ($d['visibility'][0] == "users" ) {
+            $common = array_intersect(array_slice($d['visibility'], 1), array($_SESSION['username']));
+          }
           if(sizeof($common) > 0){
             dispDir($d);
           }
@@ -135,27 +149,34 @@
     } else {
       $sub = "<sub><small>(".$dir['owner'].")</small></sub>";
     }
+    $vis="<pre class='inline'  title='".$const['FTP']['WHO']."\n";
     switch ($dir['visibility']) {
       case 'me':
-        $vis = "<pre class='inline'  title='".$const['FTP']['WHO']."\n".$const['FTP']['ME']."'>-</pre>";
+        $vis .= $const['FTP']['ME']."'>-</pre>";
         break;
       case 'all':
-        $vis = "<pre class='inline'  title='".$const['FTP']['WHO']."\n".$const['FTP']['ALL']."'>+</pre>";
+        $vis .= $const['FTP']['ALL']."'>+</pre>";
         break;
       default:
-        $vis = "<pre class='inline'  title='".$const['FTP']['WHO']."\n".$const['FTP']['GROUPS'].":\n";
-        foreach ($dir['visibility'] as $v) {
-          $vis .= "  -$v\n";
+        if ($dir['visibility'][0] == "grp") {
+          $vis .= $const['FTP']['GROUPS'];
+        } else if ($dir['visibility'][0] == "users") {
+          $vis .= $const['FTP']['USERS'];
+        }
+        $vis .= ":";
+        for ($i=1; $i < sizeof($dir['visibility']); $i++) {
+          $vis .= "\n  -".$dir['visibility'][$i];
         }
         $vis .= "'>#</pre>";
         break;
     }
-    $condition = $const['FTP']['CONFIRM_FOLDER'].$dir['nom'];
+
+    $condition = $const['FTP']['CONFIRM_FOLDER'];
     echo "
     <div class'raw'>
       <form action='' method='post' id='delfolder_".$dir['id']."' class='inline'>
         <input type='hidden' name='delDir' value='".$dir['id']."'>
-        <a class='btn bgmaincolor text-white btn-sm' onclick=\"confirmDelete('$condition', 'delfolder_".$dir['id']."');\">-</a>
+        <a class='btn bgmaincolor text-white btn-sm material-icons' onclick=\"confirmDelete('$condition', 'delfolder_".$dir['id']."');\">close</a>
       </form>
       $vis
       <form action='' method='post' id='form_goto_".$dir['id']."' class='inline'>
@@ -173,6 +194,7 @@
     } else {
       $sub = "<sub><small>(".$file['owner'].")</small></sub>";
     }
+    $vis="<pre class='inline'  title='".$const['FTP']['WHO']."\n";
     switch ($file['visibility']) {
       case 'me':
         $vis = "<pre class='inline' title='".$const['FTP']['WHO']."\n".$const['FTP']['ME']."'>-</pre>";
@@ -181,22 +203,28 @@
         $vis = "<pre class='inline' title='".$const['FTP']['WHO']."\n".$const['FTP']['ALL']."'>+</pre>";
         break;
       default:
-        $vis = "<pre class='inline' title='".$const['FTP']['WHO']."\n".$const['FTP']['GROUPS'].":\n";
-        foreach ($file['visibility'] as $v) {
-          $vis .= "  -$v\n";
+        if ( $file['visibility'][0] == "grp" ) {
+          $vis .= $const['FTP']['GROUPS'];
+        } else if ( $file['visibility'][0] == "users" ) {
+          $vis .= $const['FTP']['USERS'];
+        }
+        $vis .= ":";
+        for ($i=1; $i < sizeof($file['visibility']); $i++) {
+          $vis .= "\n  -".$file['visibility'][$i];
         }
         $vis .= "'>#</pre>";
         break;
     }
-    $condition = $const['FTP']['CONFIRM_FILE'].$file['nom'];
+    $condition = $const['FTP']['CONFIRM_FILE'];
+    $name = $file['nom'];
     echo "
     <div class='raw'>
       <form action='' method='post' id='delfile_".$file['id']."' class='inline'>
         <input type='hidden' name='delFic' value='".$file['id']."'>
-        <a class='btn bgmaincolor text-white btn-sm' onclick=\"confirmDelete('$condition', 'delfile_".$file['id']."');\">-</a>
+        <a class='btn bgmaincolor text-white btn-sm material-icons' onclick='confirmDelete(\"$condition\", \"delfile_".$file['id']."\");'>close</a>
       </form>
       $vis
-      <a class='textblue policesecond minisize' href='./".$file['nom']."' download='".$file['nom']."'>".$file['nom']."</a> 
+      <a class='textblue policesecond minisize' href='./".$name."' download='".$name."'>".$file['nom']."</a> 
       $sub
     </div>";
   }
@@ -224,7 +252,11 @@
           dispFile($f);
           break;
         default:
-          $common = array_intersect($f['visibility'], $salarie[$current_user]['groupe']);
+          if ($f['visibility'][0] == "grp") {
+            $common = array_intersect($f['visibility'], $salarie[$current_user]['groupe']);
+          } else if ($f['visibility'][0] == "users" ) {
+            $common = array_intersect(array_slice($f['visibility'], 1), array($_SESSION['username']));
+          }
           if(sizeof($common) > 0){
             dispFile($f);
           }
@@ -237,7 +269,7 @@
     </div>
     <script>
       function confirmDelete(condition, formId) {
-        if (confirm(condition + ' ?')) {
+        if (confirm(condition)) {
           document.getElementById(formId).submit();
         }
       }
@@ -256,6 +288,7 @@
           <p>&emsp;<?php echo $const['FTP']['WHO']; ?></p>
           <select id="role_dir" name="role" onchange="revealGroups(this, 'dir')">
             <option value="me"><?php echo $const['FTP']['ONLY_ME']; ?></option>
+            <option value="users"><?php echo $const['FTP']['USERS']; ?></option>
             <option value="grp"><?php echo $const['FTP']['GROUPS']; ?></option>
             <option value="all"><?php echo $const['FTP']['ALL']; ?></option>
           </select>
@@ -273,6 +306,7 @@
         <p>&emsp;<?php echo $const['FTP']['WHO']; ?></p>
         <select id="role_fic" name="role" onchange="revealGroups(this, 'fic')">
           <option value="me"><?php echo $const['FTP']['ONLY_ME']; ?></option>
+          <option value="users"><?php echo $const['FTP']['USERS']; ?></option>
           <option value="grp"><?php echo $const['FTP']['GROUPS']; ?></option>
           <option value="all"><?php echo $const['FTP']['ALL']; ?></option>
         </select>
@@ -283,15 +317,19 @@
       </form>
       <script>
         function revealGroups(self, id) {
+          const selects = document.getElementById('groups_' + id);
+          if (selects) {
+            selects.remove();
+          }
+          const span = document.getElementById('groups_' + id + '_span');
+          const select = document.createElement('select');
+          const width =  self.getBoundingClientRect()['width'] + 'px';
+          span.style.width = width ;
+          select.style.width = width;
+          select.multiple = true;
+          select.name = 'groups[]';
+          select.id = 'groups_' + id;
           if (self.value == 'grp') {
-            const span = document.getElementById('groups_' + id + '_span');
-            const select = document.createElement('select');
-            const width =  self.getBoundingClientRect()['width'] + 'px'
-            span.style.width = width ;
-            select.style.width = width;
-            select.multiple = true;
-            select.name = 'groups[]';
-            select.id = 'groups_' + id;
             <?php
               $current_user = array_search($_SESSION["username"], array_column($salarie, 'username'));
               foreach ($salarie[$current_user]['groupe'] as $g) {
@@ -299,11 +337,13 @@
               }
             ?>
             span.appendChild(select);
-          } else {
-            const select = document.getElementById('groups_' + id)
-            if (select) {
-              select.remove();
-            }
+          } else if (self.value == 'users') {
+            <?php
+              foreach (array_column($salarie, 'username') as $g) {
+                echo "select.options.add(new Option('$g', '$g', false, true));";
+              }
+            ?>
+            span.appendChild(select);
           }
         } 
       </script>
