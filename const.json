@@ -42,14 +42,14 @@
             "CONFIRM_ADD": "Confirmer l'ajout",
             "CONFIRM_SENT": "Le mail à ben été envoyé",
             "SENT_ERROR": "Le mail n'a pas été envoyé: ",
-            "ASK_CREATE": "Demander la création d'un compte salarié",
+            "ASK_CREATE": "Modifier mes informations",
             "PRENOM_PLACEHOLDER": "Entrez votre prénom",
             "PRENOM": "Prénom",
             "NOM_PLACEHOLDER": "Entrez votre nom",
             "NOM": "Nom",
             "EMAIL_PLACEHOLDER": "Entrez votre adresse mail",
             "EMAIL": "Email",
-            "ADD": "Ajouter"
+            "ADD": "Modifier"
         },
         "LOGOUT": {
             "LOGOUT": "Déconnexion",
@@ -170,14 +170,14 @@
             "CONFIRM_ADD": "Confirm add",
             "CONFIRM_SENT": "Successfully sent email",
             "SENT_ERROR": "Email haven't been sent: ",
-            "ASK_CREATE": "Sign up",
+            "ASK_CREATE": "Modify my infos",
             "PRENOM_PLACEHOLDER": "input your firstname",
             "PRENOM": "Firstname",
             "NOM_PLACEHOLDER": "Input your name",
             "NOM": "Name",
             "EMAIL_PLACEHOLDER": "Input your email address",
             "EMAIL": "Email",
-            "ADD": "Add"
+            "ADD": "Edit"
         },
         "LOGOUT": {
             "LOGOUT": "Logout",
@@ -261,7 +261,7 @@
         "ADMIN": "administrateur"
     },
     "conf": {
-        "MAIL_DOMAIN": "@sardines-and-cie.sar",
+        "MAIL_DOMAIN": "@etud.univ-ubs.fr",
         "MAIL_USERNAME": "sardines.and.cie@gmail.com",
         "MAIL_HOST": "smtp-relay.sendinblue.com",
         "MAIL_PASSWORD": "chJLY02ADd1X8y9n",

@@ -47,6 +47,49 @@ if ($_SESSION['role'] != $const["roles"]["USER"]){
     <br>
     HTML;
 }
+echo '
+    <div class="container textblue policesecond">
+        <b class="mediumsize">
+'.$const['LOGIN']['ASK_CREATE'];
+echo <<< HTML
+        </b>
+    </div>
+    <br>
+    <div class="bgmaincolor container policesecond">
+        <form action="add_user.php" method="post">
+            <div class="row textblue">
+                <div class="col-sm"><br>
+                    <div class="form-floating">
+HTML;
+$current = $salaries[array_search($_SESSION['username'], array_column($salaries, 'username'))];
+echo '
+                        <input type="text" class="form-control" id="prenom" placeholder="'.$const["LOGIN"]["PRENOM_PLACEHOLDER"].'" name="prenom" value="'.$current["prenom"].'" required>
+                        <label for="prenom">'.$const["LOGIN"]["PRENOM"].'</label><br>
+                    </div>
+                </div>
+                    <div class="col-sm"><br>
+                        <div class="form-floating">
+                        <input type="text" class="form-control" id="nom" placeholder="'.$const["LOGIN"]["NOM_PLACEHOLDER"].'" name="nom" value="'.$current["nom"].'" required>
+                        <label for="nom">'.$const["LOGIN"]["NOM"].'</label><br>
+                        </div>
+                    </div>
+                    <div class="col-sm"><br>
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="motdepasse" placeholder="'.$const["LOGIN"]["PASSWORD_PLACEHOLDER"].'" name="motdepasse" required>
+                            <label for="motdepasse">'.$const["LOGIN"]["PASSWORD"].'</label><br>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-floating input-group mb-4 textblue" >
+                    <input type="text" class="form-control" id="email" placeholder="'.$const["LOGIN"]["EMAIL_PLACEHOLDER"].'" name="email" value="'.str_replace($const['conf']['MAIL_DOMAIN'], "", $current["email"]).'" required>
+                    <label for="email">'.$const["LOGIN"]["EMAIL"].'</label><br>
+                    <span class="input-group-text textblue">'.$const["conf"]["MAIL_DOMAIN"].'</span>
+                </div>
+                <button type="submit" class="btn bg-white textblue">'.$const["LOGIN"]["ADD"].'</button><br><br>
+            </div>
+        </form>
+    </div>
+';
 
 if ( 
     $_SESSION['role'] == $const["roles"]["ADMIN"] ||
@@ -401,7 +444,11 @@ switch ($_POST['choix']) {
         });
         break;
 }
-$usernames = array();
+$usernames = array(
+    $const['roles']['ADMIN'] => [], 
+    $const['roles']['MODO'] => [],
+    $const['roles']['USER'] => []
+);
 foreach ($salaries as $salarie) {
     // affichage du tableau
     echo '
@@ -411,7 +458,7 @@ foreach ($salaries as $salarie) {
         <td>'.$salarie["nom"].'</td>
         <td><a href="mailto:"'.$salarie["email"].'">'.$salarie["email"].'</a></td>
         <td>'.$salarie["date_creation"].'</td>
-        <td>';
+    ';
     if ( 
         $_SESSION['role'] == $const["roles"]["ADMIN"] ||
         $_SESSION['role'] == $const["roles"]["MODO"] &&
@@ -419,40 +466,48 @@ foreach ($salaries as $salarie) {
             $salarie["role"] == $const["roles"]["USER"]
         )
     ) {
-        array_push($usernames, $salarie["username"]);
-        echo $salarie["date_modif"];
-    } else {
-        echo "*****";
+        if ($_SESSION['username'] != $salarie['username']) {
+            array_push($usernames[$salarie["role"]], $salarie["username"]);
+        }
+        if ($salarie['role'] != $const['roles']['ADMIN']) {
+            echo "<td>".$salarie["date_modif"]."</td>";
+        } else {
+            echo "<td>****</td>";
+        }
+    } else if ($_SESSION['role'] != $const["roles"]["USER"]) {
+        echo "<td>****</td>";
     }
     echo '
-        </td>
         <td>'.$const["GESTION"]["ROLES"][array_search($salarie["role"], $const["roles"])].'</td>
         <td>'.implode(" | ", $salarie["groupe"]).'</td>
-        ';
+    ';
     if (
-        $_SESSION["username"] != $salarie["username"] &&
-        (
-            $_SESSION["role"] == $const["roles"]["ADMIN"] || 
-            $_SESSION["role"] == $const["roles"]["MODO"] && 
-            $salarie["role"] == $const["roles"]["USER"]
-        )
+        $_SESSION["role"] == $const["roles"]["ADMIN"] || 
+        $_SESSION["role"] == $const["roles"]["MODO"]
     ) {
-        echo '
-        <td class="text-center align-middle">
-            <form action="del_user.php" method="post">
-                <input type="hidden" name="username" value='.$salarie["username"].'></input>
-                <input type="submit" class="btn btn-sm btn-danger text-white material-icons" value="close">
-            </form>
-        </td>
-        ';
-    }else {
-        echo '
-        <td class="text-center align-middle">
-            <input type="submit" class="btn btn-sm btn-danger text-white material-icons" value="close" disabled>
-        </td>
-        ';
+        echo '<td class="text-center align-middle">';
+        if 
+        (
+            $_SESSION["username"] == $salarie["username"] ||
+            $_SESSION['role'] == $const["roles"]["MODO"] &&
+            (
+                $salarie['role'] == $const["roles"]["ADMIN"] ||
+                $salarie['role'] == $const["roles"]["MODO"]
+            )
+        ){
+            echo '<button class="btn btn-sm btn-danger text-white material-icons" disabled>close</button>';
+        } else {
+            echo '
+                <form action="del_user.php" method="post">
+                    <input type="hidden" name="username" value='.$salarie["username"].'></input>
+                    <input type="submit" class="btn btn-sm btn-danger text-white material-icons" value="close">
+                </form>
+            ';
+        }
+        echo '</td>';
     }
     echo '
+
     </tr>
     ';
 }
@@ -468,7 +523,10 @@ echo '
                     <th scope="col">'.$const["LOGIN"]["NOM"].'</th>
                     <th scope="col">'.$const["LOGIN"]["EMAIL"].'</th>
                     <th scope="col">'.$const["GESTION"]["CREATED_ON"].'</th>';
-$unames = implode(",",$usernames);
+$unames = "";
+foreach( $usernames as $role) {
+    $unames .= implode(",", $role);
+}
 if ( 
     $_SESSION['role'] == $const["roles"]["USER"] &&
     in_array($_SESSION['username'], $usernames ) ||
@@ -525,8 +583,15 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
 }
 echo '
                     </th>
-                    <th scope="col">'.$const["GESTION"]["REMOVE"].'</th>
 ';
+if (
+    $_SESSION["role"] == $const["roles"]["ADMIN"] || 
+    $_SESSION["role"] == $const["roles"]["MODO"]
+) {
+    echo '
+                    <th scope="col">'.$const["GESTION"]["REMOVE"].'</th>
+    ';
+}
 echo <<< HTML
                 </tr>
             </thead>

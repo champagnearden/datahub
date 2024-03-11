@@ -106,6 +106,7 @@ if(isset($_POST['motdepasse'])){
     unset($_POST['motdepasse']);
 }
 ?>
+<!--
 <hr class="container textblue"><br>
 <div class="container textblue policesecond">
     <b class="mediumsize"><?php echo $const['LOGIN']['ASK_CREATE']; ?></b></div><br>
@@ -144,7 +145,7 @@ if(isset($_POST['motdepasse'])){
 </div>
 
 <br><br>
-
+-->
 <?php 
 footer();
 ?>
