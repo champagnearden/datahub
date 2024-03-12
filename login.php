@@ -15,7 +15,14 @@ if(isset($_SESSION['pre_nom'])){
 }
 ?>
 
-
+<script>
+        function display(self) {
+            self.type='text';
+        }
+        function hide(self) {
+            self.type='password';
+        }
+    </script>
 <div class='container container-fluid policemain textblue mediumsize text-center'><br>
   <?php echo $const['LOGIN']['HOME']; ?>
   <br> 
@@ -31,7 +38,7 @@ if(isset($_SESSION['pre_nom'])){
         <label for="username"><?php echo $const['LOGIN']['ID']; ?></label><br>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="motdepasse" placeholder="<?php echo $const['LOGIN']['PASSWORD_PLACEHOLDER']; ?>" name="motdepasse" required>
+        <input type="password" class="form-control" id="motdepasse" placeholder="<?php echo $const['LOGIN']['PASSWORD_PLACEHOLDER']; ?>" name="motdepasse" onmouseenter="display(this)" onmouseleave="hide(this)" required>
         <label for="motdepasse"><?php echo $const['LOGIN']['PASSWORD']; ?></label><br>
       </div>
       <button type="submit" class="btn bg-white textblue"><?php echo $const['LOGIN']['LOGIN']; ?></button>

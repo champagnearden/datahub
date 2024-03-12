@@ -54,6 +54,14 @@ echo '
 echo <<< HTML
         </b>
     </div>
+    <script>
+        function display(self) {
+            self.type='text';
+        }
+        function hide(self) {
+            self.type='password';
+        }
+    </script>
     <br>
     <div class="bgmaincolor container policesecond">
         <form action="add_user.php" method="post">
@@ -75,7 +83,7 @@ echo '
                     </div>
                     <div class="col-sm"><br>
                         <div class="form-floating">
-                            <input type="password" class="form-control" id="motdepasse" placeholder="'.$const["LOGIN"]["PASSWORD_PLACEHOLDER"].'" name="motdepasse" required>
+                            <input type="password" class="form-control" id="motdepasse" placeholder="'.$const["LOGIN"]["PASSWORD_PLACEHOLDER"].'" name="motdepasse" onmouseenter="display(this)" onmouseleave="hide(this)" required>
                             <label for="motdepasse">'.$const["LOGIN"]["PASSWORD"].'</label><br>
                         </div>
                     </div>
@@ -96,14 +104,6 @@ if (
     $_SESSION['role'] == $const['roles']['MODO']
 ) {
     echo <<< HTML
-    <script>
-        function display(self) {
-            self.type='text';
-        }
-        function hide(self) {
-            self.type='password';
-        }
-    </script>
     <div class="container textblue policesecond">
         <b class="mediumsize">
     HTML;
