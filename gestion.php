@@ -8,34 +8,55 @@ if (!isset($_SESSION['pre_nom'])){
     die();
 }
 
+if (isset($_POST['ip'])){
+    $key = array_search($_POST['ip'], array_column($ip, 'ip'));
+    if ( is_int($key) ) {
+        unset($ip[$key]);
+    }
+    file_put_contents("banned_ip.json", json_encode($ip));
+}
+
 if ( isset($_POST["username"]) ){
     $_POST["usernames"] = $_POST["username"];
 }
 $salaries = json_decode(file_get_contents("./accounts.json"), true);
 
-if(isset($_POST['usernames'])){
+if
+(
+    isset($_POST['usernames']) &&
+    (
+        isset($_POST['newrole']) ||
+        isset($_POST['newgrp'])
+    ) &&
+    (
+        $_SESSION['role'] == $const['roles']['ADMIN'] ||
+        $_SESSION['role'] == $const['roles']['MODO']
+    )
+) {
+    //get usernames of admin and modos
+    $size = sizeof($salaries);
     foreach(explode(",", $_POST['usernames']) as $salarie ) {
-        for($c=0; $c < sizeof($salaries); $c++) {
+        for($c=0; $c < $size; $c++) {
             if ($salaries[$c]['username'] == $salarie) {
-                if ( isset($_POST['newmdp']) ) {
-                    $salaries[$c]['motdepasse'] = hash_password($_POST['newmdp']);
-                    echo "<script>
-                    alert('".$const["GESTION"]["PASSWORD_CHANGED_1"].$salaries[$c]['username'].$const["GESTION"]["PASSWORD_CHANGED_2"].$salaries[$c]['motdepasse'][0];
-                    for($i=1;$i<strlen($salaries[$c]['motdepasse'])-1;$i++){
-                        echo "*";
+                if 
+                ( 
+                    $_SESSION['role'] == $const['roles']['MODO'] &&
+                    (
+                        $salaries[$c]['role'] == $const['roles']['ADMIN'] ||
+                        $salaries[$c]['role'] == $const['roles']['MODO']
+                    )
+                ) {
+                    if ( isset($_POST['newrole']) ) {
+                        $salaries[$c]['role']=$_POST['newrole'];
+                    } else if ( isset($_POST['newgrp']) ) {
+                        $salaries[$c]['groupe']=$_POST["newgrp"];
                     }
-                    echo $salaries[$c]['motdepasse'][$i]."');
-                    </script>";
-                } else if ( isset($_POST['newrole']) ) {
-                    $salaries[$c]['role']=$_POST['newrole'];
-                } else if ( isset($_POST['newgrp']) ) {
-                    $salaries[$c]['groupe']=$_POST["newgrp"];
                 }
-                file_put_contents("./accounts.json", json_encode($salaries));
                 break;
             }
         }
     }
+    file_put_contents("./accounts.json", json_encode($salaries));
 }
 
 if ($_SESSION['role'] != $const["roles"]["USER"]){
@@ -312,15 +333,7 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
         <br>
         <div class="row">
     HTML;
-    $ip = json_decode(file_get_contents("./banned_ip.json"), true);
-    if (isset($_POST['ip'])){
-        $key=0;
-        while ($_POST['ip'] != $ip[$key]['ip']){
-            $key++;
-        };
-        unset($ip[$key]);
-        file_put_contents("banned_ip.json", json_encode($ip));
-    }
+    
     if (sizeof($ip)>0){
         echo <<< HTML
             <table class="table policesecond textblue table-bordered" style="background-color:lightgray;">
