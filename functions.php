@@ -1,5 +1,4 @@
 <?php
-headd("");
 $prefix=$_SERVER['DOCUMENT_ROOT'];
 $ips=json_decode(file_get_contents("$prefix/banned_ip.json"),true);
 $ips=($ips == null)? array() : $ips;
@@ -50,8 +49,8 @@ function headd($tpage){
 		session_start();
 	}
 	echo <<< HTML
-        <!DOCTYPE html>
-        <html>
+    <!DOCTYPE html>
+    <html>
         <head>
             <title>$tpage</title>
             <meta charset='utf-8'>
@@ -60,12 +59,10 @@ function headd($tpage){
             <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js'></script>
             <link rel='icon' type='image/png' href='/images/cgd.png'>
             <link rel='stylesheet' type='text/css' href='/style.css'/>
-            <link rel='preconnect' href='https://fonts.googleapis.com'>
-            <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
-            <link href='https://fonts.googleapis.com/css2?family=Asset&display=swap' rel='stylesheet'>
-            <link rel='preconnect' href='https://fonts.googleapis.com'>
-            <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
-            <link href='https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap' rel='stylesheet'>
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" class="wtd-fond" rel="stylesheet">
+
         </head>
         <body>
     HTML;

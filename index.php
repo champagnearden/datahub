@@ -3,7 +3,7 @@ include ("functions.php");
 headd($const["FUNCTIONS"]["HOME"]);
 nav("index");
 ?>
-<div class='textblue policemain mediumsize text-center bgmaincolor'>
+<div class='textblue policemain mediumsize text-center'>
 	<br>
 	<img src='/images/cgd.png' alt='logo' width='20%' heigth='20%'>
 	<br><br>

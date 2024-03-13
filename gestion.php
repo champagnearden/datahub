@@ -469,11 +469,7 @@ foreach ($salaries as $salarie) {
         if ($_SESSION['username'] != $salarie['username']) {
             array_push($usernames[$salarie["role"]], $salarie["username"]);
         }
-        if ($salarie['role'] != $const['roles']['ADMIN']) {
-            echo "<td>".$salarie["date_modif"]."</td>";
-        } else {
-            echo "<td>****</td>";
-        }
+        echo "<td>".$salarie["date_modif"]."</td>";
     } else if ($_SESSION['role'] != $const["roles"]["USER"]) {
         echo "<td>****</td>";
     }
@@ -514,8 +510,8 @@ foreach ($salaries as $salarie) {
 //Entête
 echo <<< HTML
             </tbody>
-            <thead style="background-color: black;">
-                <tr class="table-active" style="color: white;">
+            <thead>
+                <tr class="table-active">
 HTML;
 echo '
                     <th scope="col">'.$const["GESTION"]["USERNAME"].'</th>
