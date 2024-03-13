@@ -14,7 +14,6 @@ foreach($ip as $i){
 			</script>";
 	}
 }
-unset($ip);
 $const = (new Consts()) -> get_lang();
 
 class Consts {
