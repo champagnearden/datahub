@@ -207,8 +207,13 @@
         <input type='hidden' name='delDir' value='".$dir['id']."'>
         <a class='btn bgmaincolor text-white btn-sm material-icons' onclick=\"confirmDelete('$condition', 'delfolder_".$dir['id']."');\">close</a>
       </form>
-      $vis</pre>
-      <a href='#' onclick='editPopUp(this)' class='material-icons' name='dir_".$dir['id']."'>edit</a>
+      $vis</pre>";
+      if ($dir['owner'] == $_SESSION['username']) {
+        echo "
+        <a href='#' onclick='editPopUp(this)' class='material-icons' name='dir_".$dir['id']."'>edit</a>
+        ";
+      }
+      echo "
       <form action='' method='post' id='form_goto_".$dir['id']."' class='inline'>
         <input type='hidden' name='goto' value='".$dir['id']."'>
         <a class='textblue policesecond minisize' onclick='document.getElementById(\"form_goto_".$dir['id']."\").submit()' style='cursor: pointer;'>".$dir['nom']."</a>
@@ -253,8 +258,13 @@
         <input type='hidden' name='delFic' value='".$file['id']."'>
         <a class='btn bgmaincolor text-white btn-sm material-icons' onclick='confirmDelete(\"$condition\", \"delfile_".$file['id']."\");'>close</a>
       </form>
-      $vis</pre>
+      $vis</pre>";
+      if ($file['owner'] == $_SESSION['username']) {
+        echo "
       <a href='#' onclick='editPopUp(this)' class='material-icons' name='fic_".$file['id']."'>edit</a>
+        ";
+      }
+      echo "
       <a class='textblue policesecond minisize' href='./".$name."' download='".$name."'>".$file['nom']."</a> 
       $sub
     </div>";
