@@ -22,7 +22,7 @@
       array_pop($ex);
       $path = join("/", $ex);
     } else {
-      foreach($dossiers as $d){
+      foreach($dossiers as $d) {
         if($d['id']==$_POST['goto']){
           $path = $d['path']."/".$d["nom"];
           break;
@@ -34,7 +34,7 @@
   }
   $_SESSION['path'] = $path;
   if(isset($_POST['AddDoss'])){
-    $str=$_POST['AddDoss'];
+    $str = $_POST['AddDoss'];
     $visi = $_POST['role'];
     if (
       $visi == 'grp' ||
@@ -81,13 +81,41 @@
   }
   if(isset($_POST['delFic'])){
     $i = array_search($_POST["delFic"], array_column($fichiers, 'id'));
-    unset($fichiers[$i]);
-    file_put_contents("../fichiers.json", json_encode(array_values($fichiers)));
+    if 
+    (
+      $fichiers[$i]['owner'] == $_SESSION['username'] ||
+      $fichiers[$i]['visibility'] == "all" ||
+      $path == $_SESSION['path'] &&
+      is_array($fichiers[$i]['visibility']) &&
+      (
+        $fichiers[$i]['visibility'][0] == "users" &&
+        in_array($_SESSION['username'], $fichiers[$i]['visibiity']) ||
+        $fichiers[$i]['visibility'][0] == "grp" &&
+        in_array($_SESSION['group'], $fichiers[$i]['visibility'])
+      ) 
+    ) {
+      unset($fichiers[$i]);
+      file_put_contents("../fichiers.json", json_encode(array_values($fichiers)));
+    }
   }
-  if(isset($_POST['delDir'])){
+  if
+  ( isset($_POST['delDir'])) {
     $i = array_search($_POST["delDir"], array_column($dossiers, 'id'));
-    unset($dossiers[$i]);
-    file_put_contents("../dossiers.json", json_encode(array_values($dossiers)));
+    if 
+    (
+      $dossiers[$i]['owner'] == $_SESSION['username'] ||
+      $dossiers[$i]['visibility'] == "all" ||
+      is_array($dossiers[$i]['visibility']) &&
+      (
+        $dossiers[$i]['visibility'][0] == "users" &&
+        in_array($_SESSION['username'], $dossiers[$i]['visibiity']) ||
+        $dossiers[$i]['visibility'][0] == "grp" &&
+        in_array($_SESSION['group'], $dossiers[$i]['visibility'])
+      ) 
+    ) {
+      unset($dossiers[$i]);
+      file_put_contents("../dossiers.json", json_encode(array_values($dossiers)));
+    }
   }
   echo "
   <div class='container textblue policesecond mediumsize'>

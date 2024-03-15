@@ -1,9 +1,9 @@
 <?php
 $prefix=$_SERVER['DOCUMENT_ROOT'];
-$ips=json_decode(file_get_contents("$prefix/banned_ip.json"),true);
-$ips=($ips == null)? array() : $ips;
-foreach($ips as $ip){
-	if ($ip['ip'] == $_SERVER['REMOTE_ADDR']){
+$ip=json_decode(file_get_contents("$prefix/banned_ip.json"),true);
+$ip=($ip == null)? array() : $ip;
+foreach($ip as $i){
+	if ($i['ip'] == $_SERVER['REMOTE_ADDR']){
 		unset($_SESSION['tentative']);
 		echo "
 			<script>
@@ -13,7 +13,6 @@ foreach($ips as $ip){
 			</script>";
 	}
 }
-unset($ips);
 $const = (new Consts()) -> get_lang();
 
 class Consts {
@@ -199,21 +198,21 @@ function session_verif($salaries,$second=false){
 	} else {
 		isset($_SESSION['tentative']) ? $_SESSION['tentative']++ : $_SESSION['tentative']=1;
 		if ($_SESSION['tentative']>=3){
-			$ips=json_decode(file_get_contents("/banned_ip.json"), true);
-			$ips=($ips == null)? array() : $ips;
+			$ip=json_decode(file_get_contents("/banned_ip.json"), true);
+			$ip=($ip == null)? array() : $ip;
 			$banned=0;
-			foreach($ips as $ip){
-				if ($ip == $_SERVER['REMOTE_ADDR']){
+			foreach($ip as $i){
+				if ($i == $_SERVER['REMOTE_ADDR']){
 					$banned=1;
 					break;
 				}
 			}
 			if (boolval(!$banned)){
-				array_push($ips, array(
+				array_push($ip, array(
 					"date" => date("j-n-Y H:i:s"),
 					"ip"=>$_SERVER['REMOTE_ADDR'])
 				);
-				file_put_contents("banned_ip.json", json_encode($ips));
+				file_put_contents("banned_ip.json", json_encode($ip));
 			}
 			header('Location: functions.php');
 			die();
