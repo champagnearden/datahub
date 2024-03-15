@@ -36,12 +36,16 @@
     }
     if ($type_id[0] == "dir") {
       $key = array_search($type_id[1], array_column($dossiers, 'id'));
-      $dossiers[$key]['visibility'] =$vis;
-      file_put_contents("../dossiers.json", json_encode($dossiers)); 
+      if ($dossiers[$key]['owner'] == $_SESSION['username']) {
+        $dossiers[$key]['visibility'] =$vis;
+        file_put_contents("../dossiers.json", json_encode($dossiers)); 
+      }
     } else if ($type_id[0] == "fic") {
       $key = array_search($type_id[1], array_column($fichiers, 'id'));
-      $fichiers[$key]['visibility'] =$vis;
-      file_put_contents("../fichiers.json", json_encode($fichiers)); 
+      if ($fichiers[$key]['owner'] == $_SESSION['username']) {
+        $fichiers[$key]['visibility'] =$vis;
+        file_put_contents("../fichiers.json", json_encode($fichiers)); 
+      }
     }
   }
   $path = "";
