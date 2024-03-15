@@ -15,6 +15,39 @@
   if (!isset($_SESSION['path'])) {
     $_SESSION['path'] = "";
   }
+  if (isset($_POST['modify_id'])) {
+    $type_id = explode('_', $_POST['modify_id']);
+    $vis = null;
+    switch ($_POST['role']) {
+      case 'all':
+        $vis = "all";
+        break;
+      case 'grp':
+        $vis = $_POST['groups'];
+        array_unshift($vis, "grp");
+        break;
+      case 'users':
+        $vis = $_POST['groups'];
+        array_unshift($vis, "users");
+        break;
+      case 'me';
+        $vis = "me";
+        break;
+    }
+    if ($type_id[0] == "dir") {
+      $key = array_search($type_id[1], array_column($dossiers, 'id'));
+      if ($dossiers[$key]['owner'] == $_SESSION['username']) {
+        $dossiers[$key]['visibility'] =$vis;
+        file_put_contents("../dossiers.json", json_encode($dossiers)); 
+      }
+    } else if ($type_id[0] == "fic") {
+      $key = array_search($type_id[1], array_column($fichiers, 'id'));
+      if ($fichiers[$key]['owner'] == $_SESSION['username']) {
+        $fichiers[$key]['visibility'] =$vis;
+        file_put_contents("../fichiers.json", json_encode($fichiers)); 
+      }
+    }
+  }
   $path = "";
   if (isset($_POST['goto'])) {
     if ( $_POST['goto'] == ".." ) {
@@ -149,13 +182,13 @@
     } else {
       $sub = "<sub><small>(".$dir['owner'].")</small></sub>";
     }
-    $vis="<pre class='inline'  title='".$const['FTP']['WHO']."\n";
+    $vis="<pre class='inline' id='pre_dir_".$dir['id']."' title='".$const['FTP']['WHO']."\n";
     switch ($dir['visibility']) {
       case 'me':
-        $vis .= $const['FTP']['ME']."'>-</pre>";
+        $vis .= $const['FTP']['ME']."'>-";
         break;
       case 'all':
-        $vis .= $const['FTP']['ALL']."'>+</pre>";
+        $vis .= $const['FTP']['ALL']."'>+";
         break;
       default:
         if ($dir['visibility'][0] == "grp") {
@@ -167,7 +200,7 @@
         for ($i=1; $i < sizeof($dir['visibility']); $i++) {
           $vis .= "\n  -".$dir['visibility'][$i];
         }
-        $vis .= "'>#</pre>";
+        $vis .= "'>#";
         break;
     }
 
@@ -178,7 +211,13 @@
         <input type='hidden' name='delDir' value='".$dir['id']."'>
         <a class='btn bgmaincolor text-white btn-sm material-icons' onclick=\"confirmDelete('$condition', 'delfolder_".$dir['id']."');\">close</a>
       </form>
-      $vis
+      $vis</pre>";
+      if ($dir['owner'] == $_SESSION['username']) {
+        echo "
+        <a href='#' onclick='editPopUp(this)' class='material-icons' name='dir_".$dir['id']."'>edit</a>
+        ";
+      }
+      echo "
       <form action='' method='post' id='form_goto_".$dir['id']."' class='inline'>
         <input type='hidden' name='goto' value='".$dir['id']."'>
         <a class='textblue policesecond minisize' onclick='document.getElementById(\"form_goto_".$dir['id']."\").submit()' style='cursor: pointer;'>".$dir['nom']."</a>
@@ -197,10 +236,10 @@
     $vis="<pre class='inline'  title='".$const['FTP']['WHO']."\n";
     switch ($file['visibility']) {
       case 'me':
-        $vis = "<pre class='inline' title='".$const['FTP']['WHO']."\n".$const['FTP']['ME']."'>-</pre>";
+        $vis = "<pre class='inline' title='".$const['FTP']['WHO']."\n".$const['FTP']['ME']."'>-";
         break;
       case 'all':
-        $vis = "<pre class='inline' title='".$const['FTP']['WHO']."\n".$const['FTP']['ALL']."'>+</pre>";
+        $vis = "<pre class='inline' title='".$const['FTP']['WHO']."\n".$const['FTP']['ALL']."'>+";
         break;
       default:
         if ( $file['visibility'][0] == "grp" ) {
@@ -212,7 +251,7 @@
         for ($i=1; $i < sizeof($file['visibility']); $i++) {
           $vis .= "\n  -".$file['visibility'][$i];
         }
-        $vis .= "'>#</pre>";
+        $vis .= "'>#";
         break;
     }
     $condition = $const['FTP']['CONFIRM_FILE'];
@@ -223,7 +262,13 @@
         <input type='hidden' name='delFic' value='".$file['id']."'>
         <a class='btn bgmaincolor text-white btn-sm material-icons' onclick='confirmDelete(\"$condition\", \"delfile_".$file['id']."\");'>close</a>
       </form>
-      $vis
+      $vis</pre>";
+      if ($file['owner'] == $_SESSION['username']) {
+        echo "
+      <a href='#' onclick='editPopUp(this)' class='material-icons' name='fic_".$file['id']."'>edit</a>
+        ";
+      }
+      echo "
       <a class='textblue policesecond minisize' href='./".$name."' download='".$name."'>".$file['nom']."</a> 
       $sub
     </div>";
@@ -313,8 +358,27 @@
         <br>
         <span id="groups_fic_span"></span>
         <br>
-        <button class='btn text-white bgmaincolor policesecond' type="submit" value="Importer le fichier"><?php echo $const['FTP']['UPLOAD']; ?></button>
+        <button class='btn text-white bgmaincolor policesecond' type="submit"><?php echo $const['FTP']['UPLOAD']; ?></button>
       </form>
+      <div id="popupContainer" class="popupContainer">
+        <div class="popupContent">
+          <span class="close" id="closePopup">&times;</span>
+          <form action='' method='post'>
+            <p>&emsp;<?php echo $const['FTP']['WHO']; ?></p>
+            <input type="hidden" value="" id="hidden_shared" name="modify_id">
+            <select id='role_shared' name='role' onchange='revealGroups(this, "shared")'>
+              <option value="me"><?php echo $const['FTP']['ONLY_ME']; ?></option>
+              <option value="users"><?php echo $const['FTP']['USERS']; ?></option>
+              <option value="grp"><?php echo $const['FTP']['GROUPS']; ?></option>
+              <option value="all"><?php echo $const['FTP']['ALL']; ?></option>
+            </select>
+            <br>
+            <span id="groups_shared_span"></span>
+            <br>
+            <button class='btn text-white bgmaincolor policesecond' type="submit"><?php echo $const['LOGIN']['ADD']; ?></button>
+          </form>
+        </div>
+      </div>
       <script>
         function revealGroups(self, id) {
           const selects = document.getElementById('groups_' + id);
@@ -345,7 +409,44 @@
             ?>
             span.appendChild(select);
           }
-        } 
+        }
+        function editPopUp(self) {
+          // Get the popup container and the subscribe link
+          const popupContainer = document.getElementById('popupContainer');
+          const editPopUp = self;
+          const closePopup = document.getElementById('closePopup');
+          const hidden = document.getElementById('hidden_shared');
+          
+          // Function to display the popup
+          function displayPopup() {
+            popupContainer.style.display = 'block';
+          }
+
+          // Function to hide the popup
+          function hidePopup() {
+            popupContainer.style.display = 'none';
+          }
+          
+          // Event listener for the subscribe link
+          editPopUp.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default behavior of the link
+            hidden.value = this.name;
+            displayPopup();
+          });
+
+          // Event listener for the close button
+          closePopup.addEventListener('click', function() {
+            hidePopup();
+          });
+
+          // Event listener to hide popup when clicking outside of it
+          window.addEventListener('click', function(event) {
+            if (event.target === popupContainer) {
+              hidePopup();
+            }
+          });
+        }
+
       </script>
       <br>
       </div>
