@@ -52,6 +52,7 @@
     ));
     file_put_contents("../dossiers.json", json_encode($dossiers));
     unset($_POST['AddDoss']);
+    notif($const['FTP']['ADDED_FOLDER']);
   }
   if (
     isset($_FILES['fic']['tmp_name']) && 
@@ -60,7 +61,7 @@
   ){
     $str = str_replace('%22','',$_FILES['fic']['name']);
     $str = str_replace("'","",$str);
-    move_uploaded_file($_FILES['fic']['tmp_name'],"./files/$str");
+    move_uploaded_file($_FILES['fic']['tmp_name'],"../files/$str");
     $visi = $_POST['role'];
     if (
       $visi == 'grp' ||
@@ -78,16 +79,19 @@
     ));
     file_put_contents("../fichiers.json", json_encode($fichiers));
     unset($_FILES['fic']);
+    notif($const['FTP']['ADDED_FILE']);
   }
   if(isset($_POST['delFic'])){
     $i = array_search($_POST["delFic"], array_column($fichiers, 'id'));
     unset($fichiers[$i]);
     file_put_contents("../fichiers.json", json_encode(array_values($fichiers)));
+    notif($const['FTP']['DELETED_FILE']);
   }
   if(isset($_POST['delDir'])){
     $i = array_search($_POST["delDir"], array_column($dossiers, 'id'));
     unset($dossiers[$i]);
     file_put_contents("../dossiers.json", json_encode(array_values($dossiers)));
+    notif($const['FTP']['DELETED_FOLDER']);
   }
   echo "
   <div class='container textblue policesecond mediumsize'>

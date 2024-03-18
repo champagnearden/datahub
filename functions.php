@@ -14,6 +14,10 @@ foreach($ips as $ip){
 	}
 }
 unset($ips);
+if (isset($_SESSION['notif'])) {
+	notif($_SESSION['notif']);
+	unset($_SESSION['notif']);
+}
 $const = (new Consts()) -> get_lang();
 
 class Consts {
@@ -42,6 +46,15 @@ class Consts {
 		}
 		return $this -> consts['en'];
 	}
+}
+
+function notif($text) {
+	echo <<< HTML
+	<div class='badge-notif bg-success'>
+		<button onclick="this.parentNode.remove()" class="btn btn-sm material-icons">close</button><br>
+		$text
+	</div>
+	HTML;
 }
 
 function headd($tpage){
@@ -163,6 +176,10 @@ function nav($page){
 	</div>
 	<br><br><br><br><br><br>
 	HTML;
+	if (isset($_SESSION['notif'])) {
+		notif($_SESSION['notif']);
+		unset($_SESSION['notif']);
+	}
 }
 
 function session_verif($salaries,$second=false){
@@ -181,6 +198,7 @@ function session_verif($salaries,$second=false){
 	if ($pass) {
 		$_SESSION['role'] = $salarie['role'];
 		$_SESSION['username'] = $salarie['username'];
+		$_SESSION['notif'] = $const['FUNCTIONS']['LOGIN_SUCCESS'];
 		echo "
 		<br>
 		<div class='text-center mx-auto d-block'>
@@ -190,7 +208,7 @@ function session_verif($salaries,$second=false){
 			<div class='text-center'><br>
 				<br>
                 ".$const['FUNCTIONS']['REDIRECT']."
-                <script>document.location.href='/'</script>
+                <script>document.location.href='/';</script>
 				<button type='button' class='btn bgmaincolor text-white center-block' onclick = 'location.href = \"/\"'>".$const['FUNCTIONS']['CONTINUE']."</button>
 			</div>
 		</div>
