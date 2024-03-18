@@ -19,18 +19,18 @@ if(isset($_POST['usernames'])){
             if ($salaries[$c]['username'] == $salarie) {
                 if ( isset($_POST['newmdp']) ) {
                     $salaries[$c]['motdepasse'] = hash_password($_POST['newmdp']);
-                    echo "<script>
-                    alert('".$const["GESTION"]["PASSWORD_CHANGED_1"].$salaries[$c]['username'].$const["GESTION"]["PASSWORD_CHANGED_2"].$salaries[$c]['motdepasse'][0];
+                    $str = $const["GESTION"]["PASSWORD_CHANGED_1"].$salaries[$c]['username'].$const["GESTION"]["PASSWORD_CHANGED_2"].$salaries[$c]['motdepasse'][0];
                     for($i=1;$i<strlen($salaries[$c]['motdepasse'])-1;$i++){
-                        echo "*";
+                        $str .= "*";
                     }
-                    echo $salaries[$c]['motdepasse'][$i]."');
-                    </script>";
+                    $str .= $salaries[$c]['motdepasse'][$i];
+                    notif($str);
                 } else if ( isset($_POST['newrole']) ) {
                     $salaries[$c]['role']=$_POST['newrole'];
                 } else if ( isset($_POST['newgrp']) ) {
                     $salaries[$c]['groupe']=$_POST["newgrp"];
                 }
+                notif($const["GESTION"]["MODIFIED_USER"]);
                 file_put_contents("./accounts.json", json_encode($salaries));
                 break;
             }
@@ -313,12 +313,13 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
         <div class="row">
     HTML;
     $ip = json_decode(file_get_contents("./banned_ip.json"), true);
-    if (isset($_POST['ip'])){
+    if (isset($_POST['ip']) && sizeof($ip)>0){
         $key=0;
         while ($_POST['ip'] != $ip[$key]['ip']){
             $key++;
         };
         unset($ip[$key]);
+        notif($const['GESTION']['DELETED_IP']);
         file_put_contents("banned_ip.json", json_encode($ip));
     }
     if (sizeof($ip)>0){

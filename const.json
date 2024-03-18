@@ -28,7 +28,8 @@
             "ATTEMPT": " tentative",
             "WARNING": "Attention, au bout de 3 tentatives vous serez banni !",
             "RETRY": "Réessayez",
-            "BAN": "Non non, vous êtes banni !\nVous pouvez dire ce que vous voulez vous l'avez cherché !"
+            "BAN": "Non non, vous êtes banni !\nVous pouvez dire ce que vous voulez vous l'avez cherché !",
+            "LOGIN_SUCCESS": "Vous êtes connecté !"
         },
         "LOGIN": {
             "HOME": "Vous êtes arrivé sur la page de connexion",
@@ -102,7 +103,13 @@
             "OK": "OK",
             "GROUPS": "Groupes",
             "REMOVE": "Supprimer",
-            "NEVER": "Jamais"
+            "NEVER": "Jamais",
+            "ADDED_USER": "L'utilisateur a été ajouté avec succès !",
+            "DELETED_USER": "Le groupe a bien été ajouté !",
+            "MODIFIED_USER": "L'utilisateur a été modifié avec succès !",
+            "ADDED_GROUP": "Le groupe a bien été ajouté !",
+            "DELETED_GROUP": "Le groupe a bien été supprimé !",
+            "DELETED_IP": "L'adresse IP a bien été supprimée !"
         },
         "FTP": {
             "FILE_FAILED": "Impossible de créer le fichier, le nom est invalide !",
@@ -124,7 +131,12 @@
             "USERS": "Certains utilisateurs",
             "ALL": "Tout le monde",
             "CREATE": "Créer",
-            "UPLOAD": "Importer un fichier"
+            "UPLOAD": "Importer un fichier",
+            "DELETED_FILE": "Le fichier a bien été supprimé !",
+            "DELETED_FOLDER": "Le dossier a bien été supprimé !",
+            "ADDED_FOLDER": "Le dossier a bien été ajouté !",
+            "ADDED_FILE": "Le fichier a bien été ajouté !",
+            "MODIF_SHARE": "Les propriétés de partage ont bien été modifiées !"
         }
     },
     "en":{
@@ -156,7 +168,8 @@
             "ATTEMPT": " attempts",
             "WARNING": "Warning, after 3 attempts you'll be ban !",
             "RETRY": "Try again",
-            "BAN": "No no, you are banned\nYou can say whatever you want..."
+            "BAN": "No no, you are banned\nYou can say whatever you want...",
+            "LOGIN_SUCCESS": "Successfully logged in !"
         },
         "LOGIN": {
             "HOME": "You are on the login page",
@@ -230,7 +243,13 @@
             "OK": "OK",
             "GROUPS": "Groups",
             "REMOVE": "Delete",
-            "NEVER": "Never"
+            "NEVER": "Never",
+            "ADDED_USER": "User successfully added",
+            "DELETED_USER": "User successfully deleted",
+            "MODIFIED_USER": "User successfully modified",
+            "ADDED_GROUP": "Group successfully added",
+            "DELETED_GROUP": "Group successfully deleted",
+            "DELETED_IP": "IP successfully deleted"
         },
         "FTP": {
             "FILE_FAILED": "Unable to create file, name is invalid !",
@@ -252,7 +271,12 @@
             "GROUPS": "My groups",
             "ALL": "Everyone",
             "CREATE": "Create",
-            "UPLOAD": "Upload a file"
+            "UPLOAD": "Upload a file",
+            "DELETED_FILE": "Successfully deleted file",
+            "DELETED_FOLDER": "Successfully deleted folder",
+            "ADDED_FOLDER": "Successfully added folder",
+            "ADDED_FILE": "Successfully uploaded file",
+            "MODIF_SHARE": "Sharing properties have successfully been modified"
         }
     },
     "roles": {

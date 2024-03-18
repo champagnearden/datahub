@@ -277,6 +277,7 @@
 
 .scrolling-active .navbar ul li{
   text-align: right;
+  z-index: 1;
 }
 
 .div1{
@@ -585,4 +586,17 @@ footer {
 
 .btn {
   background-color: rgb(255, 144, 0);
+}
+
+.badge-notif{
+  position: fixed;
+  top: 5rem;
+  right: 0%;
+  padding: 10px 20px;
+  background-color: #28a745; /* Green */
+  color: #ffffff; /* White text */
+  border-radius: 5px;
+  z-index: 1030;
+  text-align: right;
+  width: auto;
 }
