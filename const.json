@@ -38,18 +38,18 @@
             "PASSWORD_PLACEHOLDER": "Entrez votre mot de passe",
             "PASSWORD": "Mot de passe",
             "LOGIN": "Se connecter",
-            "CONFIRM_CREATE": "Confirmation de création de compte",
+            "CONFIRM_CREATE": "Confirmation de creation de compte",
             "CONFIRM_ADD": "Confirmer l'ajout",
             "CONFIRM_SENT": "Le mail à ben été envoyé",
             "SENT_ERROR": "Le mail n'a pas été envoyé: ",
-            "ASK_CREATE": "Modifier mes informations",
+            "ASK_CREATE": "Créer un compte",
             "PRENOM_PLACEHOLDER": "Entrez votre prénom",
             "PRENOM": "Prénom",
             "NOM_PLACEHOLDER": "Entrez votre nom",
             "NOM": "Nom",
             "EMAIL_PLACEHOLDER": "Entrez votre adresse mail",
             "EMAIL": "Email",
-            "ADD": "Modifier"
+            "ADD": "Envoyer"
         },
         "LOGOUT": {
             "LOGOUT": "Déconnexion",
@@ -102,7 +102,10 @@
             "OK": "OK",
             "GROUPS": "Groupes",
             "REMOVE": "Supprimer",
-            "NEVER": "Jamais"
+            "NEVER": "Jamais",
+            "EDIT_INFOS": "Modifier mes informations",
+            "EDIT": "Modifier",
+            "ADD": "Ajouter"
         },
         "FTP": {
             "FILE_FAILED": "Impossible de créer le fichier, le nom est invalide !",
@@ -170,14 +173,14 @@
             "CONFIRM_ADD": "Confirm add",
             "CONFIRM_SENT": "Successfully sent email",
             "SENT_ERROR": "Email haven't been sent: ",
-            "ASK_CREATE": "Modify my infos",
+            "ASK_CREATE": "Create an account",
             "PRENOM_PLACEHOLDER": "input your firstname",
             "PRENOM": "Firstname",
             "NOM_PLACEHOLDER": "Input your name",
             "NOM": "Name",
             "EMAIL_PLACEHOLDER": "Input your email address",
             "EMAIL": "Email",
-            "ADD": "Edit"
+            "ADD": "Send"
         },
         "LOGOUT": {
             "LOGOUT": "Logout",
@@ -230,7 +233,10 @@
             "OK": "OK",
             "GROUPS": "Groups",
             "REMOVE": "Delete",
-            "NEVER": "Never"
+            "NEVER": "Never",
+            "EDIT_INFOS": "Edit my infos",
+            "EDIT": "Edit",
+            "ADD": "Add"
         },
         "FTP": {
             "FILE_FAILED": "Unable to create file, name is invalid !",
@@ -262,12 +268,12 @@
     },
     "conf": {
         "MAIL_DOMAIN": "@etud.univ-ubs.fr",
-        "MAIL_USERNAME": "sardines.and.cie@gmail.com",
-        "MAIL_HOST": "smtp-relay.sendinblue.com",
-        "MAIL_PASSWORD": "chJLY02ADd1X8y9n",
-        "MAIL_SENDER": "sardines.and.cie@gmail.com",
+        "MAIL_USERNAME": "noreply.datahub@gmail.com",
+        "MAIL_HOST": "smtp.gmail.com",
+        "MAIL_SENDER": "noreply.datahub@gmail.com",
         "MAIL_PSEUDO": "sardinesandcie",
-        "DOMAIN": "datahub.com"
+        "MAIL_PASSWORD": "pgla uqqg etag wqdk",
+        "DOMAIN": "localhost"
     }
     
 }
