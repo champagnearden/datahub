@@ -40,22 +40,39 @@ if (
                 <b class='mediumsize'>".$const['LOGIN']['FORGOT_PASSWORD']."</b></div><br>
                 <div class='bgmaincolor container policesecond'>
                     <form action='forgot_password.php' method='post' class='inline'>
+                        <input type='hidden'name='token' value='".$token."'>
                         <div class='row textblue'>
-                        <div class='col-sm'><br>
-                            <div class='form-floating'>
-                                <input type='text' class='form-control' id='username' placeholder='".$const['GESTION']['USERNAME_PLACEHOLDER']."' name='username' value='".$tokens[$token]."' required>
-                                <label for='username'>".$const['GESTION']['USERNAME']."</label><br>
+                            <div class='col-sm'><br>
+                                <div class='form-floating'>
+                                    <input type='password' class='form-control' id='password' placeholder='".$const['LOGIN']['PASSWORD_PLACEHOLDER']."' name='password' required>
+                                    <label for='username'>".$const['LOGIN']['PASSWORD']."</label><br>
+                                </div>
                             </div>
                         </div>
+                        <div class='row textblue'>
+                            <div class='col-sm'>
+                                <div class='form-floating'>
+                                    <input type='password' class='form-control' id='password2' placeholder='".$const['LOGIN']['PASSWORD_CONFIRM_PLACEHOLDER']."' name='password2' onkeyup='validatePassword()' required>
+                                    <label for='password2'>".$const['LOGIN']['PASSWORD_CONFIRM']."</label><br>
+                                </div>
+                            </div>
                         </div>
-                        <div class='form-floating input-group mb-4 textblue' >
-                            <input type='password' class='form-control' id='password' placeholder='".$const['LOGIN']['PASSWORD_PLACEHOLDER']."' name='password' required>
-                            <label for='password'>".$const['LOGIN']['PASSWORD']."</label><br>
-                        </div>
-                        <button type='submit' class='btn bg-white textblue'>".$const['LOGIN']['ADD']."</button><br><br>
+                        <button type='submit' class='btn bg-white textblue' id='submit' disabled>".$const['LOGIN']['ADD']."</button><br><br>
                     </form>
                 </div>
             </div>
+            <script>
+                function validatePassword() {
+                    var password = document.getElementById('password').value;
+                    var password2 = document.getElementById('password2').value;
+                    if (password != password2) {
+                        //console.log('".$const['LOGIN']['PASSWORD_NOT_MATCH']."');
+                        document.getElementById('submit').disabled = true;
+                    } else {
+                        document.getElementById('submit').disabled = false;
+                    }
+                }
+            </script>
         ";
         footer();
     }
