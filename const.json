@@ -39,8 +39,8 @@
             "PASSWORD": "Mot de passe",
             "LOGIN": "Se connecter",
             "CONFIRM_CREATE": "Confirmation de creation de compte",
-            "CONFIRM_ADD": "Confirmer l'ajout",
-            "CONFIRM_SENT": "Le mail à ben été envoyé",
+            "CONFIRM_FORGOT": "Confirmer la réinitialisation du mot de passe",
+            "CONFIRM_SENT": "Le mail à bien été envoyé à ",
             "SENT_ERROR": "Le mail n'a pas été envoyé: ",
             "ASK_CREATE": "Créer un compte",
             "PRENOM_PLACEHOLDER": "Entrez votre prénom",
@@ -49,7 +49,8 @@
             "NOM": "Nom",
             "EMAIL_PLACEHOLDER": "Entrez votre adresse mail",
             "EMAIL": "Email",
-            "ADD": "Envoyer"
+            "ADD": "Envoyer",
+            "FORGOT_PASSWORD": "Mot de passe oublié"
         },
         "LOGOUT": {
             "LOGOUT": "Déconnexion",
@@ -170,8 +171,8 @@
             "PASSWORD": "Password",
             "LOGIN": "Login",
             "CONFIRM_CREATE": "Confirm sign up",
-            "CONFIRM_ADD": "Confirm add",
-            "CONFIRM_SENT": "Successfully sent email",
+            "CONFIRM_FORGOT": "Confirm password reset",
+            "CONFIRM_SENT": "Successfully sent email to ",
             "SENT_ERROR": "Email haven't been sent: ",
             "ASK_CREATE": "Create an account",
             "PRENOM_PLACEHOLDER": "input your firstname",
@@ -180,7 +181,8 @@
             "NOM": "Name",
             "EMAIL_PLACEHOLDER": "Input your email address",
             "EMAIL": "Email",
-            "ADD": "Send"
+            "ADD": "Send", 
+            "FORGOT_PASSWORD": "Forgot password"
         },
         "LOGOUT": {
             "LOGOUT": "Logout",
@@ -271,9 +273,10 @@
         "MAIL_USERNAME": "noreply.datahub@gmail.com",
         "MAIL_HOST": "smtp.gmail.com",
         "MAIL_SENDER": "noreply.datahub@gmail.com",
-        "MAIL_PSEUDO": "sardinesandcie",
+        "MAIL_PSEUDO": "DataHub",
         "MAIL_PASSWORD": "pgla uqqg etag wqdk",
-        "DOMAIN": "localhost"
+        "DOMAIN": "localhost",
+        "PROTOCOL": "http"
     }
     
 }
