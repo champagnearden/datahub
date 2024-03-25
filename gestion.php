@@ -88,11 +88,13 @@ echo '
                         </div>
                     </div>
                 </div>
-                <div class="form-floating input-group mb-4 textblue" >
-                    <input type="text" class="form-control" id="email" placeholder="'.$const["LOGIN"]["EMAIL_PLACEHOLDER"].'" name="email" value="'.str_replace($const['conf']['MAIL_DOMAIN'], "", $current["email"]).'" required>
-                    <label for="email">'.$const["LOGIN"]["EMAIL"].'</label><br>
+                <div class="input-group mb-4">
+                    <div class="form-floating flex-grow-1 textblue" >
+                        <input type="text" class="form-control" id="email" placeholder="'.$const["LOGIN"]["EMAIL_PLACEHOLDER"].'" name="email" value="'.str_replace($const['conf']['MAIL_DOMAIN'], "", $current["email"]).'" required>
+                        <label for="email">'.$const["LOGIN"]["EMAIL"].'</label>
+                    </div>
                     <span class="input-group-text textblue">'.$const["conf"]["MAIL_DOMAIN"].'</span>
-                </div>
+                </div>    
                 <button type="submit" class="btn bg-white textblue">'.$const["GESTION"]["EDIT"].'</button><br><br>
             </div>
         </form>

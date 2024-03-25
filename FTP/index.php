@@ -276,7 +276,7 @@
     </script>
 </div><br>
 <hr class='container textblue'><br>
-<div class='mx-auto d-block textblue '>
+<div class='mx-auto d-block textblue'>
   <small><i><?php echo $const['FTP']['NO_QUOTES']; ?></i></small>
   <br><br>
   <div class='container row'>
@@ -284,9 +284,12 @@
       <p>&emsp;<?php echo $const['FTP']['CREATE_FOLDER']; ?></p>
       <div class='textblue'>
         <form action="" method="post">
-          <input class='textblue minisize policesecond' style='border-radius: 2%' type="text" name="AddDoss" placeholder="<?php echo $const['FTP']['FOLDER_NAME']; ?>" required>
+          <div class="form-floating">
+            <input class='form-control form-control-lg textblue policesecond' type="text" name="AddDoss" id="AddDoss" placeholder="<?php echo $const['FTP']['FOLDER_NAME']; ?>" required>
+            <label for="AddDoss"><?php echo $const['FTP']['FOLDER_NAME']; ?></label>
+          </div>
           <p>&emsp;<?php echo $const['FTP']['WHO']; ?></p>
-          <select id="role_dir" name="role" onchange="revealGroups(this, 'dir')">
+          <select class="form-control form-select" id="role_dir" name="role" onchange="revealGroups(this, 'dir')">
             <option value="me"><?php echo $const['FTP']['ONLY_ME']; ?></option>
             <option value="users"><?php echo $const['FTP']['USERS']; ?></option>
             <option value="grp"><?php echo $const['FTP']['GROUPS']; ?></option>
@@ -302,9 +305,9 @@
     <div class='col-sm-6'>
       <p><?php echo $const['FTP']['UPLOAD']; ?></p>
       <form action="./" method="post" enctype="multipart/form-data">
-        <input class='textblue minisize policesecond' style='border-radius: 2%' type="file" name="fic">
+        <input class='form-control form-control-lg textblue policesecond' type="file" name="fic" id="fic">
         <p>&emsp;<?php echo $const['FTP']['WHO']; ?></p>
-        <select id="role_fic" name="role" onchange="revealGroups(this, 'fic')">
+        <select id="role_fic" name="role" class="form-control form-select" onchange="revealGroups(this, 'fic')">
           <option value="me"><?php echo $const['FTP']['ONLY_ME']; ?></option>
           <option value="users"><?php echo $const['FTP']['USERS']; ?></option>
           <option value="grp"><?php echo $const['FTP']['GROUPS']; ?></option>

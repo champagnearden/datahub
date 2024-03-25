@@ -37,7 +37,7 @@ if(isset($_SESSION['pre_nom'])){
         <label for="motdepasse"><?php echo $const['LOGIN']['PASSWORD']; ?></label><br>
       </div>
       <button type="submit" class="btn bg-white textblue"><?php echo $const['LOGIN']['LOGIN']; ?></button>
-      <a href='forgot_password.php' class='btn bg-white textblue'><?php echo $const['LOGIN']['FORGOT_PASSWORD']; ?></a>
+      <a href='#forgot_username' class='btn bg-white textblue'><?php echo $const['LOGIN']['FORGOT_PASSWORD']; ?></a>
     </form>
   </div>
   <br>
@@ -51,16 +51,24 @@ if(isset($_SESSION['pre_nom'])){
         <div class="row textblue">
           <div class="col-sm"><br>
             <div class="form-floating">
-              <input type="text" class="form-control" id="username" placeholder="<?php echo $const['GESTION']['USERNAME_PLACEHOLDER']; ?>" name="username" required>
-              <label for="username"><?php echo $const['GESTION']['USERNAME']; ?></label><br>
+              <input type="text" class="form-control" id="forgot_username" placeholder="<?php echo $const['GESTION']['USERNAME_PLACEHOLDER']; ?>" name="username" required>
+              <label for="forgot_username"><?php echo $const['GESTION']['USERNAME']; ?></label>
             </div>
           </div>
         </div>
-        <div class="form-floating input-group mb-4 textblue" >
-          <input type="text" class="form-control" id="email" placeholder="<?php echo $const['LOGIN']['EMAIL_PLACEHOLDER']; ?>" name="email" required>
-          <label for="email"><?php echo $const['LOGIN']['EMAIL']; ?></label><br>
-          <span class="input-group-text textblue"><?php echo $const['conf']['MAIL_DOMAIN']; ?></span>
+        <br>
+        <div class="row textblue">
+          <div class="col-sm">
+            <div class="input-group mb-4">
+              <div class="form-floating flex-grow-1">
+                <input type="text" class="form-control" id="email" placeholder="<?php echo $const['LOGIN']['EMAIL_PLACEHOLDER']; ?>" name="email" required>
+                <label for="email"><?php echo $const['LOGIN']['EMAIL']; ?></label>
+              </div>
+              <span class="input-group-text textblue"><?php echo $const['conf']['MAIL_DOMAIN']; ?></span>
+            </div>
+          </div>
         </div>
+        <br>
         <button type="submit" class="btn bg-white textblue"><?php echo $const['LOGIN']['ADD']; ?></button><br><br>
       </form>
     </div>

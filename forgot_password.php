@@ -6,28 +6,66 @@ if (!isset($_POST['token']) && !isset($_POST['username'])  ) {
     die();
 }
 $salaries = json_decode(file_get_contents("accounts.json"), true);
+$tokens = json_decode(file_get_contents("tokens.json"), true);
 $key = isset($_POST['username']) ? array_search($_POST['username'], array_column($salaries, 'username')): null;
 if (
     is_int($key) && 
     isset($_POST['email']) && 
-    $_POST['email'] == $salaries[$key]['email']
+    $_POST['email'] == $salaries[$key]['email'] &&
+    $salaries[$key] != null
 ) {
-    $token = bin2hex(random_bytes(16));
-    $tokens = json_decode(file_get_contents("tokens.json"), true);
-    $tokens[$token] = $_POST['username'];
-    $ret = send_email($salaries[$key]['prenom'], $salaries[$key]['nom'], $_POST['email'], $token);
-    if ($ret == true){
-        echo $const['LOGIN']['CONFIRM_SENT'].$_POST['email'];
-    } else {
-        echo $const['LOGIN']['SENT_ERROR'];
+    // Just sent the forgot password form
+    // check if the email correspond to username
+    $user = $salaries[array_search($_POST['email'], array_column($salaries, 'email'))];
+    if (
+        $user =! null && 
+        $user['username'] == $_POST['username'] 
+    ){
+        $token = bin2hex(random_bytes(16));
+        $ret = send_email($user['prenom'], $user[$key]['nom'], $_POST['email'], $token);
+        if ($ret == true){
+            $tokens = json_decode(file_get_contents("tokens.json"), true);
+            $tokens[$token] = $_POST['username'];
+            file_put_contents("tokens.json", json_encode($tokens));
+            echo $const['LOGIN']['CONFIRM_SENT'].$_POST['email'];
+            //notif(email sent)
+        } else {
+            echo $ret;
+            echo $const['LOGIN']['SENT_ERROR'];
+            //notif(email not sent)
+        }
     }
-    file_put_contents("tokens.json", json_encode($tokens));
-    //header("Location: login.php");
-    //die();
-} else if (isset($_POST['token']) && $_POST['token'] != null){
+    header("Location: login.php");
+    die();
+} else if (
+    isset($_POST['token']) && 
+    isset($_POST['password']) && 
+    isset($_POST['password2'])
+){
+    // sent the new password form
+    if($_POST['password'] == $_POST['password2']){
+        //notif(ERROR BG);
+        $username = $tokens[$_POST['token']];
+        $key = array_search($username, array_column($salaries, 'username'));
+        if(is_int($key)){
+            $salaries[$key]['motdepasse'] = hash_password($_POST['password']);
+            unset($tokens[$token]);
+            file_put_contents("tokens.json", json_encode($tokens));
+            file_put_contents("accounts.json", json_encode($salaries));
+            //notif(success BG);
+        } else {
+            //notif(error BG);
+        }
+    }
+    header("Location: login.php");
+    die(); 
+} else if (
+    isset($_POST['token']) && 
+    $_POST['token'] != null
+){
+    // clicked on the button in the email
     //verify the token and output the form to change the password
     $token = $_POST['token'];
-    $tokens = json_decode(file_get_contents("tokens.json"), true);
     if ($tokens[$token] == null){
         header("Location: login.php");
         die();
@@ -76,15 +114,9 @@ if (
         ";
         footer();
     }
-} else if (isset($_POST['username']) && isset($_POST['password'])){
-    //verify change the password and delete the token
-    $salaries[$key]['motdepasse'] = hash_password($_POST['password']);
-    file_put_contents("accounts.json", json_encode($salaries));
-    unset($tokens[$token]);
-    file_put_contents("tokens.json", json_encode($tokens));
-    //notif(OK BG);
+} else {
     header("Location: login.php");
-    die(); 
+    die();
 }
 
 ?>
