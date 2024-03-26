@@ -50,7 +50,7 @@ if ($_SESSION['role'] != $const["roles"]["USER"]){
 echo '
     <div class="container textblue policesecond">
         <b class="mediumsize">
-'.$const['LOGIN']['ASK_CREATE'];
+'.$const['GESTION']['EDIT_INFOS'];
 echo <<< HTML
         </b>
     </div>
@@ -88,12 +88,14 @@ echo '
                         </div>
                     </div>
                 </div>
-                <div class="form-floating input-group mb-4 textblue" >
-                    <input type="text" class="form-control" id="email" placeholder="'.$const["LOGIN"]["EMAIL_PLACEHOLDER"].'" name="email" value="'.str_replace($const['conf']['MAIL_DOMAIN'], "", $current["email"]).'" required>
-                    <label for="email">'.$const["LOGIN"]["EMAIL"].'</label><br>
+                <div class="input-group mb-4">
+                    <div class="form-floating flex-grow-1 textblue" >
+                        <input type="text" class="form-control" id="email" placeholder="'.$const["LOGIN"]["EMAIL_PLACEHOLDER"].'" name="email" value="'.str_replace($const['conf']['MAIL_DOMAIN'], "", $current["email"]).'" required>
+                        <label for="email">'.$const["LOGIN"]["EMAIL"].'</label>
+                    </div>
                     <span class="input-group-text textblue">'.$const["conf"]["MAIL_DOMAIN"].'</span>
-                </div>
-                <button type="submit" class="btn bg-white textblue">'.$const["LOGIN"]["ADD"].'</button><br><br>
+                </div>    
+                <button type="submit" class="btn bg-white textblue">'.$const["GESTION"]["EDIT"].'</button><br><br>
             </div>
         </form>
     </div>
@@ -219,7 +221,7 @@ if (
             </div>
     HTML;
     echo '
-            <button type="submit" class="btn bg-white textblue">'.$const["LOGIN"]["ADD"].'</button><br><br>
+            <button type="submit" class="btn bg-white textblue">'.$const["GESTION"]["ADD"].'</button><br><br>
     ';
     echo <<< HTML
         </form>
@@ -293,7 +295,7 @@ if ( $_SESSION['role'] != $const["roles"]["USER"] ) {
                 <input type="text" class="form-control " id="nom_grp" placeholder="'.$const["GESTION"]["GROUP_NAME_PLACEHOLDER"].'" name="nom_grp" required>
                 <label for="nom">'.$const["GESTION"]["GROUP_NAME"].'</label><br>
                 </div>
-                <button type="submit" name="ajouter des groupes" class="btn bg-white textblue">'.$const["LOGIN"]["ADD"].'</button><br><br>
+                <button type="submit" name="ajouter des groupes" class="btn bg-white textblue">'.$const["GESTION"]["ADD"].'</button><br><br>
     ';
     echo <<< HTML
             </form>

@@ -1,4 +1,10 @@
 <?php
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
 $prefix=$_SERVER['DOCUMENT_ROOT'];
 $ips=json_decode(file_get_contents("$prefix/banned_ip.json"),true);
 $ips=($ips == null)? array() : $ips;
@@ -272,4 +278,48 @@ function footer() {
 	</html>
 	HTML;
 }
+
+function send_email($prenom, $nom, $email, $token=null): mixed{
+	global $const;
+	$objet = $const['LOGIN']['CONFIRM_FORGOT'];
+	//$email .= $const['conf']['MAIL_DOMAIN'];
+	$msg = "<html>
+	  <head>
+		<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet'>
+		<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js'></script>
+	  </head>
+	  <body>
+		<form action='".$const['conf']['PROTOCOL']."://".$const['conf']['DOMAIN']."/forgot_password.php' method='post'>
+			<input type='hidden' name='token' value='".$token."'>
+			<button type='submit' class='btn bg-white'>".$const['LOGIN']['CONFIRM_FORGOT']."</button><br><br>
+		</form>
+	  </body>
+	</html>";
+	$mail = new PHPMailer(true);
+  
+	try {
+		//Server settings
+		$mail->SMTPDebug = SMTP::DEBUG_OFF;                      //Enable verbose debug output
+		$mail->isSMTP();                                            //Send using SMTP
+		$mail->Host       = $const['conf']['MAIL_HOST'];                     //Set the SMTP server to send through
+		$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+		$mail->Username   = $const['conf']['MAIL_USERNAME'];                     //SMTP username
+		$mail->Password   = $const['conf']['MAIL_PASSWORD'];                               //SMTP password
+		$mail->SMTPSecure = 'tls';
+		$mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+		$mail->isHTML(true);                                  //Set email format to HTML
+		$mail->Subject = $objet;
+		$mail->Body    = $msg;
+		$mail->AltBody = $msg;
+  
+		//Recipients
+		$mail->setFrom($const['conf']['MAIL_SENDER'], $const['conf']['MAIL_PSEUDO']);
+		$mail->addAddress($email, $prenom." ".$nom);     //Add a recipient
+  
+		$mail->send();
+		return true;
+	} catch (Exception $e) {
+		return $mail->ErrorInfo;
+	}
+  }
 ?>

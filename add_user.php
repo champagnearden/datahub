@@ -2,7 +2,12 @@
 include "functions.php";
 $salaries = json_decode(file_get_contents("accounts.json"), true);
 $_POST["email"] = $_POST["email"].$const['conf']['MAIL_DOMAIN'];
-$_POST["motdepasse"] = hash_password($_POST["motdepasse"]);
+if (isset($_POST['hash_password'])) {
+    $_POST["motdepasse"] = $_POST["hash_password"];
+    unset($_POST['hash_password']);
+} else {
+    $_POST["motdepasse"] = hash_password($_POST["motdepasse"]);
+}
 $key = array_search($_SESSION['username'], array_column($salaries, 'username'));
 if (is_int($key)) {
     $_POST['date_creation'] = $salaries[$key]['date_creation'];
