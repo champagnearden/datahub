@@ -281,7 +281,7 @@ function footer() {
 
 function send_email($prenom, $nom, $email, $token=null): mixed{
 	global $const;
-	$objet = $const['LOGIN']['CONFIRM_CREATE'];
+	$objet = $const['LOGIN']['CONFIRM_FORGOT'];
 	//$email .= $const['conf']['MAIL_DOMAIN'];
 	$msg = "<html>
 	  <head>

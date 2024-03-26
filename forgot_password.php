@@ -49,7 +49,7 @@ if (
         $key = array_search($username, array_column($salaries, 'username'));
         if(is_int($key)){
             $salaries[$key]['motdepasse'] = hash_password($_POST['password']);
-            unset($tokens[$token]);
+            unset($tokens[$_POST['token']]);
             file_put_contents("tokens.json", json_encode($tokens));
             file_put_contents("accounts.json", json_encode($salaries));
             //notif(success BG);
